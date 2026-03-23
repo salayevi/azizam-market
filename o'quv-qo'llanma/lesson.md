@@ -9,6 +9,7 @@
 import Image from "next/image"
 import { useEffect, useRef } from "react"
 import gsap from "gsap"
+import AuthTriggerButton from "../../auth/AuthTriggerButton"
 
 export default function Navbar() {
 
@@ -39,13 +40,71 @@ export default function Navbar() {
       <div className="flex gap-8 text-sm font-medium">
         <a href="#about">Biz haqimizda</a>
         <a href="#product">Mahsulot</a>
-        <a href="/auth">Kirish yoki Ro'yxatdan o'tish</a>
+         <AuthTriggerButton
+          mode="login"
+          className="transition hover:opacity-80"
+        >
+          Kirish yoki Ro&apos;yxatdan o&apos;tish
+        </AuthTriggerButton>
       </div>
 
     </nav>
 
   )
-} 
+}
+``` 
+
+# Footer/footer.tsx
+
+```
+"use client"
+
+import Image from "next/image"
+import { useEffect, useRef } from "react"
+import gsap from "gsap"
+import AuthTriggerButton from "../../auth/AuthTriggerButton"
+
+export default function Navbar() {
+
+  const navRef = useRef(null)
+
+  useEffect(() => {
+
+    gsap.from(navRef.current, {
+      y: -80,
+      opacity: 0,
+      duration: 1,
+      ease: "power3.out"
+    })
+
+  }, [])
+
+  return (
+
+    <nav
+      ref={navRef}
+      className="fixed top-0 left-0 w-full flex justify-between items-center px-10 py-6 text-white z-50 bg-black/30 backdrop-blur-md"
+    >
+
+      <div className="flex items-center gap-2">
+        <Image src="/logo.png" alt="Azizam Market" width={40} height={40} />
+      </div>
+
+      <div className="flex gap-8 text-sm font-medium">
+        <a href="#about">Biz haqimizda</a>
+        <a href="#product">Mahsulot</a>
+         <AuthTriggerButton
+          mode="login"
+          className="transition hover:opacity-80"
+        >
+          Kirish yoki Ro&apos;yxatdan o&apos;tish
+        </AuthTriggerButton>
+      </div>
+
+    </nav>
+
+  )
+}
 ```
 
 <!-- Hero -->
@@ -491,7 +550,6 @@ import { Product } from "./product.types";
 import { useProductsScroll } from "./useProductsScroll";
 import ProductSlide from "./product-slide";
 
-
 type Props = {
   products: Product[];
 };
@@ -517,7 +575,7 @@ export default function ProductsScene({ products }: Props) {
         className="sticky top-0 h-screen overflow-hidden bg-[#f5f4f2]"
       >
         {/* Intro Layer */}
-        <div className="absolute inset-0 z-20 flex items-center justify-center px-6">
+        <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center px-6">
           <div className="text-center">
             <p
               data-products-kicker
@@ -541,12 +599,11 @@ export default function ProductsScene({ products }: Props) {
             </p>
           </div>
         </div>
-
         {/* Floating Card Scene */}
-        <div className="absolute inset-0 z-10 flex items-center justify-center px-4 sm:px-6 lg:px-10">
+        <div className="absolute inset-0 z-10 flex items-center justify-center px-4 sm:px-6 lg:px-10 pointer-events-none">
           <div
             data-products-card-shell
-            className="relative w-full max-w-6xl will-change-transform"
+            className="relative w-full max-w-6xl will-change-transform pointer-events-auto"
           >
             <div
               data-products-card-shadow
@@ -1109,71 +1166,86 @@ export function useProductsScroll({ sectionRef, pinRef, totalSlides }: Params) {
 ### product-slide.tsx ###
 
 ```
-"use client"
+"use client";
 
-import { Product } from "./product.types"
-import ProductMedia from "./product-media"
-import ProductInfo from "./product-info"
-import ProductColors from "./product-colors"
-import ProductActions from "./product-actions"
+import { Product } from "./product.types";
+import ProductMedia from "./product-media";
+import ProductInfo from "./product-info";
+import ProductColors from "./product-colors";
+import ProductActions from "./product-actions";
+import ProductGuestCallout from "./product-guest-callout";
+import { useAuthModal } from "../auth/AuthModalProvider";
 
 type Props = {
-  product: Product
-  index: number
-}
+  product: Product;
+  index: number;
+};
 
 function getMediaPanelBackground(product: Product) {
-  const mode = product.mediaPanel.mode
+  const mode = product.mediaPanel.mode;
 
-  if (mode === "forceBlack") return "#111111"
-  if (mode === "forceWhite") return "#f5f1eb"
-  if (mode === "imageTone") return product.mediaPanel.color || "#d8d2cc"
+  if (mode === "forceBlack") return "#111111";
+  if (mode === "forceWhite") return "#f5f1eb";
+  if (mode === "imageTone") return product.mediaPanel.color || "#d8d2cc";
 
-  return "#111111"
+  return "#111111";
 }
 
 export default function ProductSlide({ product, index }: Props) {
-  const mediaPanelBg = getMediaPanelBackground(product)
+  const mediaPanelBg = getMediaPanelBackground(product);
+  const { isAuthenticated } = useAuthModal();
 
   return (
     <article
       data-product-slide
       data-index={index}
-      className="absolute inset-0 grid h-full w-full grid-cols-1 lg:grid-cols-[1.05fr_1fr] will-change-[opacity,transform]"
+      className="absolute inset-0 grid h-full w-full grid-cols-1 lg:grid-cols-[1.05fr_1fr]"
       style={{
         background: product.theme.bg,
         color: product.theme.text,
       }}
     >
+      {/* LEFT / MEDIA */}
       <div
-        className="relative flex items-center justify-center overflow-hidden p-8 lg:p-12"
+        className="relative flex items-center justify-center overflow-hidden p-8 lg:p-12 pointer-events-none"
         style={{ backgroundColor: mediaPanelBg }}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),transparent_58%)]" />
-        <ProductMedia product={product} />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),transparent_58%)]" />
+
+        <div className="relative z-0 pointer-events-none">
+          <ProductMedia product={product} />
+        </div>
       </div>
 
-      <div className="flex items-center p-8 lg:p-14">
+      {/* RIGHT / CONTENT */}
+      <div className="relative z-20 flex items-center p-8 lg:p-14">
         <div className="mx-auto w-full max-w-xl">
-          <ProductInfo product={product} />
+          <ProductInfo product={product} isAuthenticated={isAuthenticated} />
 
           <div className="mt-8">
             <ProductColors
               colors={product.colors}
-              accent={product.theme.accent}
+              isAuthenticated={isAuthenticated}
             />
           </div>
 
-          <div className="mt-8">
-            <ProductActions
-              actions={product.actions}
-              accent={product.theme.accent}
-            />
-          </div>
+          {isAuthenticated ? (
+            <div className="mt-8 min-h-[56px] relative z-20">
+              <ProductActions
+                actions={product.actions}
+                accent={product.theme.accent}
+                isAuthenticated={isAuthenticated}
+              />
+            </div>
+          ) : (
+            <div className="relative z-30">
+              <ProductGuestCallout accent={product.theme.accent} />
+            </div>
+          )}
         </div>
       </div>
     </article>
-  )
+  );
 }
 ```
 
@@ -1222,13 +1294,14 @@ export default function ProductMedia({ product }: Props) {
 ### product-info.tsx ### 
 
 ```
-import { Product } from "./product.types"
+import { Product } from "./product.types";
 
 type Props = {
-  product: Product
-}
+  product: Product;
+  isAuthenticated: boolean;
+};
 
-export default function ProductInfo({ product }: Props) {
+export default function ProductInfo({ product, isAuthenticated }: Props) {
   return (
     <div data-product-info className="max-w-xl">
       {product.badge && (
@@ -1263,27 +1336,31 @@ export default function ProductInfo({ product }: Props) {
         {product.description}
       </p>
 
-      {product.price && (
+      {isAuthenticated && product.price && (
         <div className="mt-8 text-2xl font-semibold">
           {product.price}
         </div>
       )}
     </div>
-  )
+  );
 }
 ```
 
 ### product-colors.tsx ###
 
 ```
-import { ProductColor } from "./product.types"
+import { ProductColor } from "./product.types";
 
 type Props = {
-  colors: ProductColor[]
-  accent: string
-}
+  colors: ProductColor[];
+  isAuthenticated: boolean;
+};
 
-export default function ProductColors({ colors }: Props) {
+export default function ProductColors({ colors, isAuthenticated }: Props) {
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <div data-product-colors>
       <p className="mb-3 text-sm font-medium uppercase tracking-[0.18em] text-neutral-500">
@@ -1307,26 +1384,35 @@ export default function ProductColors({ colors }: Props) {
         ))}
       </div>
     </div>
-  )
+  );
 }
 ```
 
 ### product-actions.tsx ###
 
 ```
-import Link from "next/link"
-import { ProductAction } from "./product.types"
+import Link from "next/link";
+import { ProductAction } from "./product.types";
 
 type Props = {
-  actions: ProductAction[]
-  accent: string
-}
+  actions: ProductAction[];
+  accent: string;
+  isAuthenticated: boolean;
+};
 
-export default function ProductActions({ actions, accent }: Props) {
+export default function ProductActions({
+  actions,
+  accent,
+  isAuthenticated,
+}: Props) {
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <div data-product-actions className="flex flex-wrap gap-4">
       {actions.map((action) => {
-        const isPrimary = action.type === "primary"
+        const isPrimary = action.type === "primary";
 
         return (
           <Link
@@ -1341,10 +1427,10 @@ export default function ProductActions({ actions, accent }: Props) {
           >
             {action.label}
           </Link>
-        )
+        );
       })}
     </div>
-  )
+  );
 }
 ```
 
@@ -1471,41 +1557,22 @@ export const productsData: Product[] = [
 
 ### layout.tsx ###
 ```
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Create Next App",
-  description: "Generated by create next app",
-};
+import { AuthModalProvider } from "./companent/auth/AuthModalProvider";
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="uz">
+      <body>
+        <AuthModalProvider>{children}</AuthModalProvider>
       </body>
     </html>
   );
 }
-
 ```
 
 ### page.tsx ###
@@ -1529,5 +1596,251 @@ export default function Home() {
     </main>
   );
 }
+```
 
+<!-- Auth --> 
+
+# auth/AuthModal.tsx
+```
+"use client";
+
+import { useEffect } from "react";
+import { useAuthModal } from "./AuthModalProvider";
+
+export default function AuthModal() {
+  const { isOpen, view, closeModal, setView, loginSuccess } = useAuthModal();
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, closeModal]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
+      <button
+        type="button"
+        onClick={closeModal}
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        aria-label="Modalni yopish"
+      />
+
+      <div className="relative z-10 w-full max-w-md rounded-3xl border border-white/10 bg-[#111111] p-5 text-white shadow-2xl">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-xl font-semibold">
+            {view === "login" ? "Kirish" : "Ro‘yxatdan o‘tish"}
+          </h2>
+
+          <button
+            type="button"
+            onClick={closeModal}
+            className="rounded-full border border-white/10 px-3 py-1 text-sm text-white/70 transition hover:bg-white/10 hover:text-white"
+          >
+            Yopish
+          </button>
+        </div>
+
+        <div className="mb-4 grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            onClick={() => setView("login")}
+            className={`rounded-full px-4 py-3 text-sm font-medium transition ${
+              view === "login"
+                ? "bg-white text-black"
+                : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
+            }`}
+          >
+            Kirish
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setView("register")}
+            className={`rounded-full px-4 py-3 text-sm font-medium transition ${
+              view === "register"
+                ? "bg-[#d13ea2] text-white"
+                : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
+            }`}
+          >
+            Ro‘yxatdan o‘tish
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none placeholder:text-white/30"
+          />
+          <input
+            type="password"
+            placeholder="Parol"
+            className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none placeholder:text-white/30"
+          />
+
+          <button
+            type="button"
+            onClick={loginSuccess}
+            className="w-full rounded-2xl bg-white px-4 py-3 font-medium text-black transition hover:scale-[1.01]"
+          >
+            {view === "login" ? "Kirish" : "Ro‘yxatdan o‘tish"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+# auth/AuthModalProvider.tsx
+```
+"use client";
+
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
+import AuthModal from "./AuthModal";
+
+type AuthView = "login" | "register";
+
+type AuthModalContextType = {
+  isOpen: boolean;
+  view: AuthView;
+  isAuthenticated: boolean;
+  openLogin: () => void;
+  openRegister: () => void;
+  closeModal: () => void;
+  setView: (view: AuthView) => void;
+  loginSuccess: () => void;
+  logout: () => void;
+};
+
+const AuthModalContext = createContext<AuthModalContextType | null>(null);
+
+export function AuthModalProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [view, setView] = useState<AuthView>("login");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const openLogin = useCallback(() => {
+    setView("login");
+    setIsOpen(true);
+  }, []);
+
+  const openRegister = useCallback(() => {
+    setView("register");
+    setIsOpen(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  const loginSuccess = useCallback(() => {
+    setIsAuthenticated(true);
+    setIsOpen(false);
+  }, []);
+
+  const logout = useCallback(() => {
+    setIsAuthenticated(false);
+  }, []);
+
+  const value = useMemo(
+    () => ({
+      isOpen,
+      view,
+      isAuthenticated,
+      openLogin,
+      openRegister,
+      closeModal,
+      setView,
+      loginSuccess,
+      logout,
+    }),
+    [isOpen, view, isAuthenticated, openLogin, openRegister, closeModal, loginSuccess, logout]
+  );
+
+  return (
+    <AuthModalContext.Provider value={value}>
+      {children}
+      <AuthModal />
+    </AuthModalContext.Provider>
+  );
+}
+
+export function useAuthModal() {
+  const context = useContext(AuthModalContext);
+
+  if (!context) {
+    throw new Error("useAuthModal must be used inside AuthModalProvider");
+  }
+
+  return context;
+}
+```
+
+# auth/AuthTriggerButton.tsx 
+```
+"use client";
+
+import { CSSProperties } from "react";
+import { useAuthModal } from "./AuthModalProvider";
+
+type Props = {
+  mode?: "login" | "register";
+  children: React.ReactNode;
+  className?: string;
+  style?: CSSProperties;
+};
+
+export default function AuthTriggerButton({
+  mode = "login",
+  children,
+  className = "",
+  style,
+}: Props) {
+  const { openLogin, openRegister } = useAuthModal();
+
+  const handleClick = () => {
+    if (mode === "register") {
+      openRegister();
+      return;
+    }
+
+    openLogin();
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={handleClick}
+      className={className}
+      style={style}
+    >
+      {children}
+    </button>
+  );
+}
 ```
