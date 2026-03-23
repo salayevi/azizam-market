@@ -5,7 +5,6 @@ import { Product } from "./product.types";
 import { useProductsScroll } from "./useProductsScroll";
 import ProductSlide from "./product-slide";
 
-
 type Props = {
   products: Product[];
 };
@@ -31,7 +30,7 @@ export default function ProductsScene({ products }: Props) {
         className="sticky top-0 h-screen overflow-hidden bg-[#f5f4f2]"
       >
         {/* Intro Layer */}
-        <div className="absolute inset-0 z-20 flex items-center justify-center px-6">
+        <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center px-6">
           <div className="text-center">
             <p
               data-products-kicker
@@ -55,12 +54,11 @@ export default function ProductsScene({ products }: Props) {
             </p>
           </div>
         </div>
-
         {/* Floating Card Scene */}
-        <div className="absolute inset-0 z-10 flex items-center justify-center px-4 sm:px-6 lg:px-10">
+        <div className="absolute inset-0 z-10 flex items-center justify-center px-4 sm:px-6 lg:px-10 pointer-events-none">
           <div
             data-products-card-shell
-            className="relative w-full max-w-6xl will-change-transform"
+            className="relative w-full max-w-6xl will-change-transform pointer-events-auto"
           >
             <div
               data-products-card-shadow

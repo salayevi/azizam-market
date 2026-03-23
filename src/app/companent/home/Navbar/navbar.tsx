@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { useEffect, useRef } from "react"
 import gsap from "gsap"
+import AuthTriggerButton from "../../auth/AuthTriggerButton"
 
 export default function Navbar() {
 
@@ -33,7 +34,12 @@ export default function Navbar() {
       <div className="flex gap-8 text-sm font-medium">
         <a href="#about">Biz haqimizda</a>
         <a href="#product">Mahsulot</a>
-        <a href="/auth">Kirish yoki Ro&apos;yxatdan o&apos;tish</a>
+         <AuthTriggerButton
+          mode="login"
+          className="transition hover:opacity-80"
+        >
+          Kirish yoki Ro&apos;yxatdan o&apos;tish
+        </AuthTriggerButton>
       </div>
 
     </nav>

@@ -1,11 +1,15 @@
-import { ProductColor } from "./product.types"
+import { ProductColor } from "./product.types";
 
 type Props = {
-  colors: ProductColor[]
-  accent: string
-}
+  colors: ProductColor[];
+  isAuthenticated: boolean;
+};
 
-export default function ProductColors({ colors }: Props) {
+export default function ProductColors({ colors, isAuthenticated }: Props) {
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <div data-product-colors>
       <p className="mb-3 text-sm font-medium uppercase tracking-[0.18em] text-neutral-500">
@@ -29,5 +33,5 @@ export default function ProductColors({ colors }: Props) {
         ))}
       </div>
     </div>
-  )
+  );
 }

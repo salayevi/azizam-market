@@ -1,10 +1,11 @@
-import { Product } from "./product.types"
+import { Product } from "./product.types";
 
 type Props = {
-  product: Product
-}
+  product: Product;
+  isAuthenticated: boolean;
+};
 
-export default function ProductInfo({ product }: Props) {
+export default function ProductInfo({ product, isAuthenticated }: Props) {
   return (
     <div data-product-info className="max-w-xl">
       {product.badge && (
@@ -39,11 +40,11 @@ export default function ProductInfo({ product }: Props) {
         {product.description}
       </p>
 
-      {product.price && (
+      {isAuthenticated && product.price && (
         <div className="mt-8 text-2xl font-semibold">
           {product.price}
         </div>
       )}
     </div>
-  )
+  );
 }

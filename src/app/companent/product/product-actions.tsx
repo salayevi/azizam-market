@@ -1,16 +1,25 @@
-import Link from "next/link"
-import { ProductAction } from "./product.types"
+import Link from "next/link";
+import { ProductAction } from "./product.types";
 
 type Props = {
-  actions: ProductAction[]
-  accent: string
-}
+  actions: ProductAction[];
+  accent: string;
+  isAuthenticated: boolean;
+};
 
-export default function ProductActions({ actions, accent }: Props) {
+export default function ProductActions({
+  actions,
+  accent,
+  isAuthenticated,
+}: Props) {
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <div data-product-actions className="flex flex-wrap gap-4">
       {actions.map((action) => {
-        const isPrimary = action.type === "primary"
+        const isPrimary = action.type === "primary";
 
         return (
           <Link
@@ -25,8 +34,8 @@ export default function ProductActions({ actions, accent }: Props) {
           >
             {action.label}
           </Link>
-        )
+        );
       })}
     </div>
-  )
+  );
 }
