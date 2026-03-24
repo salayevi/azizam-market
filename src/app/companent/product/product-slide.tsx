@@ -1,31 +1,32 @@
-"use client";
+"use client"
 
-import { Product } from "./product.types";
-import ProductMedia from "./product-media";
-import ProductInfo from "./product-info";
-import ProductColors from "./product-colors";
-import ProductActions from "./product-actions";
-import ProductGuestCallout from "./product-guest-callout";
-import { useAuthModal } from "../auth/AuthModalProvider";
+import { Product } from "./product.types"
+import ProductMedia from "./product-media"
+import ProductInfo from "./product-info"
+import ProductColors from "./product-colors"
+import ProductActions from "./product-actions"
+import ProductGuestCallout from "./product-guest-callout"
+import { useAuthModal } from "../auth/AuthModalProvider"
+import { colors, sizes } from "@/config/design-system"
 
 type Props = {
-  product: Product;
-  index: number;
-};
+  product: Product
+  index: number
+}
 
 function getMediaPanelBackground(product: Product) {
-  const mode = product.mediaPanel.mode;
+  const mode = product.mediaPanel.mode
 
-  if (mode === "forceBlack") return "#111111";
-  if (mode === "forceWhite") return "#f5f1eb";
-  if (mode === "imageTone") return product.mediaPanel.color || "#d8d2cc";
+  if (mode === "forceBlack") return colors.background.dark
+  if (mode === "forceWhite") return colors.background.lightPanel
+  if (mode === "imageTone") return product.mediaPanel.color || "#d8d2cc"
 
-  return "#111111";
+  return colors.background.dark
 }
 
 export default function ProductSlide({ product, index }: Props) {
-  const mediaPanelBg = getMediaPanelBackground(product);
-  const { isAuthenticated } = useAuthModal();
+  const mediaPanelBg = getMediaPanelBackground(product)
+  const { isAuthenticated } = useAuthModal()
 
   return (
     <article
@@ -37,10 +38,13 @@ export default function ProductSlide({ product, index }: Props) {
         color: product.theme.text,
       }}
     >
-      {/* LEFT / MEDIA */}
       <div
-        className="relative flex items-center justify-center overflow-hidden p-8 lg:p-12 pointer-events-none"
-        style={{ backgroundColor: mediaPanelBg }}
+        className="relative flex items-center justify-center overflow-hidden pointer-events-none"
+        style={{
+          backgroundColor: mediaPanelBg,
+          paddingInline: sizes.product.mediaPanelPaddingX,
+          paddingBlock: sizes.product.mediaPanelPaddingY,
+        }}
       >
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),transparent_58%)]" />
 
@@ -49,9 +53,17 @@ export default function ProductSlide({ product, index }: Props) {
         </div>
       </div>
 
-      {/* RIGHT / CONTENT */}
-      <div className="relative z-20 flex items-center p-8 lg:p-14">
-        <div className="mx-auto w-full max-w-xl">
+      <div
+        className="relative z-20 flex items-center"
+        style={{
+          paddingInline: sizes.product.contentPanelPaddingX,
+          paddingBlock: sizes.product.contentPanelPaddingY,
+        }}
+      >
+        <div
+          className="mx-auto w-full"
+          style={{ maxWidth: sizes.product.infoMaxWidth }}
+        >
           <ProductInfo product={product} isAuthenticated={isAuthenticated} />
 
           <div className="mt-8">
@@ -62,7 +74,10 @@ export default function ProductSlide({ product, index }: Props) {
           </div>
 
           {isAuthenticated ? (
-            <div className="mt-8 min-h-[56px] relative z-20">
+            <div
+              className="mt-8 relative z-20"
+              style={{ minHeight: sizes.product.actionMinHeight }}
+            >
               <ProductActions
                 actions={product.actions}
                 accent={product.theme.accent}
@@ -77,5 +92,5 @@ export default function ProductSlide({ product, index }: Props) {
         </div>
       </div>
     </article>
-  );
+  )
 }

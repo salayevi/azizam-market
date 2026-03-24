@@ -1,41 +1,55 @@
-"use client";
+"use client"
 
-import { useEffect } from "react";
-import { useAuthModal } from "./AuthModalProvider";
+import { useEffect } from "react"
+import { useAuthModal } from "./AuthModalProvider"
+import { colors, radius, shadows, sizes, zIndex } from "@/config/design-system"
 
 export default function AuthModal() {
-  const { isOpen, view, closeModal, setView, loginSuccess } = useAuthModal();
+  const { isOpen, view, closeModal, setView, loginSuccess } = useAuthModal()
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) return
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        closeModal();
+        closeModal()
       }
-    };
+    }
 
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden"
+    window.addEventListener("keydown", handleKeyDown)
 
     return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen, closeModal]);
+      document.body.style.overflow = ""
+      window.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [isOpen, closeModal])
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
+    <div
+      className="fixed inset-0 flex items-center justify-center px-4"
+      style={{ zIndex: zIndex.modal }}
+    >
       <button
         type="button"
         onClick={closeModal}
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 backdrop-blur-sm"
+        style={{ backgroundColor: colors.overlay.modal }}
         aria-label="Modalni yopish"
       />
 
-      <div className="relative z-10 w-full max-w-md rounded-3xl border border-white/10 bg-[#111111] p-5 text-white shadow-2xl">
+      <div
+        className="relative z-10 w-full p-5 text-white"
+        style={{
+          maxWidth: sizes.auth.modalMaxWidth,
+          borderRadius: radius["3xl"],
+          border: `1px solid ${colors.border.whiteSoft}`,
+          backgroundColor: colors.surface.modal,
+          boxShadow: shadows.modal,
+        }}
+      >
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-semibold">
             {view === "login" ? "Kirish" : "Ro‘yxatdan o‘tish"}
@@ -44,7 +58,12 @@ export default function AuthModal() {
           <button
             type="button"
             onClick={closeModal}
-            className="rounded-full border border-white/10 px-3 py-1 text-sm text-white/70 transition hover:bg-white/10 hover:text-white"
+            className="px-3 py-1 text-sm transition"
+            style={{
+              borderRadius: radius.full,
+              border: `1px solid ${colors.border.whiteSoft}`,
+              color: colors.text.whiteSoft,
+            }}
           >
             Yopish
           </button>
@@ -54,11 +73,13 @@ export default function AuthModal() {
           <button
             type="button"
             onClick={() => setView("login")}
-            className={`rounded-full px-4 py-3 text-sm font-medium transition ${
-              view === "login"
-                ? "bg-white text-black"
-                : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
-            }`}
+            className="px-4 py-3 text-sm font-medium transition"
+            style={{
+              borderRadius: radius.full,
+              backgroundColor:
+                view === "login" ? colors.surface.white : "rgba(255,255,255,0.05)",
+              color: view === "login" ? "#111111" : colors.text.whiteSoft,
+            }}
           >
             Kirish
           </button>
@@ -66,11 +87,15 @@ export default function AuthModal() {
           <button
             type="button"
             onClick={() => setView("register")}
-            className={`rounded-full px-4 py-3 text-sm font-medium transition ${
-              view === "register"
-                ? "bg-[#d13ea2] text-white"
-                : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
-            }`}
+            className="px-4 py-3 text-sm font-medium transition"
+            style={{
+              borderRadius: radius.full,
+              backgroundColor:
+                view === "register"
+                  ? colors.brand.primary
+                  : "rgba(255,255,255,0.05)",
+              color: colors.text.white,
+            }}
           >
             Ro‘yxatdan o‘tish
           </button>
@@ -80,23 +105,38 @@ export default function AuthModal() {
           <input
             type="email"
             placeholder="Email"
-            className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none placeholder:text-white/30"
+            className="w-full px-4 py-3 outline-none placeholder:text-white/30"
+            style={{
+              borderRadius: radius.xl,
+              border: `1px solid ${colors.border.whiteSoft}`,
+              backgroundColor: "rgba(255,255,255,0.05)",
+            }}
           />
+
           <input
             type="password"
             placeholder="Parol"
-            className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none placeholder:text-white/30"
+            className="w-full px-4 py-3 outline-none placeholder:text-white/30"
+            style={{
+              borderRadius: radius.xl,
+              border: `1px solid ${colors.border.whiteSoft}`,
+              backgroundColor: "rgba(255,255,255,0.05)",
+            }}
           />
 
           <button
             type="button"
             onClick={loginSuccess}
-            className="w-full rounded-2xl bg-white px-4 py-3 font-medium text-black transition hover:scale-[1.01]"
+            className="w-full px-4 py-3 font-medium text-black transition hover:scale-[1.01]"
+            style={{
+              borderRadius: radius.xl,
+              backgroundColor: colors.surface.white,
+            }}
           >
             {view === "login" ? "Kirish" : "Ro‘yxatdan o‘tish"}
           </button>
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -4,45 +4,42 @@ import Image from "next/image"
 import { useEffect, useRef } from "react"
 import gsap from "gsap"
 import AuthTriggerButton from "../../auth/AuthTriggerButton"
+import { colors, motion, spacing, zIndex } from "@/config/design-system"
 
 export default function Navbar() {
-
-  const navRef = useRef(null)
+  const navRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
-
     gsap.from(navRef.current, {
       y: -80,
       opacity: 0,
-      duration: 1,
-      ease: "power3.out"
+      duration: motion.duration.slower,
+      ease: motion.ease.smooth,
     })
-
   }, [])
 
   return (
-
     <nav
       ref={navRef}
-      className="fixed top-0 left-0 w-full flex justify-between items-center px-10 py-6 text-white z-50 bg-black/30 backdrop-blur-md"
+      className="fixed left-0 top-0 flex w-full items-center justify-between text-white backdrop-blur-md"
+      style={{
+        paddingInline: spacing[10],
+        paddingBlock: spacing[6],
+        zIndex: zIndex.navbar,
+        backgroundColor: colors.overlay.navbar,
+      }}
     >
-
       <div className="flex items-center gap-2">
         <Image src="/logo.png" alt="Azizam Market" width={40} height={40} />
       </div>
 
       <div className="flex gap-8 text-sm font-medium">
         <a href="#about">Biz haqimizda</a>
-        <a href="#product">Mahsulot</a>
-         <AuthTriggerButton
-          mode="login"
-          className="transition hover:opacity-80"
-        >
+        <a href="#products">Mahsulot</a>
+        <AuthTriggerButton mode="login" className="transition hover:opacity-80">
           Kirish yoki Ro&apos;yxatdan o&apos;tish
         </AuthTriggerButton>
       </div>
-
     </nav>
-
   )
 }

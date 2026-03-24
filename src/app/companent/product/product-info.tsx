@@ -1,17 +1,19 @@
-import { Product } from "./product.types";
+import { Product } from "./product.types"
+import { radius } from "@/config/design-system"
 
 type Props = {
-  product: Product;
-  isAuthenticated: boolean;
-};
+  product: Product
+  isAuthenticated: boolean
+}
 
 export default function ProductInfo({ product, isAuthenticated }: Props) {
   return (
     <div data-product-info className="max-w-xl">
       {product.badge && (
         <div
-          className="mb-4 inline-flex rounded-full px-4 py-1 text-sm font-medium"
+          className="mb-4 inline-flex px-4 py-1 text-sm font-medium"
           style={{
+            borderRadius: radius.full,
             backgroundColor: `${product.theme.accent}20`,
             color: product.theme.accent,
           }}
@@ -40,11 +42,20 @@ export default function ProductInfo({ product, isAuthenticated }: Props) {
         {product.description}
       </p>
 
-      {isAuthenticated && product.price && (
-        <div className="mt-8 text-2xl font-semibold">
-          {product.price}
+      {isAuthenticated && product.price ? (
+        <div className="mt-8">
+          <div
+            className="text-xs uppercase tracking-[0.22em]"
+            style={{ color: product.theme.muted || product.theme.text }}
+          >
+            Narx
+          </div>
+
+          <div className="mt-2 text-2xl font-semibold">
+            {product.price}
+          </div>
         </div>
-      )}
+      ) : null}
     </div>
-  );
+  )
 }

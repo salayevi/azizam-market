@@ -1,4 +1,5 @@
 import { Product } from "./product.types"
+import { colors } from "@/config/design-system"
 
 export const productsData: Product[] = [
   {
@@ -47,7 +48,7 @@ export const productsData: Product[] = [
     price: "$72",
     badge: "New Drop",
     theme: {
-      bg: "#111111",
+      bg: colors.background.dark,
       text: "#f5f1eb",
       accent: "#d5b16d",
       muted: "#b8ac9d",

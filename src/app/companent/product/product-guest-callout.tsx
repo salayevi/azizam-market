@@ -1,27 +1,58 @@
-"use client";
+"use client"
 
-import AuthTriggerButton from "../auth/AuthTriggerButton";
+import AuthTriggerButton from "../auth/AuthTriggerButton"
+import { colors, radius, shadows } from "@/config/design-system"
 
 type Props = {
-  accent: string;
-};
+  accent: string
+}
 
 export default function ProductGuestCallout({ accent }: Props) {
   return (
-    <div className="relative z-30 mt-8 rounded-3xl border border-red-300/40 bg-red-50/80 p-5 shadow-sm backdrop-blur-sm">
-      <p className="text-sm leading-6 font-medium text-red-600">
-        Buyurtma va narx uchun Ro‘yxatdan o‘ting yoki Kirish qiling, bizda
-        Ro‘yxat va Kirish tizimi judayam oson.
+    <div
+      data-product-guest-callout
+      className="mt-8 max-w-md p-5"
+      style={{
+        borderRadius: radius["2xl"],
+        backgroundColor: colors.surface.white,
+        border: `1px solid ${colors.border.soft}`,
+        boxShadow: shadows.soft,
+      }}
+    >
+      <div
+        className="text-xs font-medium uppercase tracking-[0.24em]"
+        style={{ color: accent }}
+      >
+        Mehmon rejimi
+      </div>
+
+      <h4
+        className="mt-3 text-xl font-semibold"
+        style={{ color: colors.text.primary }}
+      >
+        To‘liq imkoniyatlar uchun tizimga kiring
+      </h4>
+
+      <p
+        className="mt-3 text-sm leading-7"
+        style={{ color: colors.text.secondary }}
+      >
+        Mahsulotni savatga qo‘shish, saqlab qo‘yish va shaxsiy tanlovlarni
+        boshqarish uchun ro‘yxatdan o‘ting yoki tizimga kiring.
       </p>
 
       <div className="mt-5">
         <AuthTriggerButton
           mode="register"
-          className="rounded-full bg-[#d13ea2] px-6 py-3 text-white font-medium transition hover:scale-[1.03]"
+          className="inline-flex items-center justify-center px-5 py-3 text-sm font-medium text-white transition hover:opacity-90"
+          style={{
+            borderRadius: radius.full,
+            backgroundColor: accent,
+          }}
         >
-          Ro&apos;yxatdan o&apos;tish
+          Ro‘yxatdan o‘tish
         </AuthTriggerButton>
       </div>
     </div>
-  );
+  )
 }

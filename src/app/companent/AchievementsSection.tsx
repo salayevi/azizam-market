@@ -1,18 +1,26 @@
-"use client";
+"use client"
 
 import Image from "next/image"
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect, useRef } from "react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import {
+  colors,
+  radius,
+  shadows,
+  sizes,
+  spacing,
+  zIndex,
+} from "@/config/design-system"
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger)
 
 type AchievementItem = {
-  id: number;
-  image: string;
-  title: string;
-  description: string;
-};
+  id: number
+  image: string
+  title: string
+  description: string
+}
 
 const achievements: AchievementItem[] = [
   {
@@ -43,59 +51,57 @@ const achievements: AchievementItem[] = [
     description:
       "Har bir detal orqali nafaqat mahsulot, balki unutilmas vizual va emotsional tajriba yaratiladi.",
   },
-];
+]
 
 export default function AchievementsSection() {
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const introRef = useRef<HTMLDivElement | null>(null);
-  const introTitleRef = useRef<HTMLHeadingElement | null>(null);
-  const introSubtitleRef = useRef<HTMLParagraphElement | null>(null);
-  const finalIntroRef = useRef<HTMLDivElement | null>(null);
-  const slidesRef = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionRef = useRef<HTMLElement | null>(null)
+  const introRef = useRef<HTMLDivElement | null>(null)
+  const introTitleRef = useRef<HTMLHeadingElement | null>(null)
+  const introSubtitleRef = useRef<HTMLParagraphElement | null>(null)
+  const finalIntroRef = useRef<HTMLDivElement | null>(null)
+  const slidesRef = useRef<(HTMLDivElement | null)[]>([])
 
   useEffect(() => {
-    if (!sectionRef.current) return;
+    if (!sectionRef.current) return
 
-    const mm = gsap.matchMedia();
+    const mm = gsap.matchMedia()
 
     mm.add("(min-width: 768px)", () => {
       const ctx = gsap.context(() => {
-        const validSlides = slidesRef.current.filter(
-          Boolean,
-        ) as HTMLDivElement[];
+        const validSlides = slidesRef.current.filter(Boolean) as HTMLDivElement[]
 
-        const intro = introRef.current;
-        const introTitle = introTitleRef.current;
-        const introSubtitle = introSubtitleRef.current;
-        const finalIntro = finalIntroRef.current;
+        const intro = introRef.current
+        const introTitle = introTitleRef.current
+        const introSubtitle = introSubtitleRef.current
+        const finalIntro = finalIntroRef.current
 
-        if (!intro || !introTitle || !introSubtitle || !finalIntro) return;
+        if (!intro || !introTitle || !introSubtitle || !finalIntro) return
 
         gsap.set(introTitle, {
           opacity: 0,
           y: 60,
-        });
+        })
 
         gsap.set(introSubtitle, {
           opacity: 0,
           y: 40,
-        });
+        })
 
         gsap.set(intro, {
           transformPerspective: 2000,
           transformOrigin: "left center",
           transformStyle: "preserve-3d",
-        });
+        })
 
         gsap.set(finalIntro, {
           opacity: 0,
           scale: 0.92,
-        });
+        })
 
         validSlides.forEach((slide, index) => {
-          const imageWrap = slide.querySelector(".achievement-image-wrap");
-          const image = slide.querySelector(".achievement-image");
-          const content = slide.querySelector(".achievement-content");
+          const imageWrap = slide.querySelector(".achievement-image-wrap")
+          const image = slide.querySelector(".achievement-image")
+          const content = slide.querySelector(".achievement-content")
 
           gsap.set(slide, {
             opacity: index === 0 ? 1 : 0,
@@ -105,26 +111,26 @@ export default function AchievementsSection() {
             transformStyle: "preserve-3d",
             rotateY: 0,
             xPercent: 0,
-          });
+          })
 
           gsap.set(imageWrap, {
             opacity: 0,
             scale: 0.86,
             y: 50,
-          });
+          })
 
           gsap.set(image, {
             y: 0,
             scale: 1,
-          });
+          })
 
           gsap.set(content, {
             opacity: 0,
             y: 50,
-          });
-        });
+          })
+        })
 
-        const totalScroll = achievements.length * 2200 + 2600;
+        const totalScroll = achievements.length * 2200 + 2600
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -136,21 +142,21 @@ export default function AchievementsSection() {
             anticipatePin: 1,
             invalidateOnRefresh: true,
           },
-        });
+        })
 
         tl.to(introTitle, {
           opacity: 1,
           y: 0,
           duration: 1.2,
           ease: "power3.out",
-        });
+        })
 
         tl.to(introSubtitle, {
           opacity: 1,
           y: 0,
           duration: 1,
           ease: "power3.out",
-        });
+        })
 
         tl.to(intro, {
           rotateY: -82,
@@ -158,14 +164,14 @@ export default function AchievementsSection() {
           opacity: 0.15,
           duration: 1.35,
           ease: "power2.inOut",
-        });
+        })
 
         validSlides.forEach((slide, index) => {
-          const imageWrap = slide.querySelector(".achievement-image-wrap");
-          const image = slide.querySelector(".achievement-image");
-          const content = slide.querySelector(".achievement-content");
+          const imageWrap = slide.querySelector(".achievement-image-wrap")
+          const image = slide.querySelector(".achievement-image")
+          const content = slide.querySelector(".achievement-content")
 
-          if (!imageWrap || !image || !content) return;
+          if (!imageWrap || !image || !content) return
 
           tl.set(
             slide,
@@ -173,7 +179,7 @@ export default function AchievementsSection() {
               opacity: 1,
             },
             ">-0.1",
-          );
+          )
 
           tl.to(
             imageWrap,
@@ -185,14 +191,14 @@ export default function AchievementsSection() {
               ease: "power3.out",
             },
             ">",
-          );
+          )
 
           tl.to(image, {
             y: -110,
             scale: 0.94,
             duration: 1.05,
             ease: "power2.inOut",
-          });
+          })
 
           tl.to(
             content,
@@ -203,13 +209,11 @@ export default function AchievementsSection() {
               ease: "power3.out",
             },
             "<+0.15",
-          );
+          )
 
           if (index !== validSlides.length - 1) {
-            const nextSlide = validSlides[index + 1];
-            const nextImageWrap = nextSlide.querySelector(
-              ".achievement-image-wrap",
-            );
+            const nextSlide = validSlides[index + 1]
+            const nextImageWrap = nextSlide.querySelector(".achievement-image-wrap")
 
             tl.to(slide, {
               rotateY: -84,
@@ -217,7 +221,7 @@ export default function AchievementsSection() {
               opacity: 0.14,
               duration: 1.1,
               ease: "power2.inOut",
-            });
+            })
 
             tl.set(
               nextSlide,
@@ -225,7 +229,7 @@ export default function AchievementsSection() {
                 opacity: 1,
               },
               "<+0.12",
-            );
+            )
 
             if (nextImageWrap) {
               tl.fromTo(
@@ -243,12 +247,12 @@ export default function AchievementsSection() {
                   ease: "power3.out",
                 },
                 "<+0.1",
-              );
+              )
             }
           }
-        });
+        })
 
-        const closedSlides = [...validSlides].reverse();
+        const closedSlides = [...validSlides].reverse()
 
         tl.to(
           closedSlides,
@@ -261,7 +265,7 @@ export default function AchievementsSection() {
             ease: "power2.inOut",
           },
           ">",
-        );
+        )
 
         tl.to(
           finalIntro,
@@ -272,24 +276,22 @@ export default function AchievementsSection() {
             ease: "power3.out",
           },
           "<+0.25",
-        );
+        )
 
         tl.to(finalIntro, {
           opacity: 0,
           y: -40,
           duration: 1,
           ease: "power2.out",
-        });
-      }, sectionRef);
+        })
+      }, sectionRef)
 
-      return () => ctx.revert();
-    });
+      return () => ctx.revert()
+    })
 
     mm.add("(max-width: 767px)", () => {
       const ctx = gsap.context(() => {
-        const items = gsap.utils.toArray<HTMLElement>(
-          ".achievement-mobile-card",
-        );
+        const items = gsap.utils.toArray<HTMLElement>(".achievement-mobile-card")
 
         gsap.from(".achievement-mobile-intro", {
           opacity: 0,
@@ -300,7 +302,7 @@ export default function AchievementsSection() {
             trigger: sectionRef.current,
             start: "top 80%",
           },
-        });
+        })
 
         items.forEach((item) => {
           gsap.from(item, {
@@ -312,39 +314,45 @@ export default function AchievementsSection() {
               trigger: item,
               start: "top 85%",
             },
-          });
-        });
-      }, sectionRef);
+          })
+        })
+      }, sectionRef)
 
-      return () => ctx.revert();
-    });
+      return () => ctx.revert()
+    })
 
-    return () => mm.revert();
-  }, []);
+    return () => mm.revert()
+  }, [])
 
   return (
     <section
       ref={sectionRef}
       id="achievements"
-      className="relative w-full bg-[#f6f1ea] overflow-hidden"
+      className="relative w-full overflow-hidden"
+      style={{ backgroundColor: colors.background.achievements }}
     >
-      {/* Desktop */}
       <div className="hidden md:block">
         <div className="relative h-screen w-full [perspective:2000px]">
           <div
             ref={introRef}
-            className="absolute inset-0 z-[60] flex flex-col items-center justify-center px-6 text-center"
+            className="absolute inset-0 flex flex-col items-center justify-center text-center"
+            style={{
+              zIndex: zIndex.intro,
+              paddingInline: spacing[6],
+            }}
           >
             <h2
               ref={introTitleRef}
-              className="max-w-5xl text-5xl lg:text-7xl font-semibold tracking-tight text-[#3f2d25]"
+              className="max-w-5xl text-5xl font-semibold tracking-tight lg:text-7xl"
+              style={{ color: colors.text.primary }}
             >
               Kompaniya Yutuqlari
             </h2>
 
             <p
               ref={introSubtitleRef}
-              className="mt-6 max-w-2xl text-lg lg:text-2xl leading-relaxed text-[#6f5b51]"
+              className="mt-6 max-w-2xl text-lg leading-relaxed lg:text-2xl"
+              style={{ color: colors.text.secondary }}
             >
               Ishonch, tajriba va estetik yondashuv birlashgan yo‘limizdan
               lavhalar.
@@ -356,32 +364,64 @@ export default function AchievementsSection() {
               <div
                 key={item.id}
                 ref={(el) => {
-                  slidesRef.current[index] = el;
+                  slidesRef.current[index] = el
                 }}
                 className="absolute inset-0 flex items-center justify-center px-8 lg:px-16"
               >
                 <div className="relative flex h-full w-full max-w-7xl items-center justify-center">
-                  <div className="achievement-image-wrap absolute left-1/2 top-1/2 w-[38vw] max-w-[620px] min-w-[360px] -translate-x-1/2 -translate-y-1/2">
-                    <div className="overflow-hidden rounded-[2rem] bg-white shadow-[0_20px_80px_rgba(63,45,37,0.12)]">
+                  <div
+                    className="achievement-image-wrap absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                    style={{
+                      minWidth: "360px",
+                      maxWidth: "620px",
+                      width: "38vw",
+                    }}
+                  >
+                    <div
+                      className="overflow-hidden bg-white"
+                      style={{
+                        borderRadius: radius["2xl"],
+                        boxShadow: shadows.achievement,
+                      }}
+                    >
                       <img
                         src={item.image}
                         alt={item.title}
-                        className="achievement-image h-[66vh] w-full object-cover"
+                        className="achievement-image w-full object-cover"
+                        style={{ height: sizes.achievements.desktopImageHeight }}
                       />
                     </div>
                   </div>
 
                   <div className="achievement-content absolute left-1/2 top-[68%] w-full max-w-3xl -translate-x-1/2 text-center">
-                    <div className="mx-auto max-w-2xl rounded-[2rem] bg-white/75 px-8 py-7 backdrop-blur-md shadow-[0_10px_40px_rgba(63,45,37,0.08)]">
-                      <div className="mb-3 text-sm font-medium uppercase tracking-[0.28em] text-[#9c8576]">
+                    <div
+                      className="mx-auto max-w-2xl backdrop-blur-md"
+                      style={{
+                        borderRadius: radius["2xl"],
+                        backgroundColor: colors.surface.glass,
+                        boxShadow: shadows.glass,
+                        paddingInline: spacing[8],
+                        paddingBlock: spacing[6],
+                      }}
+                    >
+                      <div
+                        className="mb-3 text-sm font-medium uppercase tracking-[0.28em]"
+                        style={{ color: colors.text.muted }}
+                      >
                         {String(item.id).padStart(2, "0")}
                       </div>
 
-                      <h3 className="text-3xl lg:text-5xl font-semibold tracking-tight text-[#3f2d25]">
+                      <h3
+                        className="text-3xl font-semibold tracking-tight lg:text-5xl"
+                        style={{ color: colors.text.primary }}
+                      >
                         {item.title}
                       </h3>
 
-                      <p className="mt-4 text-base lg:text-lg leading-8 text-[#6f5b51]">
+                      <p
+                        className="mt-4 text-base leading-8 lg:text-lg"
+                        style={{ color: colors.text.secondary }}
+                      >
                         {item.description}
                       </p>
                     </div>
@@ -393,27 +433,48 @@ export default function AchievementsSection() {
 
           <div
             ref={finalIntroRef}
-            className="absolute inset-0 z-[80] flex flex-col items-center justify-center px-6 text-center"
+            className="absolute inset-0 flex flex-col items-center justify-center text-center"
+            style={{
+              zIndex: zIndex.finalIntro,
+              paddingInline: spacing[6],
+            }}
           >
-            <h2 className="max-w-5xl text-5xl lg:text-7xl font-semibold tracking-tight text-[#3f2d25]">
+            <h2
+              className="max-w-5xl text-5xl font-semibold tracking-tight lg:text-7xl"
+              style={{ color: colors.text.primary }}
+            >
               Kompaniya Yutuqlari
             </h2>
 
-            <p className="mt-6 max-w-2xl text-lg lg:text-2xl leading-relaxed text-[#6f5b51]">
+            <p
+              className="mt-6 max-w-2xl text-lg leading-relaxed lg:text-2xl"
+              style={{ color: colors.text.secondary }}
+            >
               Har bir bosqich ortida tajriba, did va ishonch turadi.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Mobile */}
-      <div className="md:hidden px-5 py-20">
+      <div
+        className="md:hidden"
+        style={{
+          paddingInline: spacing[5],
+          paddingBlock: spacing[20],
+        }}
+      >
         <div className="achievement-mobile-intro mx-auto max-w-xl text-center">
-          <h2 className="text-4xl font-semibold tracking-tight text-[#3f2d25]">
+          <h2
+            className="text-4xl font-semibold tracking-tight"
+            style={{ color: colors.text.primary }}
+          >
             Kompaniya Yutuqlari
           </h2>
 
-          <p className="mt-4 text-base leading-7 text-[#6f5b51]">
+          <p
+            className="mt-4 text-base leading-7"
+            style={{ color: colors.text.secondary }}
+          >
             Ishonch, tajriba va estetik yondashuv birlashgan yo‘limizdan
             lavhalar.
           </p>
@@ -423,7 +484,11 @@ export default function AchievementsSection() {
           {achievements.map((item) => (
             <div
               key={item.id}
-              className="achievement-mobile-card overflow-hidden rounded-[1.75rem] bg-white shadow-[0_16px_50px_rgba(63,45,37,0.08)]"
+              className="achievement-mobile-card overflow-hidden bg-white"
+              style={{
+                borderRadius: radius["2xl"],
+                boxShadow: shadows.soft,
+              }}
             >
               <Image
                 src={item.image}
@@ -432,16 +497,29 @@ export default function AchievementsSection() {
                 height={500}
               />
 
-              <div className="p-6">
-                <div className="text-xs font-medium uppercase tracking-[0.28em] text-[#9c8576]">
+              <div
+                style={{
+                  padding: spacing[6],
+                }}
+              >
+                <div
+                  className="text-xs font-medium uppercase tracking-[0.28em]"
+                  style={{ color: colors.text.muted }}
+                >
                   {String(item.id).padStart(2, "0")}
                 </div>
 
-                <h3 className="mt-3 text-2xl font-semibold text-[#3f2d25]">
+                <h3
+                  className="mt-3 text-2xl font-semibold"
+                  style={{ color: colors.text.primary }}
+                >
                   {item.title}
                 </h3>
 
-                <p className="mt-3 text-sm leading-7 text-[#6f5b51]">
+                <p
+                  className="mt-3 text-sm leading-7"
+                  style={{ color: colors.text.secondary }}
+                >
                   {item.description}
                 </p>
               </div>
@@ -450,5 +528,5 @@ export default function AchievementsSection() {
         </div>
       </div>
     </section>
-  );
+  )
 }
