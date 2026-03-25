@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef } from "react"
-import { Product } from "./shared/product.types"
+import { Product } from "../shared/product.types"
 import { useProductsScroll } from "./useProductsScroll"
 import ProductSlide from "./product-slide"
 import { colors, radius, shadows, sizes } from "@/config/design-system"

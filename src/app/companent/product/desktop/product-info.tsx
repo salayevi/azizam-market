@@ -1,4 +1,4 @@
-import { Product } from "./shared/product.types"
+import { Product } from "../shared/product.types"
 import { radius } from "@/config/design-system"
 
 type Props = {

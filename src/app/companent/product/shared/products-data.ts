@@ -1,4 +1,4 @@
-import { Product } from "./shared/product.types"
+import { Product } from "./product.types"
 import { colors } from "@/config/design-system"
 
 export const productsData: Product[] = [
