@@ -1,8 +1,8 @@
 "use client"
 
 import Image from "next/image"
-import AuthTriggerButton from "../../auth/AuthTriggerButton"
 import { colors, radius, spacing } from "@/config/design-system"
+import AuthTriggerButton from "@/app/companent/shared/auth/AuthTriggerButton"
 
 export default function Footer() {
   return (

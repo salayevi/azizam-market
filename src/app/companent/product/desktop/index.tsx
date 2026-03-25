@@ -1,6 +1,6 @@
 "use client"
 
-import { productsData } from "./products-data"
+import { productsData } from "../shared/products-data"
 import ProductsScene from "./products-scene"
 
 export default function ProductsSection() {

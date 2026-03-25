@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ProductAction } from "./product.types"
+import { ProductAction } from "./shared/product.types"
 import { colors, motion, radius, sizes } from "@/config/design-system"
 
 type Props = {

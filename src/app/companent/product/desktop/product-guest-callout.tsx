@@ -1,7 +1,7 @@
 "use client"
 
-import AuthTriggerButton from "../auth/AuthTriggerButton"
 import { colors, radius, shadows } from "@/config/design-system"
+import AuthTriggerButton from "../../shared/auth/AuthTriggerButton"
 
 type Props = {
   accent: string

@@ -3,8 +3,8 @@
 import Image from "next/image"
 import { useEffect, useRef } from "react"
 import gsap from "gsap"
-import AuthTriggerButton from "../../auth/AuthTriggerButton"
 import { colors, motion, spacing, zIndex } from "@/config/design-system"
+import AuthTriggerButton from "@/app/companent/shared/auth/AuthTriggerButton"
 
 export default function Navbar() {
   const navRef = useRef<HTMLElement | null>(null)

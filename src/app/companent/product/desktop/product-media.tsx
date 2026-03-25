@@ -1,6 +1,6 @@
 "use client"
 
-import { Product } from "./product.types"
+import { Product } from "./shared/product.types"
 import { sizes } from "@/config/design-system"
 
 type Props = {

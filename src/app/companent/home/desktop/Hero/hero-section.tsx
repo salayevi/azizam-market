@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import ScrollButton from "../../Buttons-funksia/button-scroll"
+
 import {
   colors,
   motion,
@@ -12,6 +12,7 @@ import {
   typography,
   zIndex,
 } from "@/config/design-system"
+import ScrollButton from "@/app/companent/Buttons-funksia/button-scroll"
 
 gsap.registerPlugin(ScrollTrigger)
 

@@ -1,4 +1,4 @@
-import { ProductColor } from "./product.types"
+import { ProductColor } from "./shared/product.types"
 import { colors as dsColors, radius } from "@/config/design-system"
 
 type Props = {

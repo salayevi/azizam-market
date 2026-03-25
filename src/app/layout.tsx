@@ -1,5 +1,5 @@
 import "./globals.css";
-import { AuthModalProvider } from "./companent/auth/AuthModalProvider";
+import { AuthModalProvider } from "./companent/shared/auth/AuthModalProvider";
 
 export default function RootLayout({
   children,

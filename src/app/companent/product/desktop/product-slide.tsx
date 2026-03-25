@@ -1,13 +1,13 @@
 "use client"
 
-import { Product } from "./product.types"
 import ProductMedia from "./product-media"
 import ProductInfo from "./product-info"
 import ProductColors from "./product-colors"
 import ProductActions from "./product-actions"
 import ProductGuestCallout from "./product-guest-callout"
-import { useAuthModal } from "../auth/AuthModalProvider"
 import { colors, sizes } from "@/config/design-system"
+import { Product } from "../shared/product.types"
+import { useAuthModal } from "../../shared/auth/AuthModalProvider"
 
 type Props = {
   product: Product
