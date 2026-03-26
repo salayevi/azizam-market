@@ -5,7 +5,6 @@ import { mobileHero } from "@/config/mobile-system/mobile-hero";
 import { mobileLayout } from "@/config/mobile-system/mobile-layout";
 import { mobileSpacing } from "@/config/mobile-system/mobile-spacing";
 import { mobileTypography } from "@/config/mobile-system/mobile-typography";
-import MobileBottomNav from "./mobile-bottom-nav";
 import MobileTopbar from "./mobile-topbar";
 import useMobileHeroMotion from "../../shared/hooks/use-mobile-hero-motion";
 
@@ -21,17 +20,15 @@ export default function MobileHero() {
   const marketRef = useRef<HTMLHeadingElement | null>(null);
   const bottomNavRef = useRef<HTMLDivElement | null>(null);
 
-  useMobileHeroMotion({
-    sectionRef,
-    stageRef,
-    bgRef,
-    overlayRef,
-    topbarRef,
-    titleWrapRef,
-    azizamRef,
-    marketRef,
-    bottomNavRef,
-  });
+ useMobileHeroMotion({
+  sectionRef,
+  stageRef,
+  bgRef,
+  overlayRef,
+  titleWrapRef,
+  azizamRef,
+  marketRef,
+});
 
   return (
     <section

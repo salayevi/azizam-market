@@ -12,11 +12,9 @@ type UseMobileHeroMotionParams = {
   stageRef: RefObject<HTMLDivElement | null>;
   bgRef: RefObject<HTMLDivElement | null>;
   overlayRef: RefObject<HTMLDivElement | null>;
-  topbarRef: RefObject<HTMLDivElement | null>;
   titleWrapRef: RefObject<HTMLDivElement | null>;
   azizamRef: RefObject<HTMLHeadingElement | null>;
   marketRef: RefObject<HTMLHeadingElement | null>;
-  bottomNavRef: RefObject<HTMLDivElement | null>;
 };
 
 export default function useMobileHeroMotion({
@@ -24,34 +22,20 @@ export default function useMobileHeroMotion({
   stageRef,
   bgRef,
   overlayRef,
-  topbarRef,
   titleWrapRef,
   azizamRef,
   marketRef,
-  bottomNavRef,
 }: UseMobileHeroMotionParams) {
   useEffect(() => {
     const section = sectionRef.current;
     const stage = stageRef.current;
     const bg = bgRef.current;
     const overlay = overlayRef.current;
-    const topbar = topbarRef.current;
     const titleWrap = titleWrapRef.current;
     const azizam = azizamRef.current;
     const market = marketRef.current;
-    const bottomNav = bottomNavRef.current;
 
-    if (
-      !section ||
-      !stage ||
-      !bg ||
-      !overlay ||
-      !topbar ||
-      !titleWrap ||
-      !azizam ||
-      !market ||
-      !bottomNav
-    ) {
+    if (!section || !stage || !bg || !overlay || !titleWrap || !azizam || !market) {
       return;
     }
 
@@ -61,33 +45,19 @@ export default function useMobileHeroMotion({
         transformOrigin: "center center",
       });
 
-      gsap.set(topbar, {
-        autoAlpha: 0,
-        y: mobileMotion.hero.topbarIntroY,
-      });
-
       gsap.set(titleWrap, {
         autoAlpha: 0,
         y: mobileMotion.hero.titleIntroY,
         scale: 0.99,
       });
 
-      gsap.set(bottomNav, {
-        autoAlpha: 0,
-        y: mobileMotion.hero.navIntroY,
+      gsap.to(titleWrap, {
+        autoAlpha: 1,
+        y: 0,
+        scale: 1,
+        duration: mobileMotion.hero.introDuration,
+        ease: mobileMotion.hero.introEase,
       });
-
-      const intro = gsap.timeline({
-        defaults: {
-          duration: mobileMotion.hero.introDuration,
-          ease: mobileMotion.hero.introEase,
-        },
-      });
-
-      intro
-        .to(topbar, { autoAlpha: 1, y: 0 }, 0)
-        .to(titleWrap, { autoAlpha: 1, y: 0, scale: 1 }, 0.04)
-        .to(bottomNav, { autoAlpha: 1, y: 0 }, 0.08);
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -157,15 +127,5 @@ export default function useMobileHeroMotion({
       window.removeEventListener("orientationchange", refresh);
       ctx.revert();
     };
-  }, [
-    sectionRef,
-    stageRef,
-    bgRef,
-    overlayRef,
-    topbarRef,
-    titleWrapRef,
-    azizamRef,
-    marketRef,
-    bottomNavRef,
-  ]);
+  }, [sectionRef, stageRef, bgRef, overlayRef, titleWrapRef, azizamRef, marketRef]);
 }
