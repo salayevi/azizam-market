@@ -1,18 +1,18 @@
 export const mobileSections = {
   about: {
-    minHeight: "240svh",
+    minHeight: "235svh",
     stickyTop: "0px",
 
-    frameMaxWidth: "min(86vw, 380px)",
+    frameMaxWidth: "min(84vw, 350px)",
     imageRadius: "28px",
     imageBorderWidth: "2px",
-    imageHeight: "min(58svh, 520px)",
+    imageHeight: "clamp(360px, 50svh, 440px)",
 
-    imageShiftY: "-84px",
+    imageShiftY: "-56px",
 
-    titleTopOffset: "14vh",
-    contentBottomOffset: "12vh",
-    contentMaxWidth: "min(78vw, 320px)",
+    titleTopOffset: "22svh",
+    contentMaxWidth: "min(78vw, 300px)",
+    infoGap: "20px",
   },
 
   product: {

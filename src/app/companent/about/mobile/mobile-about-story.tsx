@@ -157,17 +157,18 @@ export default function MobileAboutStory() {
         <div
           className="relative mx-auto h-full w-full"
           style={{
-            maxWidth: mobileSections.about.frameMaxWidth,
+            maxWidth: "420px",
             paddingInline: mobileSpacing.pageX,
           }}
         >
           <h2
             ref={titleRef}
-            className="absolute left-1/2 z-20 w-full -translate-x-1/2 text-center font-bold"
+            className="absolute top-1/2 z-20 w-full text-center font-bold"
             style={{
-              top: mobileSections.about.titleTopOffset,
+              left: 0,
+              transform: `translateY(calc(-50% - ${mobileSections.about.titleTopOffset}))`,
               color: colors.brand.primaryStrong,
-              fontSize: "clamp(34px, 8.6vw, 50px)",
+              fontSize: "clamp(32px, 8vw, 48px)",
               lineHeight: 0.96,
               letterSpacing: "-0.04em",
             }}
@@ -176,63 +177,77 @@ export default function MobileAboutStory() {
           </h2>
 
           <div
-            ref={imageWrapRef}
-            className="absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 overflow-hidden bg-white"
+            className="absolute left-1/2 top-1/2 z-10 w-full"
             style={{
-              width: mobileSections.about.frameMaxWidth,
-              maxWidth: mobileSections.about.frameMaxWidth,
-              borderRadius: mobileSections.about.imageRadius,
-              border: `${mobileSections.about.imageBorderWidth} solid ${colors.brand.primary}`,
+              transform: "translate(-50%, -50%)",
             }}
           >
-            <Image
-              src="/grid-img.png"
-              alt="Azizam Market"
-              width={420}
-              height={620}
-              className="block h-auto w-full object-cover"
-              sizes="(max-width: 480px) 86vw, 380px"
+            <div
+              className="mx-auto flex w-full flex-col items-center"
               style={{
-                height: mobileSections.about.imageHeight,
-              }}
-            />
-          </div>
-
-          <div
-            className="absolute left-1/2 z-20 w-full -translate-x-1/2 text-center"
-            style={{
-              bottom: mobileSections.about.contentBottomOffset,
-              maxWidth: mobileSections.about.contentMaxWidth,
-            }}
-          >
-            <h3
-              ref={infoTitleRef}
-              className="font-semibold"
-              style={{
-                color: colors.brand.primaryStrong,
-                fontSize: "clamp(28px, 7vw, 34px)",
-                lineHeight: 1.03,
-                letterSpacing: "-0.03em",
+                maxWidth: "420px",
               }}
             >
-              Azizam Market
-            </h3>
-
-            <div className="relative mt-4 min-h-[88px]">
-              {aboutTexts.map((text, index) => (
-                <p
-                  key={index}
-                  ref={(el) => {
-                    textsRef.current[index] = el;
-                  }}
-                  className="absolute left-0 top-0 w-full text-[15px] leading-7"
+              <div
+                ref={imageWrapRef}
+                className="overflow-hidden bg-white"
+                style={{
+                  width: "100%",
+                  maxWidth: mobileSections.about.frameMaxWidth,
+                  borderRadius: mobileSections.about.imageRadius,
+                  border: `${mobileSections.about.imageBorderWidth} solid ${colors.brand.primary}`,
+                }}
+              >
+                <Image
+                  src="/grid-img.png"
+                  alt="Azizam Market"
+                  width={420}
+                  height={620}
+                  className="block w-full object-cover"
+                  sizes="(max-width: 480px) 84vw, 350px"
                   style={{
-                    color: colors.brand.secondary,
+                    height: mobileSections.about.imageHeight,
+                  }}
+                />
+              </div>
+
+              <div
+                className="w-full text-center"
+                style={{
+                  maxWidth: mobileSections.about.contentMaxWidth,
+                  marginTop: mobileSections.about.infoGap,
+                }}
+              >
+                <h3
+                  ref={infoTitleRef}
+                  className="font-semibold"
+                  style={{
+                    color: colors.brand.primaryStrong,
+                    fontSize: "clamp(26px, 6.8vw, 34px)",
+                    lineHeight: 1.03,
+                    letterSpacing: "-0.03em",
                   }}
                 >
-                  {text}
-                </p>
-              ))}
+                  Azizam Market
+                </h3>
+
+                <div className="relative mt-4 min-h-[84px]">
+                  {aboutTexts.map((text, index) => (
+                    <p
+                      key={index}
+                      ref={(el) => {
+                        textsRef.current[index] = el;
+                      }}
+                      className="absolute left-0 top-0 w-full text-[15px] leading-7"
+                      style={{
+                        color: colors.brand.secondary,
+                      }}
+                    >
+                      {text}
+                    </p>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
