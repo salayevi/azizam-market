@@ -1,10 +1,13 @@
 export const mobileLayout = {
   pageMaxWidth: "480px",
+
+  heroViewportHeight: "100dvh",
   heroMinHeight: "100svh",
-  contentWidth: "100%",
-  sidePadding: "20px",
-  topSafeOffset: "20px",
-  bottomSafeOffset: "20px",
+
+  heroContentMaxWidth: "420px",
+  heroTitleMaxWidth: "min(88vw, 360px)",
+
+  heroScrollRunway: "760px",
 } as const;
 
 export type MobileLayout = typeof mobileLayout;

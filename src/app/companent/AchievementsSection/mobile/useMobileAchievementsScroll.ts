@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from "react";
 
-type UseMobileProductsScrollOptions = {
+type UseMobileAchievementsScrollOptions = {
   sectionId: string;
   totalItems: number;
 };
 
-export default function useMobileProductsScroll({
+export default function useMobileAchievementsScroll({
   sectionId,
   totalItems,
-}: UseMobileProductsScrollOptions) {
+}: UseMobileAchievementsScrollOptions) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {

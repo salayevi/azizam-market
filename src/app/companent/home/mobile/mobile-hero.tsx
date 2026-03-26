@@ -1,88 +1,127 @@
 "use client";
 
-import { colors, shadows } from "@/config/design-system";
+import { useRef } from "react";
+import { mobileHero } from "@/config/mobile-system/mobile-hero";
 import { mobileLayout } from "@/config/mobile-system/mobile-layout";
 import { mobileSpacing } from "@/config/mobile-system/mobile-spacing";
 import { mobileTypography } from "@/config/mobile-system/mobile-typography";
-import MobileTopbar from "./mobile-topbar";
-import MobileBottomNav from "./mobile-bottom-nav";
+import useMobileHeroMotion from "../../shared/hooks/use-mobile-hero-motion";
 
 export default function MobileHero() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const stageRef = useRef<HTMLDivElement | null>(null);
+
+  const bgRef = useRef<HTMLDivElement | null>(null);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+
+  const titleWrapRef = useRef<HTMLDivElement | null>(null);
+  const azizamRef = useRef<HTMLHeadingElement | null>(null);
+  const marketRef = useRef<HTMLHeadingElement | null>(null);
+
+  useMobileHeroMotion({
+    sectionRef,
+    stageRef,
+    bgRef,
+    overlayRef,
+    titleWrapRef,
+    azizamRef,
+    marketRef,
+  });
+
   return (
     <section
       id="home-mobile"
-      className="relative overflow-hidden"
+      ref={sectionRef}
+      className="relative w-full"
       style={{
-        minHeight: mobileLayout.heroMinHeight,
-        color: colors.text.white,
+        minHeight: `calc(${mobileLayout.heroMinHeight} + ${mobileLayout.heroScrollRunway})`,
       }}
     >
       <div
-        className="absolute inset-0"
+        ref={stageRef}
+        className="sticky top-0 overflow-hidden"
         style={{
-          backgroundImage: "url('/rose-bg.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
-
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundColor: colors.overlay.hero,
-        }}
-      />
-
-      <MobileTopbar />
-
-      <div
-        className="relative z-20 mx-auto flex flex-col"
-        style={{
+          height: mobileLayout.heroViewportHeight,
           minHeight: mobileLayout.heroMinHeight,
-          maxWidth: mobileLayout.pageMaxWidth,
-          paddingInline: mobileSpacing.pageX,
-          paddingTop: mobileSpacing.heroTop,
-          paddingBottom: mobileSpacing.heroBottom,
         }}
       >
-        <div className="flex flex-1 flex-col justify-center">
-          <div
-            className="mx-auto w-full"
-            style={{
-              maxWidth: "320px",
-            }}
-          >
-            <h1
-              className="font-bold"
-              style={{
-                fontSize: mobileTypography.hero.title,
-                lineHeight: mobileTypography.hero.lineHeight,
-                letterSpacing: mobileTypography.hero.letterSpacing,
-                fontWeight: mobileTypography.hero.weight,
-                textShadow: shadows.card,
-              }}
-            >
-              Azizam
-            </h1>
+        <div
+          ref={bgRef}
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url('${mobileHero.backgroundImage}')`,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center center",
+            transformOrigin: "center center",
+            willChange: "transform",
+          }}
+        />
 
-            <h1
-              className="text-right font-bold"
+        <div
+          ref={overlayRef}
+          className="absolute inset-0"
+          style={{
+            backgroundColor: mobileHero.overlayColor,
+            opacity: 1,
+          }}
+        />
+
+        <div
+          className="relative z-20 mx-auto h-full w-full"
+          style={{
+            maxWidth: mobileLayout.heroContentMaxWidth,
+            paddingInline: mobileSpacing.pageX,
+            paddingBottom: mobileSpacing.heroBottomSafeSpace,
+          }}
+        >
+          <div className="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2">
+            <div
+              ref={titleWrapRef}
+              className="mx-auto w-full"
               style={{
-                fontSize: mobileTypography.hero.title,
-                lineHeight: mobileTypography.hero.lineHeight,
-                letterSpacing: mobileTypography.hero.letterSpacing,
-                fontWeight: mobileTypography.hero.weight,
-                marginTop: "8px",
-                textShadow: shadows.card,
+                width: mobileLayout.heroTitleMaxWidth,
+                maxWidth: mobileLayout.heroTitleMaxWidth,
+                transform: `translateY(${mobileSpacing.heroTitleOffsetY})`,
+                willChange: "transform, opacity",
               }}
             >
-              Market
-            </h1>
+              <h1
+                ref={azizamRef}
+                className="text-left"
+                style={{
+                  color: mobileHero.titleColor,
+                  fontSize: mobileTypography.hero.title,
+                  lineHeight: mobileTypography.hero.lineHeight,
+                  letterSpacing: mobileTypography.hero.letterSpacing,
+                  fontWeight: mobileTypography.hero.weight,
+                  whiteSpace: "nowrap",
+                  margin: 0,
+                }}
+              >
+                Azizam
+              </h1>
+
+              <h1
+                ref={marketRef}
+                className="text-right"
+                style={{
+                  color: mobileHero.titleColor,
+                  fontSize: mobileTypography.hero.title,
+                  lineHeight: mobileTypography.hero.lineHeight,
+                  letterSpacing: mobileTypography.hero.letterSpacing,
+                  fontWeight: mobileTypography.hero.weight,
+                  whiteSpace: "nowrap",
+                  margin: 0,
+                  marginTop: mobileTypography.hero.lineGap,
+                }}
+              >
+                Market
+              </h1>
+            </div>
           </div>
         </div>
       </div>
-
-      <MobileBottomNav />
     </section>
   );
 }
