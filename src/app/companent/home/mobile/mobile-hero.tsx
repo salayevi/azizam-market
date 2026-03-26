@@ -5,6 +5,8 @@ import { mobileHero } from "@/config/mobile-system/mobile-hero";
 import { mobileLayout } from "@/config/mobile-system/mobile-layout";
 import { mobileSpacing } from "@/config/mobile-system/mobile-spacing";
 import { mobileTypography } from "@/config/mobile-system/mobile-typography";
+import MobileBottomNav from "./mobile-bottom-nav";
+import MobileTopbar from "./mobile-topbar";
 import useMobileHeroMotion from "../../shared/hooks/use-mobile-hero-motion";
 
 export default function MobileHero() {
@@ -13,19 +15,22 @@ export default function MobileHero() {
 
   const bgRef = useRef<HTMLDivElement | null>(null);
   const overlayRef = useRef<HTMLDivElement | null>(null);
-
+  const topbarRef = useRef<HTMLDivElement | null>(null);
   const titleWrapRef = useRef<HTMLDivElement | null>(null);
   const azizamRef = useRef<HTMLHeadingElement | null>(null);
   const marketRef = useRef<HTMLHeadingElement | null>(null);
+  const bottomNavRef = useRef<HTMLDivElement | null>(null);
 
   useMobileHeroMotion({
     sectionRef,
     stageRef,
     bgRef,
     overlayRef,
+    topbarRef,
     titleWrapRef,
     azizamRef,
     marketRef,
+    bottomNavRef,
   });
 
   return (
@@ -35,6 +40,7 @@ export default function MobileHero() {
       className="relative w-full"
       style={{
         minHeight: `calc(${mobileLayout.heroMinHeight} + ${mobileLayout.heroScrollRunway})`,
+        backgroundColor: "#000",
       }}
     >
       <div
@@ -43,6 +49,7 @@ export default function MobileHero() {
         style={{
           height: mobileLayout.heroViewportHeight,
           minHeight: mobileLayout.heroMinHeight,
+          backgroundColor: "#000",
         }}
       >
         <div
@@ -66,6 +73,8 @@ export default function MobileHero() {
             opacity: 1,
           }}
         />
+
+        <MobileTopbar topbarRef={topbarRef} />
 
         <div
           className="relative z-20 mx-auto h-full w-full"
@@ -113,7 +122,7 @@ export default function MobileHero() {
                   fontWeight: mobileTypography.hero.weight,
                   whiteSpace: "nowrap",
                   margin: 0,
-                  marginTop: mobileTypography.hero.lineGap,
+                  marginTop: "6px",
                 }}
               >
                 Market
@@ -121,6 +130,7 @@ export default function MobileHero() {
             </div>
           </div>
         </div>
+
       </div>
     </section>
   );

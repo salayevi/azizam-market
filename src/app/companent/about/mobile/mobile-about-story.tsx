@@ -21,6 +21,8 @@ const aboutTexts = [
 
 export default function MobileAboutStory() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const stickyRef = useRef<HTMLDivElement | null>(null);
+
   const titleRef = useRef<HTMLHeadingElement | null>(null);
   const imageWrapRef = useRef<HTMLDivElement | null>(null);
   const infoTitleRef = useRef<HTMLHeadingElement | null>(null);
@@ -28,33 +30,34 @@ export default function MobileAboutStory() {
 
   useEffect(() => {
     const section = sectionRef.current;
+    const sticky = stickyRef.current;
     const title = titleRef.current;
     const imageWrap = imageWrapRef.current;
     const infoTitle = infoTitleRef.current;
 
-    if (!section || !title || !imageWrap || !infoTitle) return;
+    if (!section || !sticky || !title || !imageWrap || !infoTitle) return;
 
     const ctx = gsap.context(() => {
       gsap.set(title, {
-        opacity: 0,
+        autoAlpha: 0,
         y: mobileMotion.about.titleY,
-        scale: 1.04,
+        scale: 1.02,
       });
 
       gsap.set(imageWrap, {
-        opacity: 0,
+        autoAlpha: 0,
         y: mobileMotion.about.imageY,
         scale: mobileMotion.about.imageScaleFrom,
         clipPath: "inset(100% 0% 0% 0%)",
       });
 
       gsap.set(infoTitle, {
-        opacity: 0,
+        autoAlpha: 0,
         y: mobileMotion.about.textY,
       });
 
       gsap.set(textsRef.current, {
-        opacity: 0,
+        autoAlpha: 0,
         y: mobileMotion.about.textY,
       });
 
@@ -62,74 +65,74 @@ export default function MobileAboutStory() {
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: "+=1800",
+          end: "+=1600",
           scrub: mobileMotion.about.scrub,
-          pin: ".mobile-about-sticky",
+          pin: sticky,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       });
 
       tl.to(title, {
-        opacity: 1,
+        autoAlpha: 1,
         y: 0,
         scale: 1,
-        duration: 0.9,
-        ease: "power3.out",
+        duration: 0.45,
+        ease: "power2.out",
       });
 
       tl.to(title, {
-        opacity: 0,
-        y: -44,
-        duration: 0.8,
+        autoAlpha: 0,
+        y: -20,
+        duration: 0.35,
         ease: "power2.out",
       });
 
       tl.to(
         imageWrap,
         {
-          opacity: 1,
+          autoAlpha: 1,
           y: 0,
           scale: mobileMotion.about.imageScaleTo,
           clipPath: "inset(0% 0% 0% 0%)",
-          duration: 1,
-          ease: "power3.out",
+          duration: 0.55,
+          ease: "power2.out",
         },
-        ">-0.1",
+        ">-0.05",
       );
 
       tl.to(imageWrap, {
         y: mobileSections.about.imageShiftY,
-        duration: 1,
+        duration: 0.55,
         ease: "power2.inOut",
       });
 
       tl.to(
         infoTitle,
         {
-          opacity: 1,
+          autoAlpha: 1,
           y: 0,
-          duration: 0.7,
-          ease: "power3.out",
+          duration: 0.35,
+          ease: "power2.out",
         },
-        "<+0.1",
+        "<+0.05",
       );
 
       textsRef.current.forEach((textEl) => {
         if (!textEl) return;
 
         tl.to(textEl, {
-          opacity: 1,
+          autoAlpha: 1,
           y: 0,
-          duration: 0.55,
-          ease: "power3.out",
+          duration: 0.3,
+          ease: "power2.out",
         });
 
         tl.to(textEl, {
-          opacity: 0,
-          y: -24,
-          duration: 0.45,
-          ease: "power2.out",
+          autoAlpha: 0,
+          y: -14,
+          duration: 0.24,
+          ease: "power1.out",
         });
       });
     }, section);
@@ -147,9 +150,12 @@ export default function MobileAboutStory() {
         backgroundColor: colors.background.about,
       }}
     >
-      <div className="mobile-about-sticky relative h-[100svh] w-full overflow-hidden">
+      <div
+        ref={stickyRef}
+        className="relative h-[100svh] w-full overflow-hidden"
+      >
         <div
-          className="mx-auto relative h-full w-full"
+          className="relative mx-auto h-full w-full"
           style={{
             maxWidth: mobileSections.about.frameMaxWidth,
             paddingInline: mobileSpacing.pageX,
@@ -161,22 +167,22 @@ export default function MobileAboutStory() {
             style={{
               top: mobileSections.about.titleTopOffset,
               color: colors.brand.primaryStrong,
-              fontSize: "clamp(36px, 9vw, 52px)",
-              lineHeight: 0.95,
+              fontSize: "clamp(34px, 8.6vw, 50px)",
+              lineHeight: 0.96,
               letterSpacing: "-0.04em",
             }}
           >
-            BIZ HAQIMIZDA
+            Biz Haqimizda
           </h2>
 
           <div
             ref={imageWrapRef}
             className="absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 overflow-hidden bg-white"
             style={{
+              width: mobileSections.about.frameMaxWidth,
               maxWidth: mobileSections.about.frameMaxWidth,
               borderRadius: mobileSections.about.imageRadius,
               border: `${mobileSections.about.imageBorderWidth} solid ${colors.brand.primary}`,
-              
             }}
           >
             <Image
@@ -184,9 +190,10 @@ export default function MobileAboutStory() {
               alt="Azizam Market"
               width={420}
               height={620}
-              className="h-auto w-full object-cover"
+              className="block h-auto w-full object-cover"
+              sizes="(max-width: 480px) 86vw, 380px"
               style={{
-                minHeight: mobileSections.about.imageHeight,
+                height: mobileSections.about.imageHeight,
               }}
             />
           </div>
@@ -203,22 +210,22 @@ export default function MobileAboutStory() {
               className="font-semibold"
               style={{
                 color: colors.brand.primaryStrong,
-                fontSize: "30px",
-                lineHeight: 1.04,
+                fontSize: "clamp(28px, 7vw, 34px)",
+                lineHeight: 1.03,
                 letterSpacing: "-0.03em",
               }}
             >
               Azizam Market
             </h3>
 
-            <div className="relative mt-5 min-h-[92px]">
+            <div className="relative mt-4 min-h-[88px]">
               {aboutTexts.map((text, index) => (
                 <p
                   key={index}
                   ref={(el) => {
                     textsRef.current[index] = el;
                   }}
-                  className="absolute left-0 top-0 w-full text-base leading-7"
+                  className="absolute left-0 top-0 w-full text-[15px] leading-7"
                   style={{
                     color: colors.brand.secondary,
                   }}

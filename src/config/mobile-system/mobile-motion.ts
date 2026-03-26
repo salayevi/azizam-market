@@ -1,28 +1,29 @@
 export const mobileMotion = {
   about: {
-    titleY: 40,
-    imageY: 80,
-    textY: 28,
-    imageScaleFrom: 0.86,
+    titleY: 26,
+    imageY: 54,
+    textY: 18,
+    imageScaleFrom: 0.94,
     imageScaleTo: 1,
-    scrub: 0.8,
+    scrub: 0.32,
   },
 
-  hero: {
-    introDuration: 0.75,
+hero: {
+    introDuration: 0.68,
     introEase: "power2.out",
 
-    titleIntroY: 14,
-    topbarIntroY: 14,
-    navIntroY: 14,
+    titleIntroY: 12,
+    topbarIntroY: 10,
+    navIntroY: 10,
 
-    scrollDistance: 620,
-    backgroundScaleTo: 1.04,
-    titleSplitX: 36,
-    titleFadeTo: 0.58,
-    titleLiftTo: -6,
+    scrollDistance: 560,
+    backgroundScaleTo: 1.08,
 
-    scrub: 0.16,
+    titleSplitX: 120,
+    titleFadeTo: 0,
+    titleLiftTo: -8,
+
+    scrub: 0.12,
   },
 } as const;
 

@@ -12,9 +12,11 @@ type UseMobileHeroMotionParams = {
   stageRef: RefObject<HTMLDivElement | null>;
   bgRef: RefObject<HTMLDivElement | null>;
   overlayRef: RefObject<HTMLDivElement | null>;
+  topbarRef: RefObject<HTMLDivElement | null>;
   titleWrapRef: RefObject<HTMLDivElement | null>;
   azizamRef: RefObject<HTMLHeadingElement | null>;
   marketRef: RefObject<HTMLHeadingElement | null>;
+  bottomNavRef: RefObject<HTMLDivElement | null>;
 };
 
 export default function useMobileHeroMotion({
@@ -22,29 +24,57 @@ export default function useMobileHeroMotion({
   stageRef,
   bgRef,
   overlayRef,
+  topbarRef,
   titleWrapRef,
   azizamRef,
   marketRef,
+  bottomNavRef,
 }: UseMobileHeroMotionParams) {
   useEffect(() => {
     const section = sectionRef.current;
     const stage = stageRef.current;
     const bg = bgRef.current;
     const overlay = overlayRef.current;
+    const topbar = topbarRef.current;
     const titleWrap = titleWrapRef.current;
     const azizam = azizamRef.current;
     const market = marketRef.current;
+    const bottomNav = bottomNavRef.current;
 
-    if (!section || !stage || !bg || !overlay || !titleWrap || !azizam || !market) {
+    if (
+      !section ||
+      !stage ||
+      !bg ||
+      !overlay ||
+      !topbar ||
+      !titleWrap ||
+      !azizam ||
+      !market ||
+      !bottomNav
+    ) {
       return;
     }
 
     const ctx = gsap.context(() => {
-      gsap.set(bg, { scale: 1.02, transformOrigin: "center center" });
+      gsap.set(bg, {
+        scale: 1.01,
+        transformOrigin: "center center",
+      });
+
+      gsap.set(topbar, {
+        autoAlpha: 0,
+        y: mobileMotion.hero.topbarIntroY,
+      });
+
       gsap.set(titleWrap, {
         autoAlpha: 0,
         y: mobileMotion.hero.titleIntroY,
-        scale: 0.97,
+        scale: 0.99,
+      });
+
+      gsap.set(bottomNav, {
+        autoAlpha: 0,
+        y: mobileMotion.hero.navIntroY,
       });
 
       const intro = gsap.timeline({
@@ -54,7 +84,10 @@ export default function useMobileHeroMotion({
         },
       });
 
-      intro.to(titleWrap, { autoAlpha: 1, y: 0, scale: 1 }, 0);
+      intro
+        .to(topbar, { autoAlpha: 1, y: 0 }, 0)
+        .to(titleWrap, { autoAlpha: 1, y: 0, scale: 1 }, 0.04)
+        .to(bottomNav, { autoAlpha: 1, y: 0 }, 0.08);
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -79,7 +112,7 @@ export default function useMobileHeroMotion({
         .to(
           overlay,
           {
-            opacity: 0.76,
+            opacity: 0.72,
             ease: "none",
           },
           0,
@@ -88,7 +121,7 @@ export default function useMobileHeroMotion({
           azizam,
           {
             x: -mobileMotion.hero.titleSplitX,
-            opacity: mobileMotion.hero.titleFadeTo,
+            autoAlpha: mobileMotion.hero.titleFadeTo,
             ease: "none",
           },
           0,
@@ -97,7 +130,7 @@ export default function useMobileHeroMotion({
           market,
           {
             x: mobileMotion.hero.titleSplitX,
-            opacity: mobileMotion.hero.titleFadeTo,
+            autoAlpha: mobileMotion.hero.titleFadeTo,
             ease: "none",
           },
           0,
@@ -124,5 +157,15 @@ export default function useMobileHeroMotion({
       window.removeEventListener("orientationchange", refresh);
       ctx.revert();
     };
-  }, [sectionRef, stageRef, bgRef, overlayRef, titleWrapRef, azizamRef, marketRef]);
+  }, [
+    sectionRef,
+    stageRef,
+    bgRef,
+    overlayRef,
+    topbarRef,
+    titleWrapRef,
+    azizamRef,
+    marketRef,
+    bottomNavRef,
+  ]);
 }

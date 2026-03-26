@@ -1,19 +1,17 @@
 export const mobileSpacing = {
   pageX: "20px",
 
-  topbarTop: "calc(env(safe-area-inset-top, 0px) + 24px)",
+  topbarTop: "26px",
   topbarLeft: "20px",
+  topbarGap: "18px",
 
-  heroTitleOffsetY: "0svh",
-  heroBottomSafeSpace: "calc(env(safe-area-inset-bottom, 0px) + 150px)",
+  heroBottomSafeSpace: "148px",
 
   bottomNavX: "16px",
-  bottomNavY: "calc(env(safe-area-inset-bottom, 0px) + 18px)",
+  bottomNavY: "20px",
   bottomNavInnerX: "18px",
 
-  collapsedTopNavTop: "calc(env(safe-area-inset-top, 0px) + 12px)",
-  collapsedTopNavX: "12px",
-  collapsedTopNavInnerX: "12px",
+  heroTitleOffsetY: "0svh",
 } as const;
 
 export type MobileSpacing = typeof mobileSpacing;

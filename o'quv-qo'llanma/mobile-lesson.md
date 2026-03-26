@@ -105,67 +105,10 @@ config/
 # home/mobile/index.tsx
 
 ```
-"use client";
+import MobileHero from "./mobile-hero";
 
-import { mobileSections } from "@/config/mobile-system/mobile-sections";
-import MobileAchievementsShell from "./mobile-achievements-shell";
-import useMobileAchievementsScroll from "./useMobileAchievementsScroll";
-
-const mobileAchievements = [
-  {
-    id: 1,
-    name: "Azizam Team",
-    role: "Ishonch",
-    description:
-      "Bizning kuchimiz mahsulotning o‘zida emas, unga qo‘shilgan samimiyat va e’tiborda.",
-    image: "/achievement-1.png",
-  },
-  {
-    id: 2,
-    name: "Go‘zallik",
-    role: "Nafosat",
-    description:
-      "Har bir tanlovda nozik did, yengillik va qadrlash hissi sezilib turadi.",
-    image: "/achievement-2.png",
-  },
-  {
-    id: 3,
-    name: "Mehr",
-    role: "Qadriyat",
-    description:
-      "Azizam Market inson o‘zini aziz his qiladigan tajribani yaratishga intiladi.",
-    image: "/achievement-3.png",
-  },
-];
-
-export default function MobileAchievementsSection() {
-  const activeIndex = useMobileAchievementsScroll({
-    sectionId: "achievements",
-    totalItems: mobileAchievements.length,
-  });
-
-  return (
-    <section
-      id="achievements"
-      className="relative w-full bg-[#f5f1f3]"
-      style={{
-        minHeight: mobileSections.achievements.minHeight,
-      }}
-    >
-      <div className="sticky top-0 flex h-[100svh] w-full items-center justify-center overflow-hidden px-4">
-        <div className="absolute left-1/2 top-[12vh] z-30 w-full max-w-[360px] -translate-x-1/2 text-center">
-          <h2 className="text-[42px] font-bold leading-none tracking-[-0.04em] text-[#cf2f8f]">
-            Yutuqlar
-          </h2>
-        </div>
-
-        <MobileAchievementsShell
-          items={mobileAchievements}
-          activeIndex={activeIndex}
-        />
-      </div>
-    </section>
-  );
+export default function MobileHomeSection() {
+  return <MobileHero />;
 }
 ```
 
@@ -299,6 +242,8 @@ import useMobileHeroMotion from "../../shared/hooks/use-mobile-hero-motion";
 
 export default function MobileHero() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const stageRef = useRef<HTMLDivElement | null>(null);
+
   const bgRef = useRef<HTMLDivElement | null>(null);
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const topbarRef = useRef<HTMLDivElement | null>(null);
@@ -309,6 +254,7 @@ export default function MobileHero() {
 
   useMobileHeroMotion({
     sectionRef,
+    stageRef,
     bgRef,
     overlayRef,
     topbarRef,
@@ -322,82 +268,101 @@ export default function MobileHero() {
     <section
       id="home-mobile"
       ref={sectionRef}
-      className="relative w-full overflow-hidden"
+      className="relative w-full"
       style={{
-        height: mobileLayout.heroViewportHeight,
-        minHeight: mobileLayout.heroMinHeight,
+        minHeight: `calc(${mobileLayout.heroMinHeight} + ${mobileLayout.heroScrollRunway})`,
+        backgroundColor: "#000",
       }}
     >
       <div
-        ref={bgRef}
-        className="absolute inset-0 will-change-transform"
+        ref={stageRef}
+        className="sticky top-0 overflow-hidden"
         style={{
-          backgroundImage: `url('${mobileHero.backgroundImage}')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          transformOrigin: "center center",
-        }}
-      />
-
-      <div
-        ref={overlayRef}
-        className="absolute inset-0"
-        style={{
-          backgroundColor: mobileHero.overlayColor,
-          opacity: 1,
-        }}
-      />
-
-      <MobileTopbar topbarRef={topbarRef} />
-
-      <div
-        className="relative z-20 mx-auto h-full w-full"
-        style={{
-          maxWidth: mobileLayout.heroContentMaxWidth,
-          paddingInline: mobileSpacing.pageX,
-          paddingBottom: mobileSpacing.heroBottomSafeSpace,
+          height: mobileLayout.heroViewportHeight,
+          minHeight: mobileLayout.heroMinHeight,
+          backgroundColor: "#000",
         }}
       >
         <div
-          ref={titleWrapRef}
-          className="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 will-change-transform"
+          ref={bgRef}
+          className="absolute inset-0"
           style={{
-            maxWidth: mobileLayout.heroTitleMaxWidth,
-            transform: `translate(-50%, calc(-50% + ${mobileSpacing.titleLiftY}))`,
+            backgroundImage: `url('${mobileHero.backgroundImage}')`,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center center",
+            transformOrigin: "center center",
+            willChange: "transform",
+          }}
+        />
+
+        <div
+          ref={overlayRef}
+          className="absolute inset-0"
+          style={{
+            backgroundColor: mobileHero.overlayColor,
+            opacity: 1,
+          }}
+        />
+
+        <MobileTopbar topbarRef={topbarRef} />
+
+        <div
+          className="relative z-20 mx-auto h-full w-full"
+          style={{
+            maxWidth: mobileLayout.heroContentMaxWidth,
+            paddingInline: mobileSpacing.pageX,
+            paddingBottom: mobileSpacing.heroBottomSafeSpace,
           }}
         >
-          <h1
-            ref={azizamRef}
-            className="text-left"
-            style={{
-              color: mobileHero.titleColor,
-              fontSize: mobileTypography.hero.title,
-              lineHeight: mobileTypography.hero.lineHeight,
-              letterSpacing: mobileTypography.hero.letterSpacing,
-              fontWeight: mobileTypography.hero.weight,
-            }}
-          >
-            Azizam
-          </h1>
+          <div className="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2">
+            <div
+              ref={titleWrapRef}
+              className="mx-auto w-full"
+              style={{
+                width: mobileLayout.heroTitleMaxWidth,
+                maxWidth: mobileLayout.heroTitleMaxWidth,
+                transform: `translateY(${mobileSpacing.heroTitleOffsetY})`,
+                willChange: "transform, opacity",
+              }}
+            >
+              <h1
+                ref={azizamRef}
+                className="text-left"
+                style={{
+                  color: mobileHero.titleColor,
+                  fontSize: mobileTypography.hero.title,
+                  lineHeight: mobileTypography.hero.lineHeight,
+                  letterSpacing: mobileTypography.hero.letterSpacing,
+                  fontWeight: mobileTypography.hero.weight,
+                  whiteSpace: "nowrap",
+                  margin: 0,
+                }}
+              >
+                Azizam
+              </h1>
 
-          <h1
-            ref={marketRef}
-            className="text-right"
-            style={{
-              color: mobileHero.titleColor,
-              fontSize: mobileTypography.hero.title,
-              lineHeight: mobileTypography.hero.lineHeight,
-              letterSpacing: mobileTypography.hero.letterSpacing,
-              fontWeight: mobileTypography.hero.weight,
-              marginTop: "8px",
-            }}
-          >
-            Market
-          </h1>
+              <h1
+                ref={marketRef}
+                className="text-right"
+                style={{
+                  color: mobileHero.titleColor,
+                  fontSize: mobileTypography.hero.title,
+                  lineHeight: mobileTypography.hero.lineHeight,
+                  letterSpacing: mobileTypography.hero.letterSpacing,
+                  fontWeight: mobileTypography.hero.weight,
+                  whiteSpace: "nowrap",
+                  margin: 0,
+                  marginTop: "6px",
+                }}
+              >
+                Market
+              </h1>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <MobileBottomNav bottomNavRef={bottomNavRef} />
+      </div>
     </section>
   );
 }
@@ -408,17 +373,19 @@ export default function MobileHero() {
 ```
 "use client";
 
+import type { ReactNode, RefObject } from "react";
 import Image from "next/image";
 import AuthTriggerButton from "../../shared/auth/AuthTriggerButton";
+import useMobileCollapsedNav from "../../shared/hooks/use-mobile-collapsed-nav";
 import { mobileNavbar } from "@/config/mobile-system/mobile-navbar";
 import { mobileSpacing } from "@/config/mobile-system/mobile-spacing";
 import { mobileHero } from "@/config/mobile-system/mobile-hero";
 
 type MobileTopbarProps = {
-  topbarRef?: React.RefObject<HTMLDivElement | null>;
+  topbarRef?: RefObject<HTMLDivElement | null>;
 };
 
-function CircleShell({ children }: { children: React.ReactNode }) {
+function CircleShell({ children }: { children: ReactNode }) {
   return (
     <div
       className="flex items-center justify-center"
@@ -428,6 +395,7 @@ function CircleShell({ children }: { children: React.ReactNode }) {
         borderRadius: "9999px",
         backgroundColor: mobileHero.topIconOuterBackground,
         boxShadow: mobileHero.softShadow,
+        flexShrink: 0,
       }}
     >
       <div
@@ -446,14 +414,19 @@ function CircleShell({ children }: { children: React.ReactNode }) {
 }
 
 export default function MobileTopbar({ topbarRef }: MobileTopbarProps) {
+  const isCollapsed = useMobileCollapsedNav(110);
+
   return (
     <div
       ref={topbarRef}
-      className="absolute z-30 flex flex-col"
+      className="fixed z-40 flex flex-col transition-all duration-300"
       style={{
         top: mobileSpacing.topbarTop,
         left: mobileSpacing.topbarLeft,
         gap: mobileNavbar.topIconGap,
+        opacity: isCollapsed ? 0 : 1,
+        pointerEvents: isCollapsed ? "none" : "auto",
+        transform: isCollapsed ? "translateY(-8px)" : "translateY(0)",
       }}
     >
       <CircleShell>
@@ -535,6 +508,8 @@ const aboutTexts = [
 
 export default function MobileAboutStory() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const stickyRef = useRef<HTMLDivElement | null>(null);
+
   const titleRef = useRef<HTMLHeadingElement | null>(null);
   const imageWrapRef = useRef<HTMLDivElement | null>(null);
   const infoTitleRef = useRef<HTMLHeadingElement | null>(null);
@@ -542,33 +517,34 @@ export default function MobileAboutStory() {
 
   useEffect(() => {
     const section = sectionRef.current;
+    const sticky = stickyRef.current;
     const title = titleRef.current;
     const imageWrap = imageWrapRef.current;
     const infoTitle = infoTitleRef.current;
 
-    if (!section || !title || !imageWrap || !infoTitle) return;
+    if (!section || !sticky || !title || !imageWrap || !infoTitle) return;
 
     const ctx = gsap.context(() => {
       gsap.set(title, {
-        opacity: 0,
+        autoAlpha: 0,
         y: mobileMotion.about.titleY,
-        scale: 1.04,
+        scale: 1.02,
       });
 
       gsap.set(imageWrap, {
-        opacity: 0,
+        autoAlpha: 0,
         y: mobileMotion.about.imageY,
         scale: mobileMotion.about.imageScaleFrom,
         clipPath: "inset(100% 0% 0% 0%)",
       });
 
       gsap.set(infoTitle, {
-        opacity: 0,
+        autoAlpha: 0,
         y: mobileMotion.about.textY,
       });
 
       gsap.set(textsRef.current, {
-        opacity: 0,
+        autoAlpha: 0,
         y: mobileMotion.about.textY,
       });
 
@@ -576,74 +552,74 @@ export default function MobileAboutStory() {
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: "+=1800",
+          end: "+=1600",
           scrub: mobileMotion.about.scrub,
-          pin: ".mobile-about-sticky",
+          pin: sticky,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       });
 
       tl.to(title, {
-        opacity: 1,
+        autoAlpha: 1,
         y: 0,
         scale: 1,
-        duration: 0.9,
-        ease: "power3.out",
+        duration: 0.45,
+        ease: "power2.out",
       });
 
       tl.to(title, {
-        opacity: 0,
-        y: -44,
-        duration: 0.8,
+        autoAlpha: 0,
+        y: -20,
+        duration: 0.35,
         ease: "power2.out",
       });
 
       tl.to(
         imageWrap,
         {
-          opacity: 1,
+          autoAlpha: 1,
           y: 0,
           scale: mobileMotion.about.imageScaleTo,
           clipPath: "inset(0% 0% 0% 0%)",
-          duration: 1,
-          ease: "power3.out",
+          duration: 0.55,
+          ease: "power2.out",
         },
-        ">-0.1",
+        ">-0.05",
       );
 
       tl.to(imageWrap, {
         y: mobileSections.about.imageShiftY,
-        duration: 1,
+        duration: 0.55,
         ease: "power2.inOut",
       });
 
       tl.to(
         infoTitle,
         {
-          opacity: 1,
+          autoAlpha: 1,
           y: 0,
-          duration: 0.7,
-          ease: "power3.out",
+          duration: 0.35,
+          ease: "power2.out",
         },
-        "<+0.1",
+        "<+0.05",
       );
 
       textsRef.current.forEach((textEl) => {
         if (!textEl) return;
 
         tl.to(textEl, {
-          opacity: 1,
+          autoAlpha: 1,
           y: 0,
-          duration: 0.55,
-          ease: "power3.out",
+          duration: 0.3,
+          ease: "power2.out",
         });
 
         tl.to(textEl, {
-          opacity: 0,
-          y: -24,
-          duration: 0.45,
-          ease: "power2.out",
+          autoAlpha: 0,
+          y: -14,
+          duration: 0.24,
+          ease: "power1.out",
         });
       });
     }, section);
@@ -661,9 +637,12 @@ export default function MobileAboutStory() {
         backgroundColor: colors.background.about,
       }}
     >
-      <div className="mobile-about-sticky relative h-[100svh] w-full overflow-hidden">
+      <div
+        ref={stickyRef}
+        className="relative h-[100svh] w-full overflow-hidden"
+      >
         <div
-          className="mx-auto relative h-full w-full"
+          className="relative mx-auto h-full w-full"
           style={{
             maxWidth: mobileSections.about.frameMaxWidth,
             paddingInline: mobileSpacing.pageX,
@@ -675,22 +654,22 @@ export default function MobileAboutStory() {
             style={{
               top: mobileSections.about.titleTopOffset,
               color: colors.brand.primaryStrong,
-              fontSize: "clamp(36px, 9vw, 52px)",
-              lineHeight: 0.95,
+              fontSize: "clamp(34px, 8.6vw, 50px)",
+              lineHeight: 0.96,
               letterSpacing: "-0.04em",
             }}
           >
-            BIZ HAQIMIZDA
+            Biz Haqimizda
           </h2>
 
           <div
             ref={imageWrapRef}
             className="absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 overflow-hidden bg-white"
             style={{
+              width: mobileSections.about.frameMaxWidth,
               maxWidth: mobileSections.about.frameMaxWidth,
               borderRadius: mobileSections.about.imageRadius,
               border: `${mobileSections.about.imageBorderWidth} solid ${colors.brand.primary}`,
-              
             }}
           >
             <Image
@@ -698,9 +677,10 @@ export default function MobileAboutStory() {
               alt="Azizam Market"
               width={420}
               height={620}
-              className="h-auto w-full object-cover"
+              className="block h-auto w-full object-cover"
+              sizes="(max-width: 480px) 86vw, 380px"
               style={{
-                minHeight: mobileSections.about.imageHeight,
+                height: mobileSections.about.imageHeight,
               }}
             />
           </div>
@@ -717,22 +697,22 @@ export default function MobileAboutStory() {
               className="font-semibold"
               style={{
                 color: colors.brand.primaryStrong,
-                fontSize: "30px",
-                lineHeight: 1.04,
+                fontSize: "clamp(28px, 7vw, 34px)",
+                lineHeight: 1.03,
                 letterSpacing: "-0.03em",
               }}
             >
               Azizam Market
             </h3>
 
-            <div className="relative mt-5 min-h-[92px]">
+            <div className="relative mt-4 min-h-[88px]">
               {aboutTexts.map((text, index) => (
                 <p
                   key={index}
                   ref={(el) => {
                     textsRef.current[index] = el;
                   }}
-                  className="absolute left-0 top-0 w-full text-base leading-7"
+                  className="absolute left-0 top-0 w-full text-[15px] leading-7"
                   style={{
                     color: colors.brand.secondary,
                   }}
@@ -1453,11 +1433,15 @@ import MobileAboutSection from "../about/mobile";
 import MobileAchievementsSection from "../AchievementsSection/mobile";
 import MobileHomeSection from "../home/mobile";
 import MobileFooter from "../home/mobile/mobile-footer";
+import MobileBottomNav from "../home/mobile/mobile-bottom-nav";
 import MobileProductSection from "../product/mobile";
+import MobileTopbar from "../home/mobile/mobile-topbar";
 
 export default function MobilePage() {
   return (
-    <main className="min-h-screen w-full bg-white">
+    <main className="relative min-h-screen w-full bg-white">
+      <MobileTopbar />
+      <MobileBottomNav />
       <div>
         <MobileHomeSection />
         <MobileAboutSection />
@@ -1484,6 +1468,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 type UseMobileHeroMotionParams = {
   sectionRef: RefObject<HTMLElement | null>;
+  stageRef: RefObject<HTMLDivElement | null>;
   bgRef: RefObject<HTMLDivElement | null>;
   overlayRef: RefObject<HTMLDivElement | null>;
   topbarRef: RefObject<HTMLDivElement | null>;
@@ -1495,6 +1480,7 @@ type UseMobileHeroMotionParams = {
 
 export default function useMobileHeroMotion({
   sectionRef,
+  stageRef,
   bgRef,
   overlayRef,
   topbarRef,
@@ -1505,6 +1491,7 @@ export default function useMobileHeroMotion({
 }: UseMobileHeroMotionParams) {
   useEffect(() => {
     const section = sectionRef.current;
+    const stage = stageRef.current;
     const bg = bgRef.current;
     const overlay = overlayRef.current;
     const topbar = topbarRef.current;
@@ -1513,11 +1500,42 @@ export default function useMobileHeroMotion({
     const market = marketRef.current;
     const bottomNav = bottomNavRef.current;
 
-    if (!section || !bg || !overlay || !topbar || !titleWrap || !azizam || !market || !bottomNav) {
+    if (
+      !section ||
+      !stage ||
+      !bg ||
+      !overlay ||
+      !topbar ||
+      !titleWrap ||
+      !azizam ||
+      !market ||
+      !bottomNav
+    ) {
       return;
     }
 
     const ctx = gsap.context(() => {
+      gsap.set(bg, {
+        scale: 1.01,
+        transformOrigin: "center center",
+      });
+
+      gsap.set(topbar, {
+        autoAlpha: 0,
+        y: mobileMotion.hero.topbarIntroY,
+      });
+
+      gsap.set(titleWrap, {
+        autoAlpha: 0,
+        y: mobileMotion.hero.titleIntroY,
+        scale: 0.99,
+      });
+
+      gsap.set(bottomNav, {
+        autoAlpha: 0,
+        y: mobileMotion.hero.navIntroY,
+      });
+
       const intro = gsap.timeline({
         defaults: {
           duration: mobileMotion.hero.introDuration,
@@ -1525,35 +1543,31 @@ export default function useMobileHeroMotion({
         },
       });
 
-      gsap.set(bg, { scale: 1.02 });
-      gsap.set(topbar, { opacity: 0, y: mobileMotion.hero.topbarIntroY });
-      gsap.set(titleWrap, { opacity: 0, y: mobileMotion.hero.titleIntroY, scale: 0.96 });
-      gsap.set(bottomNav, { opacity: 0, y: mobileMotion.hero.navIntroY });
-
       intro
-        .to(topbar, { opacity: 1, y: 0 }, 0)
-        .to(titleWrap, { opacity: 1, y: 0, scale: 1 }, 0.08)
-        .to(bottomNav, { opacity: 1, y: 0 }, 0.16);
+        .to(topbar, { autoAlpha: 1, y: 0 }, 0)
+        .to(titleWrap, { autoAlpha: 1, y: 0, scale: 1 }, 0.04)
+        .to(bottomNav, { autoAlpha: 1, y: 0 }, 0.08);
 
-      const scrollTl = gsap.timeline({
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: "top top",
           end: `+=${mobileMotion.hero.scrollDistance}`,
           scrub: mobileMotion.hero.scrub,
+          pin: stage,
+          anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       });
 
-      scrollTl
-        .to(
-          bg,
-          {
-            scale: mobileMotion.hero.backgroundScaleTo,
-            ease: "none",
-          },
-          0,
-        )
+      tl.to(
+        bg,
+        {
+          scale: mobileMotion.hero.backgroundScaleTo,
+          ease: "none",
+        },
+        0,
+      )
         .to(
           overlay,
           {
@@ -1566,7 +1580,7 @@ export default function useMobileHeroMotion({
           azizam,
           {
             x: -mobileMotion.hero.titleSplitX,
-            opacity: mobileMotion.hero.titleFadeTo,
+            autoAlpha: mobileMotion.hero.titleFadeTo,
             ease: "none",
           },
           0,
@@ -1575,7 +1589,7 @@ export default function useMobileHeroMotion({
           market,
           {
             x: mobileMotion.hero.titleSplitX,
-            opacity: mobileMotion.hero.titleFadeTo,
+            autoAlpha: mobileMotion.hero.titleFadeTo,
             ease: "none",
           },
           0,
@@ -1593,12 +1607,53 @@ export default function useMobileHeroMotion({
     const refresh = () => ScrollTrigger.refresh();
 
     window.addEventListener("load", refresh);
+    window.addEventListener("resize", refresh);
+    window.addEventListener("orientationchange", refresh);
 
     return () => {
       window.removeEventListener("load", refresh);
+      window.removeEventListener("resize", refresh);
+      window.removeEventListener("orientationchange", refresh);
       ctx.revert();
     };
-  }, [sectionRef, bgRef, overlayRef, topbarRef, titleWrapRef, azizamRef, marketRef, bottomNavRef]);
+  }, [
+    sectionRef,
+    stageRef,
+    bgRef,
+    overlayRef,
+    topbarRef,
+    titleWrapRef,
+    azizamRef,
+    marketRef,
+    bottomNavRef,
+  ]);
+}
+```
+
+# shared/hooks/use-mobile-collapsed-nav.ts
+
+```
+"use client";
+
+import { useEffect, useState } from "react";
+
+export default function useMobileCollapsedNav(threshold = 110) {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setIsCollapsed(window.scrollY > threshold);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [threshold]);
+
+  return isCollapsed;
 }
 ```
 
@@ -1680,24 +1735,19 @@ export default function useDeviceMode(): DeviceMode {
 # config/mobile-system/mobile-hero.ts
 
 ```
-export const mobileHero = {
-  backgroundImage: "/rose-bg.png",
+export const mobileLayout = {
+  pageMaxWidth: "480px",
 
-  overlayColor: "rgba(113, 10, 74, 0.34)",
+  heroViewportHeight: "100dvh",
+  heroMinHeight: "100svh",
 
-  topIconOuterBackground: "#9D1A12",
-  topIconInnerBackground: "#FFFFFF",
+  heroContentMaxWidth: "420px",
+  heroTitleMaxWidth: "min(88vw, 360px)",
 
-  bottomNavBackground: "rgba(255,255,255,0.92)",
-  bottomNavTextColor: "#4A3337",
-
-  titleColor: "#FFFFFF",
-
-  softShadow: "0 10px 30px rgba(0, 0, 0, 0.16)",
-  navShadow: "0 12px 36px rgba(0, 0, 0, 0.14)",
+  heroScrollRunway: "560px",
 } as const;
 
-export type MobileHero = typeof mobileHero;
+export type MobileLayout = typeof mobileLayout;
 ```
 
 # config/mobile-system/mobile-layout.ts
@@ -1710,7 +1760,9 @@ export const mobileLayout = {
   heroMinHeight: "100svh",
 
   heroContentMaxWidth: "420px",
-  heroTitleMaxWidth: "320px",
+  heroTitleMaxWidth: "min(88vw, 360px)",
+
+  heroScrollRunway: "560px",
 } as const;
 
 export type MobileLayout = typeof mobileLayout;
@@ -1721,33 +1773,35 @@ export type MobileLayout = typeof mobileLayout;
 ```
 export const mobileMotion = {
   about: {
-    titleY: 40,
-    imageY: 80,
-    textY: 28,
-    imageScaleFrom: 0.86,
+    titleY: 26,
+    imageY: 54,
+    textY: 18,
+    imageScaleFrom: 0.94,
     imageScaleTo: 1,
-    scrub: 0.8,
+    scrub: 0.32,
   },
 
-   hero: {
-    introDuration: 0.9,
-    introEase: "power3.out",
+hero: {
+    introDuration: 0.68,
+    introEase: "power2.out",
 
-    titleIntroY: 34,
-    topbarIntroY: 20,
-    navIntroY: 22,
+    titleIntroY: 12,
+    topbarIntroY: 10,
+    navIntroY: 10,
 
-    scrollDistance: 700,
-    backgroundScaleTo: 1.12,
-    titleSplitX: 96,
-    titleFadeTo: 0.3,
-    titleLiftTo: -34,
+    scrollDistance: 560,
+    backgroundScaleTo: 1.08,
 
-    scrub: 1,
+    titleSplitX: 120,
+    titleFadeTo: 0,
+    titleLiftTo: -8,
+
+    scrub: 0.12,
   },
 } as const;
 
 export type MobileMotion = typeof mobileMotion;
+
 ```
 
 # config/mobile-system/mobile-navbar.ts
@@ -1756,12 +1810,17 @@ export type MobileMotion = typeof mobileMotion;
 export const mobileNavbar = {
   topIconSize: "78px",
   topIconInnerSize: "62px",
-  topIconBorderWidth: "4px",
   topIconGap: "16px",
 
   bottomHeight: "78px",
   bottomRadius: "9999px",
   bottomBlur: "14px",
+
+  collapsedHeight: "68px",
+  collapsedRadius: "9999px",
+  collapsedBlur: "12px",
+  collapsedIconOuter: "54px",
+  collapsedIconInner: "42px",
 } as const;
 
 export type MobileNavbar = typeof mobileNavbar;
@@ -1772,16 +1831,19 @@ export type MobileNavbar = typeof mobileNavbar;
 ```
 export const mobileSections = {
   about: {
-    minHeight: "220svh",
+    minHeight: "240svh",
     stickyTop: "0px",
-    frameMaxWidth: "380px",
+
+    frameMaxWidth: "min(86vw, 380px)",
     imageRadius: "28px",
     imageBorderWidth: "2px",
-    imageHeight: "420px",
-    imageShiftY: "-88px",
-    titleTopOffset: "16vh",
-    contentBottomOffset: "14vh",
-    contentMaxWidth: "320px",
+    imageHeight: "min(58svh, 520px)",
+
+    imageShiftY: "-84px",
+
+    titleTopOffset: "14vh",
+    contentBottomOffset: "12vh",
+    contentMaxWidth: "min(78vw, 320px)",
   },
 
   product: {
@@ -1830,7 +1892,7 @@ export const mobileSpacing = {
   bottomNavY: "20px",
   bottomNavInnerX: "18px",
 
-  titleLiftY: "-2svh",
+  heroTitleOffsetY: "0svh",
 } as const;
 
 export type MobileSpacing = typeof mobileSpacing;
@@ -1841,10 +1903,11 @@ export type MobileSpacing = typeof mobileSpacing;
 ```
 export const mobileTypography = {
   hero: {
-    title: "clamp(64px, 18vw, 92px)",
+    title: "clamp(50px, 14vw, 76px)",
     lineHeight: 0.9,
     letterSpacing: "-0.06em",
     weight: 700,
+    lineGap: "4px",
   },
 
   nav: {

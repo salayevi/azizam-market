@@ -20,8 +20,8 @@ function SmallCircle({ children }: { children: React.ReactNode }) {
     <div
       className="flex items-center justify-center"
       style={{
-        width: mobileNavbar.collapsedIconOuter,
-        height: mobileNavbar.collapsedIconOuter,
+        width: "54px",
+        height: "54px",
         borderRadius: "9999px",
         backgroundColor: mobileHero.topIconOuterBackground,
         flexShrink: 0,
@@ -30,8 +30,8 @@ function SmallCircle({ children }: { children: React.ReactNode }) {
       <div
         className="flex items-center justify-center"
         style={{
-          width: mobileNavbar.collapsedIconInner,
-          height: mobileNavbar.collapsedIconInner,
+          width: "42px",
+          height: "42px",
           borderRadius: "9999px",
           backgroundColor: mobileHero.topIconInnerBackground,
         }}
@@ -57,27 +57,19 @@ export default function MobileBottomNav() {
       <nav
         className="items-center"
         style={{
-          minHeight: isCollapsed
-            ? mobileNavbar.collapsedHeight
-            : mobileNavbar.bottomHeight,
-          borderRadius: isCollapsed
-            ? mobileNavbar.collapsedRadius
-            : mobileNavbar.bottomRadius,
+          minHeight: isCollapsed ? "68px" : mobileNavbar.bottomHeight,
+          borderRadius: mobileNavbar.bottomRadius,
           backgroundColor: isCollapsed
             ? "rgba(181,150,150,0.94)"
             : mobileHero.bottomNavBackground,
-          backdropFilter: `blur(${
-            isCollapsed
-              ? mobileNavbar.collapsedBlur
-              : mobileNavbar.bottomBlur
-          })`,
+          backdropFilter: `blur(${mobileNavbar.bottomBlur})`,
           boxShadow: mobileHero.navShadow,
           paddingInline: mobileSpacing.bottomNavInnerX,
           display: "grid",
           gridTemplateColumns: isCollapsed ? "auto 1fr auto" : "1fr",
           gap: isCollapsed ? "10px" : "0px",
           transition:
-            "min-height 260ms ease, border-radius 260ms ease, background-color 260ms ease, transform 260ms ease, gap 260ms ease",
+            "min-height 260ms ease, background-color 260ms ease, gap 260ms ease, transform 260ms ease",
         }}
       >
         {isCollapsed ? (

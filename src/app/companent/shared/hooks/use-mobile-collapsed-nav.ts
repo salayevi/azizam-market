@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export default function useMobileCollapsedNav(threshold = 120) {
+export default function useMobileCollapsedNav(threshold = 110) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
