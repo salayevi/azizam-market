@@ -25,28 +25,28 @@ type AchievementItem = {
 const achievements: AchievementItem[] = [
   {
     id: 1,
-    image: "/gallery/team-1.jpg",
+    image: "/achievements/team-1.jpg",
     title: "Premium tajriba",
     description:
       "Har bir mahsulot va xizmat estetik tanlov, sifat va hissiy taassurot mezonlari asosida shakllantiriladi.",
   },
   {
     id: 2,
-    image: "/gallery/team-2.jpg",
+    image: "/achievements/team-2.jpg",
     title: "Ishonchli jamoa",
     description:
       "Bizning jamoa buyurtmadan tortib taqdimotgacha bo‘lgan har bir bosqichni did va e’tibor bilan boshqaradi.",
   },
   {
     id: 3,
-    image: "/gallery/team-3.jpg",
+    image: "/achievements/team-3.jpg",
     title: "Yutuq va rivojlanish",
     description:
       "Azizam o‘sib borayotgan brend sifatida tajriba, ishonch va premium yondashuvni bir joyga jamlaydi.",
   },
   {
     id: 4,
-    image: "/gallery/team-4.jpg",
+    image: "/achievements/team-4.jpg",
     title: "Brend qadriyati",
     description:
       "Har bir detal orqali nafaqat mahsulot, balki unutilmas vizual va emotsional tajriba yaratiladi.",
