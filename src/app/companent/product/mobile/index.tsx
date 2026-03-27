@@ -1,6 +1,7 @@
 "use client";
 
 import { mobileSections } from "@/config/mobile-system/mobile-sections";
+
 import { productsData } from "../shared/products-data";
 import MobileProductShell from "./mobile-product-shell";
 import useMobileProductsScroll from "../../shared/hooks/useMobileProductsScroll";
@@ -14,6 +15,7 @@ const mobileProducts = productsData.map((product) => ({
   image: product.media.src,
   imageAlt: product.media.alt ?? product.name,
   theme: product.theme,
+  price: product.price,
 }));
 
 export default function MobileProductSection() {
@@ -66,7 +68,6 @@ export default function MobileProductSection() {
           activeIndex={scrollState.activeIndex}
           cardsProgress={scrollState.cardsProgress}
           cardsRevealProgress={scrollState.cardsRevealProgress}
-          isAuthenticated={false}
         />
       </div>
     </section>

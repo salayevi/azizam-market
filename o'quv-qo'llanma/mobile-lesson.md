@@ -750,63 +750,78 @@ export default function MobileAboutStory() {
 "use client";
 
 import { mobileSections } from "@/config/mobile-system/mobile-sections";
+import { productsData } from "../shared/products-data";
 import MobileProductShell from "./mobile-product-shell";
-import useMobileProductsScroll from "./useMobileProductsScroll";
+import useMobileProductsScroll from "../../shared/hooks/useMobileProductsScroll";
 
-const mobileProducts = [
-  {
-    id: 1,
-    title: "Atirlar",
-    description:
-      "Har bir did va kayfiyatga mos, nafis va esda qolarli iforlar to‘plami.",
-    image: "/product-1.png",
-  },
-  {
-    id: 2,
-    title: "Kosmetika",
-    description:
-      "Go‘zallikni yanada nozik ko‘rsatadigan kundalik va maxsus mahsulotlar.",
-    image: "/product-2.png",
-  },
-  {
-    id: 3,
-    title: "Parvarish",
-    description:
-      "Terini va o‘zingizni qadrlash uchun tanlangan ishonchli parvarish vositalari.",
-    image: "/product-3.png",
-  },
-];
+const mobileProducts = productsData.map((product) => ({
+  id: Number(product.id),
+  title: product.name,
+  eyebrow: product.subtitle ?? "",
+  promo: product.badge,
+  description: product.description,
+  image: product.media.src,
+  imageAlt: product.media.alt ?? product.name,
+  theme: product.theme,
+}));
 
 export default function MobileProductSection() {
-  const activeIndex = useMobileProductsScroll({
+  const scrollState = useMobileProductsScroll({
     sectionId: "products",
     totalItems: mobileProducts.length,
   });
 
+  const titleOpacity = 1 - scrollState.titleFadeProgress;
+  const titleTranslateY = scrollState.titleFadeProgress * -26;
+  const titleScale = 1 - scrollState.titleFadeProgress * 0.04;
+
   return (
     <section
       id="products"
-      className="relative w-full bg-[#f5f1f3]"
+      className="relative w-full overflow-clip bg-[#f5f1f3]"
       style={{
         minHeight: mobileSections.product.minHeight,
       }}
     >
-      <div className="sticky top-0 flex h-[100svh] w-full items-center justify-center overflow-hidden px-4">
-        <div className="absolute left-1/2 top-[12vh] z-30 w-full max-w-[360px] -translate-x-1/2 text-center">
-          <h2 className="text-[42px] font-bold leading-none tracking-[-0.04em] text-[#cf2f8f]">
-            Mahsulotlar
-          </h2>
+      <div
+        className="sticky top-0 flex w-full items-center justify-center overflow-hidden px-3"
+        style={{
+          height: mobileSections.product.stickyHeight,
+        }}
+      >
+        <div
+          className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center px-6 text-center"
+          style={{
+            opacity: titleOpacity,
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              maxWidth: mobileSections.product.frameMaxWidth,
+              transform: `translateY(${titleTranslateY}px) scale(${titleScale})`,
+              transformOrigin: "center center",
+            }}
+          >
+            <h2 className="text-[clamp(34px,10vw,50px)] font-bold leading-none tracking-[-0.05em] text-[#cf2f8f]">
+              Maxsulotlar
+            </h2>
+          </div>
         </div>
 
         <MobileProductShell
           products={mobileProducts}
-          activeIndex={activeIndex}
+          floatingIndex={scrollState.floatingIndex}
+          activeIndex={scrollState.activeIndex}
+          cardsProgress={scrollState.cardsProgress}
+          cardsRevealProgress={scrollState.cardsRevealProgress}
           isAuthenticated={false}
         />
       </div>
     </section>
   );
 }
+
 ```
 
 # product/mobile/mobile-product-actions.tsx
@@ -815,30 +830,73 @@ export default function MobileProductSection() {
 "use client";
 
 type MobileProductActionsProps = {
-  onAdd?: () => void;
-  onSave?: () => void;
+  price?: string;
+  accentColor: string;
+  textColor: string;
+  mutedColor: string;
+  borderColor: string;
+  backgroundColor: string;
+  dark?: boolean;
 };
 
 export default function MobileProductActions({
-  onAdd,
-  onSave,
+  price,
+  accentColor,
+  textColor,
+  mutedColor,
+  borderColor,
+  backgroundColor,
+  dark = false,
 }: MobileProductActionsProps) {
   return (
-    <div className="mt-4 flex items-center justify-center gap-3">
-      <button
-        type="button"
-        onClick={onAdd}
-        className="rounded-full bg-[#cf2f8f] px-5 py-3 text-sm font-semibold text-white"
-      >
-        Savatga
-      </button>
+    <div
+      className="mt-5 rounded-[24px] border shadow-[0_10px_26px_rgba(0,0,0,0.08)]"
+      style={{
+        paddingInline: "16px",
+        paddingBlock: "16px",
+        background: backgroundColor,
+        borderColor,
+      }}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p
+            className="text-[13px] font-medium"
+            style={{ color: mutedColor }}
+          >
+            Narx
+          </p>
+
+          <p
+            className="mt-1 text-[clamp(24px,6vw,30px)] font-bold leading-none"
+            style={{ color: textColor }}
+          >
+            {price ?? "Narx mavjud emas"}
+          </p>
+        </div>
+
+        <button
+          type="button"
+          className="rounded-full px-5 py-3 text-[15px] font-semibold"
+          style={{
+            background: accentColor,
+            color: dark ? "#111" : "#fff",
+          }}
+        >
+          Sotib olish
+        </button>
+      </div>
 
       <button
         type="button"
-        onClick={onSave}
-        className="rounded-full border border-[#cf2f8f] px-5 py-3 text-sm font-semibold text-[#cf2f8f]"
+        className="mt-3 w-full rounded-full border px-5 py-3 text-[15px] font-semibold transition-opacity hover:opacity-90"
+        style={{
+          borderColor,
+          color: textColor,
+          background: "transparent",
+        }}
       >
-        Saqlash
+        Savatga qo'shish
       </button>
     </div>
   );
@@ -848,51 +906,176 @@ export default function MobileProductActions({
 # product/mobile/mobile-product-card.tsx
 
 ```
-import MobileProductActions from "./mobile-product-actions";
+import { mobileMotion } from "@/config/mobile-system/mobile-motion";
+import { mobileSections } from "@/config/mobile-system/mobile-sections";
 import MobileProductGuestCallout from "./mobile-product-guest-callout";
 import MobileProductInfo from "./mobile-product-info";
 import MobileProductMedia from "./mobile-product-media";
+import MobileProductActions from "./mobile-product-actions";
+
+type ProductTheme = {
+  bg: string;
+  text: string;
+  accent: string;
+  muted?: string;
+  card?: string;
+  tone?: "light" | "dark";
+};
 
 export type MobileProductItem = {
   id: number;
   title: string;
+  eyebrow: string;
+  promo?: string;
   description: string;
   image: string;
+  imageAlt?: string;
+  theme: ProductTheme;
+  price?: string;
 };
 
 type MobileProductCardProps = {
   product: MobileProductItem;
-  isActive?: boolean;
+  index: number;
+  floatingIndex: number;
+  activeIndex: number;
+  cardsProgress: number;
+  cardsRevealProgress: number;
   isAuthenticated?: boolean;
 };
 
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
+
 export default function MobileProductCard({
   product,
-  isActive = false,
+  index,
+  floatingIndex,
+  activeIndex,
+  cardsProgress,
+  cardsRevealProgress,
   isAuthenticated = false,
 }: MobileProductCardProps) {
+  const distance = index - floatingIndex;
+  const limitedDistance = clamp(distance, -1.2, 2.4);
+
+  const isFront = Math.abs(distance) < 0.55 || index === activeIndex;
+  const passedCard = distance < -0.55;
+
+  const revealLift = (1 - cardsRevealProgress) * mobileMotion.product.introOffsetY;
+  const revealScale =
+    mobileMotion.product.introScaleFrom +
+    (1 - mobileMotion.product.introScaleFrom) * cardsRevealProgress;
+
+  const translateY = passedCard
+    ? -mobileMotion.product.exitLift * clamp(Math.abs(distance), 0, 1)
+    : limitedDistance * mobileMotion.product.stackOffsetY +
+      Math.max(limitedDistance, 0) * 16 +
+      revealLift;
+
+  const scale = passedCard
+    ? 0.91
+    : (1 - Math.max(limitedDistance, 0) * mobileMotion.product.stackScaleStep) *
+      revealScale;
+
+  const opacityBase = passedCard
+    ? Math.max(0, 1 - Math.abs(distance) * 1.8)
+    : clamp(
+        1 - Math.max(limitedDistance, 0) * 0.22,
+        mobileMotion.product.inactiveOpacity,
+        1,
+      );
+
+  const opacity = opacityBase * cardsRevealProgress;
+  const blur = passedCard ? 5 : Math.max(0, limitedDistance) * 1.15;
+  const zIndex = 100 - Math.round(Math.max(limitedDistance, 0) * 10);
+
+  const isDark = product.theme.tone === "dark";
+
+  const outerColor = isDark ? "#1f1f1f" : "#7b001d";
+  const topColor = isDark ? "#2b2b2b" : "#b61d52";
+  const bottomColor = product.theme.card ?? (isDark ? "#191919" : "#f3dbe5");
+  const borderColor = product.theme.accent;
+  const textColor = product.theme.text;
+  const subtextColor = product.theme.muted ?? product.theme.text;
+
   return (
     <article
-      className={`absolute left-1/2 top-1/2 w-full max-w-[360px] -translate-x-1/2 rounded-[28px] border border-[#efbfd8] bg-white p-4 shadow-lg transition-all duration-500 ${
-        isActive ? "z-20 opacity-100" : "z-10 opacity-0"
-      }`}
+      className="absolute left-1/2 top-1/2 w-full overflow-hidden transition-transform duration-200 ease-out"
       style={{
-        transform: `translate(-50%, -50%) scale(${isActive ? 1 : 0.92})`,
+        width: mobileSections.product.cardMaxWidth,
+        minHeight: mobileSections.product.cardMinHeight,
+        borderRadius: mobileSections.product.cardRadius,
+        transform: `translate(-50%, calc(-50% + ${translateY}px)) scale(${scale})`,
+        opacity,
+        filter: `blur(${blur}px)`,
+        zIndex,
+        pointerEvents: isFront ? "auto" : "none",
+        background: outerColor,
+        border: `1px solid ${borderColor}`,
+        boxShadow: isFront
+          ? "0 22px 54px rgba(71, 10, 30, 0.22)"
+          : "0 12px 28px rgba(71, 10, 30, 0.12)",
       }}
     >
-      <MobileProductMedia image={product.image} title={product.title} />
+      <div className="p-[clamp(14px,4vw,18px)]">
+        <div
+          className="overflow-hidden"
+          style={{
+            borderRadius: mobileSections.product.cardRadius,
+            background: bottomColor,
+          }}
+        >
+          <div
+            className="px-[clamp(14px,4vw,18px)] pt-[clamp(14px,4vw,18px)]"
+            style={{ background: topColor }}
+          >
+            <MobileProductMedia
+              image={product.image}
+              title={product.imageAlt ?? product.title}
+            />
+          </div>
 
-      <div className="pt-5">
-        <MobileProductInfo
-          title={product.title}
-          description={product.description}
-        />
+          <div
+            className="px-[clamp(18px,4.8vw,22px)] pb-[clamp(18px,4.8vw,22px)] pt-[clamp(18px,4.8vw,24px)]"
+            style={{
+              marginTop: "-2px",
+              background: bottomColor,
+            }}
+          >
+            <MobileProductInfo
+              title={product.title}
+              eyebrow={product.eyebrow}
+              promo={product.promo}
+              description={product.description}
+              textColor={textColor}
+              subtextColor={subtextColor}
+              accentColor={product.theme.accent}
+            />
 
-        {isAuthenticated ? (
-          <MobileProductActions />
-        ) : (
-          <MobileProductGuestCallout />
-        )}
+            {isAuthenticated ? (
+              <MobileProductActions
+                price={product.price}
+                accentColor={product.theme.accent}
+                textColor={textColor}
+                mutedColor={subtextColor}
+                borderColor={borderColor}
+                backgroundColor={isDark ? "#222222" : "#f8edf2"}
+                dark={isDark}
+              />
+            ) : (
+              <MobileProductGuestCallout
+                compact={!isFront && cardsProgress < 0.98}
+                accentColor={product.theme.accent}
+                textColor={textColor}
+                borderColor={borderColor}
+                backgroundColor={isDark ? "#222222" : "#f8edf2"}
+                mutedColor={subtextColor}
+                dark={isDark}
+              />
+            )}
+          </div>
+        </div>
       </div>
     </article>
   );
@@ -906,17 +1089,60 @@ export default function MobileProductCard({
 
 import AuthTriggerButton from "../../shared/auth/AuthTriggerButton";
 
-export default function MobileProductGuestCallout() {
+type MobileProductGuestCalloutProps = {
+  compact?: boolean;
+  accentColor: string;
+  textColor: string;
+  mutedColor: string;
+  borderColor: string;
+  backgroundColor: string;
+  dark?: boolean;
+};
+
+export default function MobileProductGuestCallout({
+  compact = false,
+  accentColor,
+  textColor,
+  mutedColor,
+  borderColor,
+  backgroundColor,
+  dark = false,
+}: MobileProductGuestCalloutProps) {
   return (
-    <div className="mt-4 rounded-[22px] border border-[#f1bdd9] bg-white/90 px-4 py-4 text-center shadow-sm">
-      <p className="text-sm leading-6 text-[#6f4d57]">
-        Mahsulot bilan ishlash uchun avval tizimga kiring.
+    <div
+      className="mt-5 rounded-[24px] border shadow-[0_10px_26px_rgba(0,0,0,0.08)]"
+      style={{
+        paddingInline: compact ? "14px" : "16px",
+        paddingBlock: compact ? "14px" : "16px",
+        background: backgroundColor,
+        borderColor,
+      }}
+    >
+      <p
+        className="text-[clamp(14px,3.8vw,16px)] font-semibold leading-[1.35]"
+        style={{ color: textColor }}
+      >
+        To‘liq imkoniyatlar uchun tizimga kiring
       </p>
 
-      <div className="mt-3 flex justify-center">
+      <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-[clamp(13px,3.7vw,15px)]">
+        <AuthTriggerButton
+          mode="register"
+          className="font-semibold underline underline-offset-4"
+          style={{ color: accentColor }}
+        >
+          Ro‘yxatdan o‘ting
+        </AuthTriggerButton>
+
+        <span style={{ color: mutedColor }}>yoki</span>
+
         <AuthTriggerButton
           mode="login"
-          className="rounded-full bg-[#cf2f8f] px-5 py-3 text-sm font-semibold text-white"
+          className="rounded-full px-4 py-2 font-semibold"
+          style={{
+            background: accentColor,
+            color: dark ? "#111" : "#fff",
+          }}
         >
           Kirish
         </AuthTriggerButton>
@@ -931,20 +1157,54 @@ export default function MobileProductGuestCallout() {
 ```
 type MobileProductInfoProps = {
   title: string;
+  eyebrow: string;
+  promo?: string;
   description: string;
+  textColor: string;
+  subtextColor: string;
+  accentColor: string;
 };
 
 export default function MobileProductInfo({
   title,
+  eyebrow,
+  promo,
   description,
+  textColor,
+  subtextColor,
+  accentColor,
 }: MobileProductInfoProps) {
   return (
-    <div className="space-y-3 text-center">
-      <h3 className="text-[34px] font-bold leading-none tracking-[-0.03em] text-[#cf2f8f]">
+    <div className="space-y-3 text-left">
+      <h3
+        className="text-[clamp(28px,8vw,40px)] font-semibold leading-[0.96] tracking-[-0.045em]"
+        style={{ color: textColor }}
+      >
         {title}
       </h3>
 
-      <p className="mx-auto max-w-[280px] text-[15px] leading-6 text-[#6f4d57]">
+      {eyebrow ? (
+        <p
+          className="text-[clamp(14px,4vw,18px)] font-medium leading-[1.25]"
+          style={{ color: subtextColor }}
+        >
+          {eyebrow}
+        </p>
+      ) : null}
+
+      {promo ? (
+        <p
+          className="text-[clamp(12px,3.6vw,14px)] font-semibold tracking-[0.01em]"
+          style={{ color: accentColor }}
+        >
+          {promo}
+        </p>
+      ) : null}
+
+      <p
+        className="max-w-[30ch] text-[clamp(15px,4.2vw,18px)] leading-[1.45]"
+        style={{ color: textColor }}
+      >
         {description}
       </p>
     </div>
@@ -971,9 +1231,9 @@ export default function MobileProductMedia({
       <Image
         src={image}
         alt={title}
-        width={500}
-        height={500}
-        className="h-auto w-full object-cover"
+        width={640}
+        height={520}
+        className="h-[clamp(236px,33svh,310px)] w-full object-cover object-center"
         priority={false}
       />
     </div>
@@ -984,26 +1244,43 @@ export default function MobileProductMedia({
 # product/mobile/mobile-product-shell.tsx
 
 ```
+import { mobileSections } from "@/config/mobile-system/mobile-sections";
 import MobileProductCard, { type MobileProductItem } from "./mobile-product-card";
 
 type MobileProductShellProps = {
   products: MobileProductItem[];
+  floatingIndex: number;
   activeIndex: number;
+  cardsProgress: number;
+  cardsRevealProgress: number;
   isAuthenticated?: boolean;
 };
 
 export default function MobileProductShell({
   products,
+  floatingIndex,
   activeIndex,
+  cardsProgress,
+  cardsRevealProgress,
   isAuthenticated = false,
 }: MobileProductShellProps) {
   return (
-    <div className="relative mx-auto h-[100svh] w-full max-w-[380px]">
+    <div
+      className="relative mx-auto w-full"
+      style={{
+        maxWidth: mobileSections.product.frameMaxWidth,
+        height: "100svh",
+      }}
+    >
       {products.map((product, index) => (
         <MobileProductCard
           key={product.id}
           product={product}
-          isActive={index === activeIndex}
+          index={index}
+          floatingIndex={floatingIndex}
+          activeIndex={activeIndex}
+          cardsProgress={cardsProgress}
+          cardsRevealProgress={cardsRevealProgress}
           isAuthenticated={isAuthenticated}
         />
       ))}
@@ -1012,23 +1289,42 @@ export default function MobileProductShell({
 }
 ```
 
-# product/mobile/useMobileProductsScroll.ts
+# commponent/shared/hooks/useMobileProductsScroll.ts
 
 ```
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { mobileMotion } from "@/config/mobile-system/mobile-motion";
 
 type UseMobileProductsScrollOptions = {
   sectionId: string;
   totalItems: number;
 };
 
+type MobileProductsScrollState = {
+  sectionProgress: number;
+  titleHoldProgress: number;
+  titleFadeProgress: number;
+  cardsRevealProgress: number;
+  cardsProgress: number;
+  floatingIndex: number;
+  activeIndex: number;
+};
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
+
+function rangeProgress(value: number, start: number, end: number) {
+  if (end <= start) return value >= end ? 1 : 0;
+  return clamp((value - start) / (end - start), 0, 1);
+}
+
 export default function useMobileProductsScroll({
   sectionId,
   totalItems,
-}: UseMobileProductsScrollOptions) {
-  const [activeIndex, setActiveIndex] = useState(0);
+}: UseMobileProductsScrollOptions): MobileProductsScrollState {
+  const [sectionProgress, setSectionProgress] = useState(0);
 
   useEffect(() => {
     const section = document.getElementById(sectionId);
@@ -1036,16 +1332,9 @@ export default function useMobileProductsScroll({
 
     const update = () => {
       const rect = section.getBoundingClientRect();
-      const total = rect.height - window.innerHeight;
-      const passed = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
-      const progress = total > 0 ? passed / total : 0;
-
-      const index = Math.min(
-        totalItems - 1,
-        Math.floor(progress * totalItems),
-      );
-
-      setActiveIndex(index);
+      const totalScrollable = Math.max(rect.height - window.innerHeight, 1);
+      const passed = clamp(-rect.top, 0, totalScrollable);
+      setSectionProgress(passed / totalScrollable);
     };
 
     update();
@@ -1056,9 +1345,47 @@ export default function useMobileProductsScroll({
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };
-  }, [sectionId, totalItems]);
+  }, [sectionId]);
 
-  return activeIndex;
+  return useMemo(() => {
+    const titleHoldProgress = rangeProgress(
+      sectionProgress,
+      mobileMotion.product.titleOnlyStart,
+      mobileMotion.product.titleOnlyEnd,
+    );
+
+    const titleFadeProgress = rangeProgress(
+      sectionProgress,
+      mobileMotion.product.titleFadeStart,
+      mobileMotion.product.titleFadeEnd,
+    );
+
+    const cardsRevealProgress = rangeProgress(
+      sectionProgress,
+      mobileMotion.product.cardsRevealStart,
+      mobileMotion.product.cardsRevealEnd,
+    );
+
+    const cardsProgress = rangeProgress(
+      sectionProgress,
+      mobileMotion.product.cardsStart,
+      mobileMotion.product.cardsEnd,
+    );
+
+    const maxIndex = Math.max(totalItems - 1, 0);
+    const floatingIndex = cardsProgress * maxIndex;
+    const activeIndex = clamp(Math.round(floatingIndex), 0, maxIndex);
+
+    return {
+      sectionProgress,
+      titleHoldProgress,
+      titleFadeProgress,
+      cardsRevealProgress,
+      cardsProgress,
+      floatingIndex,
+      activeIndex,
+    };
+  }, [sectionProgress, totalItems]);
 }
 ```
 
@@ -1754,7 +2081,7 @@ export const mobileMotion = {
     scrub: 0.32,
   },
 
-hero: {
+  hero: {
     introDuration: 0.68,
     introEase: "power2.out",
 
@@ -1771,10 +2098,32 @@ hero: {
 
     scrub: 0.12,
   },
+
+ product: {
+    titleOnlyStart: 0,
+    titleOnlyEnd: 0.2,
+
+    titleFadeStart: 0.16,
+    titleFadeEnd: 0.3,
+
+    cardsRevealStart: 0.24,
+    cardsRevealEnd: 0.4,
+
+    cardsStart: 0.34,
+    cardsEnd: 0.96,
+
+    stackOffsetY: 28,
+    stackScaleStep: 0.055,
+    inactiveOpacity: 0.38,
+    exitLift: 156,
+
+    introOffsetY: 72,
+    introScaleFrom: 0.94,
+  },
+  
 } as const;
 
 export type MobileMotion = typeof mobileMotion;
-
 ```
 
 # config/mobile-system/mobile-navbar.ts
@@ -1820,13 +2169,13 @@ export const mobileSections = {
   },
 
   product: {
-    minHeight: "320svh",
+    minHeight: "380svh",
     stickyHeight: "100svh",
-    frameMaxWidth: "380px",
-    titleTopOffset: "14vh",
-    cardMaxWidth: "360px",
-    cardRadius: "28px",
-    cardMinHeight: "560px",
+    frameMaxWidth: "min(calc(100vw - 24px), 390px)",
+    titleTopOffset: "0svh",
+    cardMaxWidth: "min(calc(100vw - 34px), 392px)",
+    cardRadius: "30px",
+    cardMinHeight: "clamp(560px, 76svh, 710px)",
     contentBottomOffset: "110px",
   },
 

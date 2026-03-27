@@ -1,3 +1,5 @@
+"use client";
+
 import MobileAboutSection from "../about/mobile";
 import MobileAchievementsSection from "../AchievementsSection/mobile";
 import MobileHomeSection from "../home/mobile";
@@ -8,16 +10,17 @@ import MobileTopbar from "../home/mobile/mobile-topbar";
 
 export default function MobilePage() {
   return (
-    <main className="relative min-h-screen w-full bg-white">
-      <MobileTopbar />
-      <MobileBottomNav />
-      <div>
-        <MobileHomeSection />
-        <MobileAboutSection />
-        <MobileProductSection />
-        <MobileAchievementsSection />
-        <MobileFooter />
-      </div>
-    </main>
+      <main className="relative min-h-screen w-full bg-white">
+        <MobileTopbar />
+        <MobileBottomNav />
+
+        <div>
+          <MobileHomeSection />
+          <MobileAboutSection />
+          <MobileProductSection />
+          <MobileAchievementsSection />
+          <MobileFooter />
+        </div>
+      </main>
   );
 }

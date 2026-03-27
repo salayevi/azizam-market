@@ -3,6 +3,8 @@ import { mobileSections } from "@/config/mobile-system/mobile-sections";
 import MobileProductGuestCallout from "./mobile-product-guest-callout";
 import MobileProductInfo from "./mobile-product-info";
 import MobileProductMedia from "./mobile-product-media";
+import MobileProductActions from "./mobile-product-actions";
+import { useAuthModal } from "../../shared/auth/AuthModalProvider";
 
 type ProductTheme = {
   bg: string;
@@ -22,6 +24,7 @@ export type MobileProductItem = {
   image: string;
   imageAlt?: string;
   theme: ProductTheme;
+  price?: string;
 };
 
 type MobileProductCardProps = {
@@ -31,7 +34,6 @@ type MobileProductCardProps = {
   activeIndex: number;
   cardsProgress: number;
   cardsRevealProgress: number;
-  isAuthenticated?: boolean;
 };
 
 const clamp = (value: number, min: number, max: number) =>
@@ -44,15 +46,16 @@ export default function MobileProductCard({
   activeIndex,
   cardsProgress,
   cardsRevealProgress,
-  isAuthenticated = false,
 }: MobileProductCardProps) {
+  const { isAuthenticated } = useAuthModal();
   const distance = index - floatingIndex;
   const limitedDistance = clamp(distance, -1.2, 2.4);
 
   const isFront = Math.abs(distance) < 0.55 || index === activeIndex;
   const passedCard = distance < -0.55;
 
-  const revealLift = (1 - cardsRevealProgress) * mobileMotion.product.introOffsetY;
+  const revealLift =
+    (1 - cardsRevealProgress) * mobileMotion.product.introOffsetY;
   const revealScale =
     mobileMotion.product.introScaleFrom +
     (1 - mobileMotion.product.introScaleFrom) * cardsRevealProgress;
@@ -81,6 +84,7 @@ export default function MobileProductCard({
   const zIndex = 100 - Math.round(Math.max(limitedDistance, 0) * 10);
 
   const isDark = product.theme.tone === "dark";
+  const bottomSafeOffset = 60; // nav height
 
   const outerColor = isDark ? "#1f1f1f" : "#7b001d";
   const topColor = isDark ? "#2b2b2b" : "#b61d52";
@@ -96,7 +100,7 @@ export default function MobileProductCard({
         width: mobileSections.product.cardMaxWidth,
         minHeight: mobileSections.product.cardMinHeight,
         borderRadius: mobileSections.product.cardRadius,
-        transform: `translate(-50%, calc(-50% + ${translateY}px)) scale(${scale})`,
+        transform: `translate(-50%, calc(-50% + ${translateY - bottomSafeOffset}px)) scale(${scale})`,
         opacity,
         filter: `blur(${blur}px)`,
         zIndex,
@@ -143,7 +147,17 @@ export default function MobileProductCard({
               accentColor={product.theme.accent}
             />
 
-            {!isAuthenticated && (
+            {isAuthenticated ? (
+              <MobileProductActions
+                price={product.price}
+                accentColor={product.theme.accent}
+                textColor={textColor}
+                mutedColor={subtextColor}
+                borderColor={borderColor}
+                backgroundColor={isDark ? "#222222" : "#f8edf2"}
+                dark={isDark}
+              />
+            ) : (
               <MobileProductGuestCallout
                 compact={!isFront && cardsProgress < 0.98}
                 accentColor={product.theme.accent}

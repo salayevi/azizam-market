@@ -7,7 +7,6 @@ type MobileProductShellProps = {
   activeIndex: number;
   cardsProgress: number;
   cardsRevealProgress: number;
-  isAuthenticated?: boolean;
 };
 
 export default function MobileProductShell({
@@ -16,7 +15,6 @@ export default function MobileProductShell({
   activeIndex,
   cardsProgress,
   cardsRevealProgress,
-  isAuthenticated = false,
 }: MobileProductShellProps) {
   return (
     <div
@@ -35,7 +33,6 @@ export default function MobileProductShell({
           activeIndex={activeIndex}
           cardsProgress={cardsProgress}
           cardsRevealProgress={cardsRevealProgress}
-          isAuthenticated={isAuthenticated}
         />
       ))}
     </div>
