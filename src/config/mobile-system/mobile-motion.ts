@@ -47,6 +47,21 @@ export const mobileMotion = {
     introOffsetY: 72,
     introScaleFrom: 0.94,
   },
+
+  achievements: {
+  introOffsetY: 60,
+  introScaleFrom: 0.92,
+
+  imageLift: 80,
+  imageScale: 0.92,
+
+  contentOffsetY: 60,
+
+  stackOffsetY: 90,
+  stackScaleStep: 0.06,
+
+  inactiveOpacity: 0.35,
+}
   
 } as const;
 

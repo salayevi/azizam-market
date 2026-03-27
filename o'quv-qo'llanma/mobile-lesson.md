@@ -1651,54 +1651,101 @@ import useMobileAchievementsScroll from "./useMobileAchievementsScroll";
 const mobileAchievements = [
   {
     id: 1,
-    name: "Azizam Team",
-    role: "Ishonch",
+    name: "Quvnoq Jamoa",
+    role: "Jamoamiz",
     description:
-      "Bizning kuchimiz mahsulotning o‘zida emas, unga qo‘shilgan samimiyat va e’tiborda.",
-    image: "/achievement-1.png",
+      "Samimiy jamoa, iliq muhit va bir maqsad sari birlashgan ishonchli hamkorlik.",
+    image: "/achievements/team-1.jpg",
+    theme: {
+      frame: "#d11c8f",
+      ribbon: "#d61f95",
+      text: "#ffffff",
+      muted: "rgba(255,255,255,0.88)",
+    },
   },
   {
     id: 2,
-    name: "Go‘zallik",
+    name: "Go‘zallik Ruhi",
     role: "Nafosat",
     description:
       "Har bir tanlovda nozik did, yengillik va qadrlash hissi sezilib turadi.",
-    image: "/achievement-2.png",
+    image: "/achievements/team-2.jpg",
+    theme: {
+      frame: "#d11c8f",
+      ribbon: "#cf2f8f",
+      text: "#ffffff",
+      muted: "rgba(255,255,255,0.88)",
+    },
   },
   {
     id: 3,
-    name: "Mehr",
+    name: "Azizam Mehri",
     role: "Qadriyat",
     description:
       "Azizam Market inson o‘zini aziz his qiladigan tajribani yaratishga intiladi.",
-    image: "/achievement-3.png",
+    image: "/achievements/team-3.jpg",
+    theme: {
+      frame: "#d11c8f",
+      ribbon: "#c51d88",
+      text: "#ffffff",
+      muted: "rgba(255,255,255,0.88)",
+    },
   },
 ];
 
 export default function MobileAchievementsSection() {
-  const activeIndex = useMobileAchievementsScroll({
+  const scroll = useMobileAchievementsScroll({
     sectionId: "achievements",
     totalItems: mobileAchievements.length,
   });
 
+  const titleIntroProgress = Math.min(scroll.sectionProgress / 0.12, 1);
+
+  const titleOpacity =
+    titleIntroProgress * (1 - scroll.titleFadeProgress);
+
+  const titleY =
+    (1 - titleIntroProgress) * 40 + scroll.titleFadeProgress * -26;
+
+  const titleScale =
+    0.92 + titleIntroProgress * 0.08 - scroll.titleFadeProgress * 0.04;
+
   return (
     <section
       id="achievements"
-      className="relative w-full bg-[#f5f1f3]"
+      className="relative w-full overflow-clip bg-[#f5f1f3]"
       style={{
-        minHeight: mobileSections.achievements.minHeight,
+        minHeight: "340svh",
       }}
     >
-      <div className="sticky top-0 flex h-[100svh] w-full items-center justify-center overflow-hidden px-4">
-        <div className="absolute left-1/2 top-[12vh] z-30 w-full max-w-[360px] -translate-x-1/2 text-center">
-          <h2 className="text-[42px] font-bold leading-none tracking-[-0.04em] text-[#cf2f8f]">
-            Yutuqlar
-          </h2>
+      <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
+        <div
+          className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center px-6 text-center"
+          style={{
+            opacity: titleOpacity,
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              maxWidth: mobileSections.achievements.frameMaxWidth,
+              transform: `translateY(${titleY}px) scale(${titleScale})`,
+              transformOrigin: "center center",
+            }}
+          >
+            <h2 className="text-[clamp(34px,10vw,50px)] font-bold leading-none tracking-[-0.05em] text-[#cf2f8f]">
+              Kompanya Yutuqlari
+            </h2>
+          </div>
         </div>
 
         <MobileAchievementsShell
           items={mobileAchievements}
-          activeIndex={activeIndex}
+          floatingIndex={scroll.floatingIndex}
+          activeIndex={scroll.activeIndex}
+          imageRevealProgress={scroll.imageRevealProgress}
+          storyRevealProgress={scroll.storyRevealProgress}
+          cardsProgress={scroll.cardsProgress}
         />
       </div>
     </section>
@@ -1709,6 +1756,8 @@ export default function MobileAchievementsSection() {
 # AchievementsSection/mobile/mobile-achievement-card.tsx
 
 ```
+"use client";
+
 import Image from "next/image";
 
 export type MobileAchievementItem = {
@@ -1717,48 +1766,140 @@ export type MobileAchievementItem = {
   role: string;
   description: string;
   image: string;
+  theme: {
+    frame: string;
+    ribbon: string;
+    text: string;
+    muted: string;
+  };
 };
 
 type MobileAchievementCardProps = {
   item: MobileAchievementItem;
-  isActive?: boolean;
+  index: number;
+  floatingIndex: number;
+  activeIndex: number;
+  imageRevealProgress: number;
+  storyRevealProgress: number;
+  cardsProgress: number;
 };
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
 
 export default function MobileAchievementCard({
   item,
-  isActive = false,
+  index,
+  floatingIndex,
+  activeIndex,
+  imageRevealProgress,
+  storyRevealProgress,
+  cardsProgress,
 }: MobileAchievementCardProps) {
+  const distance = index - floatingIndex;
+  const limited = clamp(distance, -1.2, 2.2);
+
+  const isFront = Math.abs(distance) < 0.6 || index === activeIndex;
+  const passed = distance < -0.6;
+
+  const stackOffset = Math.max(limited, 0) * 22;
+  const baseY = passed ? -120 * clamp(Math.abs(distance), 0, 1) : stackOffset;
+
+  const imageIntroY = (1 - imageRevealProgress) * 80;
+  const imageLiftY = storyRevealProgress * -74;
+  const imageY = baseY + imageIntroY + imageLiftY;
+
+  const imageScale =
+    (0.92 + imageRevealProgress * 0.08) -
+    Math.max(limited, 0) * 0.04;
+
+  const ribbonOpacity = storyRevealProgress;
+  const ribbonY = (1 - storyRevealProgress) * 60;
+
+  const opacity = passed
+    ? Math.max(0, 1 - Math.abs(distance) * 1.7)
+    : clamp(
+        1 - Math.max(limited, 0) * 0.22,
+        0.28,
+        1,
+      );
+
+  const blur = passed ? 5 : Math.max(limited, 0) * 1.1;
+  const zIndex = 100 - Math.round(Math.max(limited, 0) * 10);
+
   return (
     <article
-      className={`absolute left-1/2 top-1/2 w-full max-w-[360px] -translate-x-1/2 rounded-[28px] border border-[#efbfd8] bg-white p-4 shadow-lg transition-all duration-500 ${
-        isActive ? "z-20 opacity-100" : "z-10 opacity-0"
-      }`}
+      className="absolute left-1/2 top-1/2 w-full"
       style={{
-        transform: `translate(-50%, -50%) scale(${isActive ? 1 : 0.92})`,
+        transform: "translate(-50%, -50%)",
+        opacity,
+        zIndex,
+        filter: `blur(${blur}px)`,
+        pointerEvents: isFront ? "auto" : "none",
       }}
     >
-      <div className="overflow-hidden rounded-[24px] bg-[#f8f1f4]">
-        <Image
-          src={item.image}
-          alt={item.name}
-          width={500}
-          height={650}
-          className="h-auto w-full object-cover"
-        />
-      </div>
+      <div className="mx-auto w-full max-w-[390px] px-4">
+        <div
+          style={{
+            transform: `translateY(${imageY}px) scale(${imageScale})`,
+            transition: "transform 120ms linear, opacity 120ms linear",
+          }}
+        >
+          <div className="relative mx-auto w-full max-w-[360px]">
+            <div
+              className="overflow-hidden shadow-[0_22px_54px_rgba(0,0,0,0.16)]"
+              style={{
+                clipPath:
+                  "polygon(2% 4%, 8% 1%, 18% 3%, 27% 0%, 40% 2%, 54% 1%, 67% 4%, 81% 2%, 92% 1%, 98% 5%, 99% 16%, 98% 28%, 99% 44%, 98% 59%, 99% 74%, 98% 88%, 96% 97%, 86% 96%, 72% 98%, 58% 97%, 43% 99%, 29% 97%, 16% 98%, 6% 96%, 2% 89%, 1% 74%, 2% 59%, 1% 44%, 2% 29%, 1% 15%)",
+                border: `3px solid ${item.theme.frame}`,
+                background: "#ffffff",
+              }}
+            >
+              <Image
+                src={item.image}
+                alt={item.name}
+                width={760}
+                height={940}
+                className="block h-[clamp(320px,44svh,430px)] w-full object-cover object-center"
+              />
+            </div>
+          </div>
+        </div>
 
-      <div className="pt-5 text-center">
-        <h3 className="text-[34px] font-bold leading-none tracking-[-0.03em] text-[#cf2f8f]">
-          {item.name}
-        </h3>
+        <div
+          className="relative mx-auto mt-3 w-full max-w-[350px] shadow-[0_18px_44px_rgba(0,0,0,0.14)]"
+          style={{
+            opacity: ribbonOpacity,
+            transform: `translateY(${ribbonY}px)`,
+            transition: "all 220ms ease-out",
+          }}
+        >
+          <div
+            className="px-6 pb-10 pt-6"
+            style={{
+              background: item.theme.ribbon,
+              color: item.theme.text,
+              clipPath:
+                "polygon(0 0, 100% 0, 100% 84%, 63% 84%, 50% 92%, 37% 84%, 0 84%)",
+              minHeight: "220px",
+            }}
+          >
+            <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-white/80">
+              {item.role}
+            </p>
 
-        <p className="mt-2 text-sm font-medium uppercase tracking-[0.08em] text-[#8c6772]">
-          {item.role}
-        </p>
+            <h3 className="mt-3 text-[clamp(30px,8vw,42px)] font-bold leading-[0.95] tracking-[-0.04em]">
+              {item.name}
+            </h3>
 
-        <p className="mx-auto mt-4 max-w-[280px] text-[15px] leading-6 text-[#6f4d57]">
-          {item.description}
-        </p>
+            <p
+              className="mt-4 max-w-[24ch] text-[clamp(15px,4.1vw,18px)] leading-[1.45]"
+              style={{ color: item.theme.muted }}
+            >
+              {item.description}
+            </p>
+          </div>
+        </div>
       </div>
     </article>
   );
@@ -1774,20 +1915,33 @@ import MobileAchievementCard, {
 
 type MobileAchievementsShellProps = {
   items: MobileAchievementItem[];
+  floatingIndex: number;
   activeIndex: number;
+  imageRevealProgress: number;
+  storyRevealProgress: number;
+  cardsProgress: number;
 };
 
 export default function MobileAchievementsShell({
   items,
+  floatingIndex,
   activeIndex,
+  imageRevealProgress,
+  storyRevealProgress,
+  cardsProgress,
 }: MobileAchievementsShellProps) {
   return (
-    <div className="relative mx-auto h-[100svh] w-full max-w-[380px]">
+    <div className="relative mx-auto h-[100svh] w-full max-w-[390px]">
       {items.map((item, index) => (
         <MobileAchievementCard
           key={item.id}
           item={item}
-          isActive={index === activeIndex}
+          index={index}
+          floatingIndex={floatingIndex}
+          activeIndex={activeIndex}
+          imageRevealProgress={imageRevealProgress}
+          storyRevealProgress={storyRevealProgress}
+          cardsProgress={cardsProgress}
         />
       ))}
     </div>
@@ -1800,18 +1954,26 @@ export default function MobileAchievementsShell({
 ```
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type UseMobileAchievementsScrollOptions = {
   sectionId: string;
   totalItems: number;
 };
 
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
+
+const rangeProgress = (value: number, start: number, end: number) => {
+  if (end <= start) return value >= end ? 1 : 0;
+  return clamp((value - start) / (end - start), 0, 1);
+};
+
 export default function useMobileAchievementsScroll({
   sectionId,
   totalItems,
 }: UseMobileAchievementsScrollOptions) {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [sectionProgress, setSectionProgress] = useState(0);
 
   useEffect(() => {
     const section = document.getElementById(sectionId);
@@ -1819,16 +1981,11 @@ export default function useMobileAchievementsScroll({
 
     const update = () => {
       const rect = section.getBoundingClientRect();
-      const total = rect.height - window.innerHeight;
-      const passed = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
-      const progress = total > 0 ? passed / total : 0;
+      const totalScrollable = Math.max(rect.height - window.innerHeight, 1);
+      const passed = clamp(-rect.top, 0, totalScrollable);
+      const progress = passed / totalScrollable;
 
-      const index = Math.min(
-        totalItems - 1,
-        Math.floor(progress * totalItems),
-      );
-
-      setActiveIndex(index);
+      setSectionProgress(progress);
     };
 
     update();
@@ -1839,9 +1996,30 @@ export default function useMobileAchievementsScroll({
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };
-  }, [sectionId, totalItems]);
+  }, [sectionId]);
 
-  return activeIndex;
+  return useMemo(() => {
+    const titleFadeProgress = rangeProgress(sectionProgress, 0.06, 0.22);
+
+    const imageRevealProgress = rangeProgress(sectionProgress, 0.18, 0.34);
+    const storyRevealProgress = rangeProgress(sectionProgress, 0.30, 0.52);
+
+    const cardsProgress = rangeProgress(sectionProgress, 0.34, 0.96);
+
+    const maxIndex = Math.max(totalItems - 1, 0);
+    const floatingIndex = cardsProgress * maxIndex;
+    const activeIndex = clamp(Math.round(floatingIndex), 0, maxIndex);
+
+    return {
+      sectionProgress,
+      titleFadeProgress,
+      imageRevealProgress,
+      storyRevealProgress,
+      cardsProgress,
+      floatingIndex,
+      activeIndex,
+    };
+  }, [sectionProgress, totalItems]);
 }
 ```
 

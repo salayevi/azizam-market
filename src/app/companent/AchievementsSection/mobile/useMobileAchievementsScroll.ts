@@ -1,17 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type UseMobileAchievementsScrollOptions = {
   sectionId: string;
   totalItems: number;
 };
 
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
+
+const rangeProgress = (value: number, start: number, end: number) => {
+  if (end <= start) return value >= end ? 1 : 0;
+  return clamp((value - start) / (end - start), 0, 1);
+};
+
 export default function useMobileAchievementsScroll({
   sectionId,
   totalItems,
 }: UseMobileAchievementsScrollOptions) {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [sectionProgress, setSectionProgress] = useState(0);
 
   useEffect(() => {
     const section = document.getElementById(sectionId);
@@ -19,16 +27,10 @@ export default function useMobileAchievementsScroll({
 
     const update = () => {
       const rect = section.getBoundingClientRect();
-      const total = rect.height - window.innerHeight;
-      const passed = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
-      const progress = total > 0 ? passed / total : 0;
-
-      const index = Math.min(
-        totalItems - 1,
-        Math.floor(progress * totalItems),
-      );
-
-      setActiveIndex(index);
+      const totalScrollable = Math.max(rect.height - window.innerHeight, 1);
+      const passed = clamp(-rect.top, 0, totalScrollable);
+      const progress = passed / totalScrollable;
+      setSectionProgress(progress);
     };
 
     update();
@@ -39,7 +41,40 @@ export default function useMobileAchievementsScroll({
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };
-  }, [sectionId, totalItems]);
+  }, [sectionId]);
 
-  return activeIndex;
+  return useMemo(() => {
+    const titleFadeProgress = rangeProgress(sectionProgress, 0.08, 0.24);
+
+    // Card yig‘ilish bosqichi
+    const frameRevealProgress = rangeProgress(sectionProgress, 0.24, 0.42);
+
+    // Bayroqcha frame ichidan chiqish bosqichi
+    const ribbonRevealProgress = rangeProgress(sectionProgress, 0.38, 0.58);
+
+    // Faqat shundan keyin content almashishni boshlaymiz
+    const contentStart = 0.58;
+    const contentEnd = 0.96;
+    const contentProgress = rangeProgress(sectionProgress, contentStart, contentEnd);
+
+    const maxIndex = Math.max(totalItems - 1, 0);
+    const floatingIndex = contentProgress * maxIndex;
+
+    const currentIndex = clamp(Math.floor(floatingIndex), 0, maxIndex);
+    const nextIndex = clamp(currentIndex + 1, 0, maxIndex);
+
+    const blend = clamp(floatingIndex - currentIndex, 0, 1);
+
+    return {
+      sectionProgress,
+      titleFadeProgress,
+      frameRevealProgress,
+      ribbonRevealProgress,
+      contentProgress,
+      floatingIndex,
+      currentIndex,
+      nextIndex,
+      blend,
+    };
+  }, [sectionProgress, totalItems]);
 }
