@@ -1,40 +1,39 @@
 export const sizes = {
   hero: {
     titleMobile: "140px",
-    titleDesktop: "280px",
-    containerMax: "1536px",
-    sectionHeight: "100vh",
+    containerMax: "1280px",
+    titleDesktop: "clamp(140px, 16vw, 220px)",
+    sectionHeight: "100svh",
   },
 
   about: {
-    titleDesktop: "120px",
-    imageWidth: "520px",
-    imageHeight: "650px",
-    textWidth: "500px",
+    imageWidth: "clamp(420px, 28vw, 520px)",
+    imageHeight: "clamp(520px, 38vw, 640px)",
+    textWidth: "clamp(340px, 26vw, 460px)",
+  },
+
+  achievements: {
+    desktopImageHeight: "clamp(480px, 60vh, 720px)",
   },
 
   product: {
     sceneExtraSlides: 1.45,
-    cardMaxWidth: "72rem",
-    cardHeight: "70vh",
-    cardMinHeight: "560px",
-    introTitleDesktop: "8rem",
-    mediaMax: "84%",
-    infoMaxWidth: "36rem",
-    mediaPanelPaddingX: "3rem",
+    cardMaxWidth: "1180px",
+    cardHeight: "min(74vh, 820px)",
+    cardMinHeight: "600px",
+    introTitleDesktop: "7rem",
+    mediaMax: "78%",
+    infoMaxWidth: "32rem",
+    mediaPanelPaddingX: "2.5rem",
     mediaPanelPaddingY: "2rem",
-    contentPanelPaddingX: "3.5rem",
-    contentPanelPaddingY: "2rem",
+    contentPanelPaddingX: "3rem",
+    contentPanelPaddingY: "2.25rem",
     actionMinHeight: "56px",
-  },
-
-  achievements: {
-    desktopImageHeight: "66vh",
   },
 
   auth: {
     modalMaxWidth: "28rem",
   },
-} as const
+} as const;
 
-export type Sizes = typeof sizes
+export type Sizes = typeof sizes;

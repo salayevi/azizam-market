@@ -1,6 +1,108 @@
 <!-- Home -->
 \\\\\\\\\\\\\\\\\\\\\\
 
+# Papka va filelar Joylashuv arxitekturasi Asosiy va o'zgarmas va bu Arxitektura Desktop dizayn versiaga tegishli 
+
+```
+src/
+  app/
+    page.tsx
+    layout.tsx
+    globals.css
+
+  components/
+    shared/
+      auth/
+        AuthModal.tsx
+        AuthModalProvider.tsx
+        AuthTriggerButton.tsx
+
+      responsive/
+        ResponsivePage.tsx
+        breakpoints.ts
+        device-config.ts
+        use-device-mode.ts
+
+      ui/
+      hooks/
+      utils/
+
+    home/
+      desktop/
+        Hero/
+          hero-section.tsx
+        Navbar/
+          navbar.tsx
+        Footer/
+          footer.tsx
+
+      mobile/
+        index.tsx
+        mobile-hero.tsx
+        mobile-topbar.tsx
+        mobile-bottom-nav.tsx
+
+    about/
+      desktop/
+        index.tsx
+      mobile/
+        index.tsx
+        mobile-about-story.tsx
+
+    product/
+      shared/
+        product.types.ts
+        products-data.ts
+
+      desktop/
+        index.tsx
+        product-actions.tsx
+        product-colors.tsx
+        product-guest-callout.tsx
+        product-info.tsx
+        product-media.tsx
+        product-slide.tsx
+        products-scene.tsx
+        useProductsScroll.ts
+
+      mobile/
+        index.tsx
+        mobile-product-shell.tsx
+        mobile-product-card.tsx
+        mobile-product-media.tsx
+        mobile-product-info.tsx
+        mobile-product-actions.tsx
+        mobile-product-guest-callout.tsx
+        useMobileProductsScroll.ts
+
+    achievements/
+      desktop/
+        AchievementsSection.tsx
+      mobile/
+        index.tsx
+        mobile-achievement-card.tsx
+        mobile-achievements-shell.tsx
+
+    sections/
+      desktop-page.tsx
+      mobile-page.tsx
+
+config/
+  design-system/
+    colors.ts
+    spacing.ts
+    typography.ts
+    motion.ts
+
+  mobile-system/
+    breakpoints.ts
+    mobile-layout.ts
+    mobile-spacing.ts
+    mobile-typography.ts
+    mobile-navbar.ts
+    mobile-sections.ts
+    mobile-motion.ts
+```
 <!-- Navbar -->
 
 # navbar.tsx
