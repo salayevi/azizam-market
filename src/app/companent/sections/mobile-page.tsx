@@ -19,7 +19,6 @@ export default function MobilePage() {
   return (
     <>
       <MobileStartupLoader visible={isLoading} />
-
       <main
         id="mobile-page-root"
         className="relative min-h-screen w-full bg-white"

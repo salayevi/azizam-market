@@ -8,36 +8,62 @@ export default function MobileFooter() {
       className="relative flex min-h-[100svh] w-full items-end justify-center bg-[#f5f1f3] px-5"
       style={{
         paddingBottom: "120px",
-        paddingTop: "80px",
+        paddingTop: "100px",
       }}
     >
-      <div className="w-full max-w-[380px] rounded-[32px] border border-[#efbfd8] bg-white px-6 py-10 text-center shadow-lg">
-        <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#8c6772]">
-          Azizam Market
-        </p>
+      {/* glow background */}
+      <div className="pointer-events-none absolute top-[-120px] h-[300px] w-[300px] rounded-full bg-[#cf2f8f]/20 blur-[120px]" />
 
-        <h2 className="mt-4 text-[42px] font-bold leading-none tracking-[-0.04em] text-[#cf2f8f]">
-          Siz Azizsiz
-        </h2>
+      <div className="relative w-full max-w-[380px]">
+        {/* main card */}
+        <div className="rounded-[36px] border border-[#efbfd8] bg-white px-7 py-12 text-center shadow-[0_30px_80px_rgba(207,47,143,0.15)]">
+          {/* brand */}
+          <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9b6c7c]">
+            Azizam Market
+          </p>
 
-        <p className="mx-auto mt-5 max-w-[280px] text-[15px] leading-6 text-[#6f4d57]">
-          Go‘zallik, e’tibor va mehr uyg‘unlashgan joyga xush kelibsiz.
-        </p>
+          {/* main headline */}
+          <h2 className="mt-4 text-[40px] font-bold leading-[1.05] tracking-[-0.04em] text-[#cf2f8f]">
+            Go‘zallik sizdan boshlanadi
+          </h2>
 
-        <div className="mt-8 flex flex-col items-center gap-3">
-          <AuthTriggerButton
-            mode="login"
-            className="rounded-full bg-[#cf2f8f] px-6 py-3 text-sm font-semibold text-white"
-          >
-            Kirish
-          </AuthTriggerButton>
+          {/* description */}
+          <p className="mx-auto mt-5 max-w-[280px] text-[15px] leading-[1.6] text-[#6f4d57]">
+            Har bir mahsulot ortida mehr, e’tibor va nafislik mujassam.
+            Siz bunga loyiqsiz.
+          </p>
 
-          <a
-            href="#home-mobile"
-            className="rounded-full border border-[#cf2f8f] px-6 py-3 text-sm font-semibold text-[#cf2f8f]"
-          >
-            Boshiga qaytish
-          </a>
+          {/* CTA */}
+          <div className="mt-10 flex flex-col items-center gap-3">
+            <AuthTriggerButton
+              mode="login"
+              className="w-full max-w-[240px] rounded-full bg-[#cf2f8f] px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(207,47,143,0.35)] active:scale-[0.97]"
+            >
+              Boshlash
+            </AuthTriggerButton>
+
+            <a
+              href="#home-mobile"
+              className="w-full max-w-[240px] rounded-full border border-[#cf2f8f] px-6 py-3 text-sm font-semibold text-[#cf2f8f] transition active:scale-[0.97]"
+            >
+              Yuqoriga qaytish
+            </a>
+          </div>
+
+          {/* divider */}
+          <div className="my-8 h-px w-full bg-[#f1d6e4]" />
+
+          {/* nav links */}
+          <div className="flex items-center justify-center gap-5 text-[13px] font-medium text-[#8c6772]">
+            <a href="#about">About</a>
+            <a href="#products">Mahsulot</a>
+            <a href="#achievements">Yutuqlar</a>
+          </div>
+
+          {/* bottom note */}
+          <p className="mt-6 text-[12px] text-[#b08a97]">
+            © {new Date().getFullYear()} Azizam Market
+          </p>
         </div>
       </div>
     </section>

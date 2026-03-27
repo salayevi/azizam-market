@@ -189,36 +189,62 @@ export default function MobileFooter() {
       className="relative flex min-h-[100svh] w-full items-end justify-center bg-[#f5f1f3] px-5"
       style={{
         paddingBottom: "120px",
-        paddingTop: "80px",
+        paddingTop: "100px",
       }}
     >
-      <div className="w-full max-w-[380px] rounded-[32px] border border-[#efbfd8] bg-white px-6 py-10 text-center shadow-lg">
-        <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#8c6772]">
-          Azizam Market
-        </p>
+      {/* glow background */}
+      <div className="pointer-events-none absolute top-[-120px] h-[300px] w-[300px] rounded-full bg-[#cf2f8f]/20 blur-[120px]" />
 
-        <h2 className="mt-4 text-[42px] font-bold leading-none tracking-[-0.04em] text-[#cf2f8f]">
-          Siz Azizsiz
-        </h2>
+      <div className="relative w-full max-w-[380px]">
+        {/* main card */}
+        <div className="rounded-[36px] border border-[#efbfd8] bg-white px-7 py-12 text-center shadow-[0_30px_80px_rgba(207,47,143,0.15)]">
+          {/* brand */}
+          <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9b6c7c]">
+            Azizam Market
+          </p>
 
-        <p className="mx-auto mt-5 max-w-[280px] text-[15px] leading-6 text-[#6f4d57]">
-          Go‘zallik, e’tibor va mehr uyg‘unlashgan joyga xush kelibsiz.
-        </p>
+          {/* main headline */}
+          <h2 className="mt-4 text-[40px] font-bold leading-[1.05] tracking-[-0.04em] text-[#cf2f8f]">
+            Go‘zallik sizdan boshlanadi
+          </h2>
 
-        <div className="mt-8 flex flex-col items-center gap-3">
-          <AuthTriggerButton
-            mode="login"
-            className="rounded-full bg-[#cf2f8f] px-6 py-3 text-sm font-semibold text-white"
-          >
-            Kirish
-          </AuthTriggerButton>
+          {/* description */}
+          <p className="mx-auto mt-5 max-w-[280px] text-[15px] leading-[1.6] text-[#6f4d57]">
+            Har bir mahsulot ortida mehr, e’tibor va nafislik mujassam.
+            Siz bunga loyiqsiz.
+          </p>
 
-          <a
-            href="#home-mobile"
-            className="rounded-full border border-[#cf2f8f] px-6 py-3 text-sm font-semibold text-[#cf2f8f]"
-          >
-            Boshiga qaytish
-          </a>
+          {/* CTA */}
+          <div className="mt-10 flex flex-col items-center gap-3">
+            <AuthTriggerButton
+              mode="login"
+              className="w-full max-w-[240px] rounded-full bg-[#cf2f8f] px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(207,47,143,0.35)] active:scale-[0.97]"
+            >
+              Boshlash
+            </AuthTriggerButton>
+
+            <a
+              href="#home-mobile"
+              className="w-full max-w-[240px] rounded-full border border-[#cf2f8f] px-6 py-3 text-sm font-semibold text-[#cf2f8f] transition active:scale-[0.97]"
+            >
+              Yuqoriga qaytish
+            </a>
+          </div>
+
+          {/* divider */}
+          <div className="my-8 h-px w-full bg-[#f1d6e4]" />
+
+          {/* nav links */}
+          <div className="flex items-center justify-center gap-5 text-[13px] font-medium text-[#8c6772]">
+            <a href="#about">About</a>
+            <a href="#products">Mahsulot</a>
+            <a href="#achievements">Yutuqlar</a>
+          </div>
+
+          {/* bottom note */}
+          <p className="mt-6 text-[12px] text-[#b08a97]">
+            © {new Date().getFullYear()} Azizam Market
+          </p>
         </div>
       </div>
     </section>
@@ -1657,10 +1683,10 @@ const mobileAchievements = [
       "Samimiy jamoa, iliq muhit va bir maqsad sari birlashgan ishonchli hamkorlik.",
     image: "/achievements/team-1.jpg",
     theme: {
-      frame: "#d11c8f",
-      ribbon: "#d61f95",
+      frame: "#f0069f",
+      ribbon: "#f0069f",
       text: "#ffffff",
-      muted: "rgba(255,255,255,0.88)",
+      muted: "rgba(255,255,255,0.92)",
     },
   },
   {
@@ -1671,10 +1697,10 @@ const mobileAchievements = [
       "Har bir tanlovda nozik did, yengillik va qadrlash hissi sezilib turadi.",
     image: "/achievements/team-2.jpg",
     theme: {
-      frame: "#d11c8f",
-      ribbon: "#cf2f8f",
+      frame: "#f0069f",
+      ribbon: "#f0069f",
       text: "#ffffff",
-      muted: "rgba(255,255,255,0.88)",
+      muted: "rgba(255,255,255,0.92)",
     },
   },
   {
@@ -1685,10 +1711,10 @@ const mobileAchievements = [
       "Azizam Market inson o‘zini aziz his qiladigan tajribani yaratishga intiladi.",
     image: "/achievements/team-3.jpg",
     theme: {
-      frame: "#d11c8f",
-      ribbon: "#c51d88",
+      frame: "#f0069f",
+      ribbon: "#f0069f",
       text: "#ffffff",
-      muted: "rgba(255,255,255,0.88)",
+      muted: "rgba(255,255,255,0.92)",
     },
   },
 ];
@@ -1700,30 +1726,23 @@ export default function MobileAchievementsSection() {
   });
 
   const titleIntroProgress = Math.min(scroll.sectionProgress / 0.12, 1);
-
-  const titleOpacity =
-    titleIntroProgress * (1 - scroll.titleFadeProgress);
-
-  const titleY =
-    (1 - titleIntroProgress) * 40 + scroll.titleFadeProgress * -26;
-
+  const titleOpacity = titleIntroProgress * (1 - scroll.titleFadeProgress);
+  const titleY = (1 - titleIntroProgress) * 40 + scroll.titleFadeProgress * -26;
   const titleScale =
     0.92 + titleIntroProgress * 0.08 - scroll.titleFadeProgress * 0.04;
+
+  const showCard = scroll.sectionProgress >= 0.22;
 
   return (
     <section
       id="achievements"
       className="relative w-full overflow-clip bg-[#f5f1f3]"
-      style={{
-        minHeight: "340svh",
-      }}
+      style={{ minHeight: "320svh" }}
     >
       <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
         <div
           className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center px-6 text-center"
-          style={{
-            opacity: titleOpacity,
-          }}
+          style={{ opacity: titleOpacity }}
         >
           <div
             style={{
@@ -1739,18 +1758,21 @@ export default function MobileAchievementsSection() {
           </div>
         </div>
 
-        <MobileAchievementsShell
-          items={mobileAchievements}
-          floatingIndex={scroll.floatingIndex}
-          activeIndex={scroll.activeIndex}
-          imageRevealProgress={scroll.imageRevealProgress}
-          storyRevealProgress={scroll.storyRevealProgress}
-          cardsProgress={scroll.cardsProgress}
-        />
+        {showCard ? (
+          <MobileAchievementsShell
+            items={mobileAchievements}
+            currentIndex={scroll.currentIndex}
+            nextIndex={scroll.nextIndex}
+            blend={scroll.blend}
+            frameRevealProgress={scroll.frameRevealProgress}
+            ribbonRevealProgress={scroll.ribbonRevealProgress}
+          />
+        ) : null}
       </div>
     </section>
   );
 }
+
 ```
 
 # AchievementsSection/mobile/mobile-achievement-card.tsx
@@ -1775,129 +1797,209 @@ export type MobileAchievementItem = {
 };
 
 type MobileAchievementCardProps = {
-  item: MobileAchievementItem;
-  index: number;
-  floatingIndex: number;
-  activeIndex: number;
-  imageRevealProgress: number;
-  storyRevealProgress: number;
-  cardsProgress: number;
+  items: MobileAchievementItem[];
+  currentIndex: number;
+  nextIndex: number;
+  blend: number;
+  frameRevealProgress: number;
+  ribbonRevealProgress: number;
 };
 
-const clamp = (value: number, min: number, max: number) =>
-  Math.min(Math.max(value, min), max);
-
 export default function MobileAchievementCard({
-  item,
-  index,
-  floatingIndex,
-  activeIndex,
-  imageRevealProgress,
-  storyRevealProgress,
-  cardsProgress,
+  items,
+  currentIndex,
+  nextIndex,
+  blend,
+  frameRevealProgress,
+  ribbonRevealProgress,
 }: MobileAchievementCardProps) {
-  const distance = index - floatingIndex;
-  const limited = clamp(distance, -1.2, 2.2);
+  const currentItem = items[currentIndex];
+  const nextItem = items[nextIndex] ?? currentItem;
 
-  const isFront = Math.abs(distance) < 0.6 || index === activeIndex;
-  const passed = distance < -0.6;
+  const frameOpacity = frameRevealProgress;
+  const frameScale = 0.9 + frameRevealProgress * 0.1;
+  const frameY = (1 - frameRevealProgress) * 115;
 
-  const stackOffset = Math.max(limited, 0) * 22;
-  const baseY = passed ? -120 * clamp(Math.abs(distance), 0, 1) : stackOffset;
+  const imageLift = ribbonRevealProgress * -22;
 
-  const imageIntroY = (1 - imageRevealProgress) * 80;
-  const imageLiftY = storyRevealProgress * -74;
-  const imageY = baseY + imageIntroY + imageLiftY;
+  const currentImageOpacity = 1 - blend;
+  const nextImageOpacity = nextIndex === currentIndex ? 0 : blend;
 
-  const imageScale =
-    (0.92 + imageRevealProgress * 0.08) -
-    Math.max(limited, 0) * 0.04;
+  const ribbonOpacity = ribbonRevealProgress;
+  const ribbonTranslateY = (1 - ribbonRevealProgress) * -104;
+  const ribbonScaleY = 0.86 + ribbonRevealProgress * 0.14;
 
-  const ribbonOpacity = storyRevealProgress;
-  const ribbonY = (1 - storyRevealProgress) * 60;
+  const currentTextOpacity = 1 - blend;
+  const nextTextOpacity = nextIndex === currentIndex ? 0 : blend;
 
-  const opacity = passed
-    ? Math.max(0, 1 - Math.abs(distance) * 1.7)
-    : clamp(
-        1 - Math.max(limited, 0) * 0.22,
-        0.28,
-        1,
-      );
+  const frameColor = currentItem.theme.frame;
+  const ribbonColor = currentItem.theme.ribbon;
 
-  const blur = passed ? 5 : Math.max(limited, 0) * 1.1;
-  const zIndex = 100 - Math.round(Math.max(limited, 0) * 10);
+  const frameShape =
+    "polygon(2% 4%, 8% 1%, 18% 3%, 27% 0%, 40% 2%, 54% 1%, 67% 4%, 81% 2%, 92% 1%, 98% 5%, 99% 16%, 98% 28%, 99% 44%, 98% 59%, 99% 74%, 98% 88%, 96% 97%, 86% 96%, 72% 98%, 58% 97%, 43% 99%, 29% 97%, 16% 98%, 6% 96%, 2% 89%, 1% 74%, 2% 59%, 1% 44%, 2% 29%, 1% 15%)";
 
   return (
     <article
       className="absolute left-1/2 top-1/2 w-full"
       style={{
         transform: "translate(-50%, -50%)",
-        opacity,
-        zIndex,
-        filter: `blur(${blur}px)`,
-        pointerEvents: isFront ? "auto" : "none",
+        opacity: frameOpacity,
+        pointerEvents: "auto",
       }}
     >
       <div className="mx-auto w-full max-w-[390px] px-4">
         <div
           style={{
-            transform: `translateY(${imageY}px) scale(${imageScale})`,
+            transform: `translateY(${frameY}px) scale(${frameScale})`,
             transition: "transform 120ms linear, opacity 120ms linear",
           }}
         >
           <div className="relative mx-auto w-full max-w-[360px]">
             <div
-              className="overflow-hidden shadow-[0_22px_54px_rgba(0,0,0,0.16)]"
+              className="relative z-20 overflow-visible"
               style={{
-                clipPath:
-                  "polygon(2% 4%, 8% 1%, 18% 3%, 27% 0%, 40% 2%, 54% 1%, 67% 4%, 81% 2%, 92% 1%, 98% 5%, 99% 16%, 98% 28%, 99% 44%, 98% 59%, 99% 74%, 98% 88%, 96% 97%, 86% 96%, 72% 98%, 58% 97%, 43% 99%, 29% 97%, 16% 98%, 6% 96%, 2% 89%, 1% 74%, 2% 59%, 1% 44%, 2% 29%, 1% 15%)",
-                border: `3px solid ${item.theme.frame}`,
-                background: "#ffffff",
+                filter: "drop-shadow(0 24px 46px rgba(0,0,0,0.16))",
               }}
             >
-              <Image
-                src={item.image}
-                alt={item.name}
-                width={760}
-                height={940}
-                className="block h-[clamp(320px,44svh,430px)] w-full object-cover object-center"
-              />
+              <div
+                className="relative overflow-hidden"
+                style={{
+                  clipPath: frameShape,
+                  background: frameColor,
+                  padding: "4px",
+                }}
+              >
+                <div
+                  className="relative overflow-hidden"
+                  style={{
+                    clipPath: frameShape,
+                    background: "#f3f0f2",
+                  }}
+                >
+                  <div
+                    className="relative h-[clamp(348px,47svh,460px)] w-full"
+                    style={{
+                      transform: `translateY(${imageLift}px) scale(1.02)`,
+                      transition: "transform 120ms linear",
+                    }}
+                  >
+                    <Image
+                      src={currentItem.image}
+                      alt={currentItem.name}
+                      fill
+                      sizes="(max-width: 480px) 92vw, 360px"
+                      className="object-cover object-center"
+                      style={{
+                        opacity: currentImageOpacity,
+                        transition: "opacity 120ms linear",
+                      }}
+                    />
+
+                    {nextIndex !== currentIndex ? (
+                      <Image
+                        src={nextItem.image}
+                        alt={nextItem.name}
+                        fill
+                        sizes="(max-width: 480px) 92vw, 360px"
+                        className="object-cover object-center"
+                        style={{
+                          opacity: nextImageOpacity,
+                          transition: "opacity 120ms linear",
+                        }}
+                      />
+                    ) : null}
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div
-          className="relative mx-auto mt-3 w-full max-w-[350px] shadow-[0_18px_44px_rgba(0,0,0,0.14)]"
-          style={{
-            opacity: ribbonOpacity,
-            transform: `translateY(${ribbonY}px)`,
-            transition: "all 220ms ease-out",
-          }}
-        >
-          <div
-            className="px-6 pb-10 pt-6"
-            style={{
-              background: item.theme.ribbon,
-              color: item.theme.text,
-              clipPath:
-                "polygon(0 0, 100% 0, 100% 84%, 63% 84%, 50% 92%, 37% 84%, 0 84%)",
-              minHeight: "220px",
-            }}
-          >
-            <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-white/80">
-              {item.role}
-            </p>
-
-            <h3 className="mt-3 text-[clamp(30px,8vw,42px)] font-bold leading-[0.95] tracking-[-0.04em]">
-              {item.name}
-            </h3>
-
-            <p
-              className="mt-4 max-w-[24ch] text-[clamp(15px,4.1vw,18px)] leading-[1.45]"
-              style={{ color: item.theme.muted }}
+            <div
+              className="relative z-10 mx-auto w-[96%]"
+              style={{
+                marginTop: `${-70 + ribbonRevealProgress * 58}px`,
+                opacity: ribbonOpacity,
+                transform: `translateY(${ribbonTranslateY}px) scaleY(${ribbonScaleY})`,
+                transformOrigin: "top center",
+                transition:
+                  "transform 120ms linear, opacity 120ms linear, margin-top 120ms linear",
+              }}
             >
-              {item.description}
-            </p>
+              <div className="absolute inset-x-[12%] bottom-[-18px] h-[30px] bg-black/20 blur-[18px]" />
+
+              <div
+                className="relative overflow-hidden rounded-t-[10px]"
+                style={{
+                  background: `linear-gradient(
+                    180deg,
+                    #ff2bad 0%,
+                    ${ribbonColor} 32%,
+                    #d10f8f 66%,
+                    #b8077b 100%
+                  )`,
+                  boxShadow:
+                    "0 20px 40px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -8px 18px rgba(0,0,0,0.12)",
+                  clipPath:
+                    "polygon(0 0, 100% 0, 100% 84%, 82% 84%, 68% 92%, 50% 100%, 32% 92%, 18% 84%, 0 84%)",
+                }}
+              >
+                <div
+                  className="absolute inset-x-0 top-0 h-[4px]"
+                  style={{ background: frameColor }}
+                />
+
+                <div className="absolute inset-x-[10%] top-[8px] h-[20px] rounded-full bg-white/15 blur-[8px]" />
+
+                <div className="relative min-h-[276px] px-6 pb-[72px] pt-6 text-white">
+                  <div
+                    style={{
+                      opacity: currentTextOpacity,
+                      transition: "opacity 120ms linear",
+                    }}
+                  >
+                    <p className="text-[13px] uppercase tracking-[0.16em] text-white/80">
+                      {currentItem.role}
+                    </p>
+
+                    <h3 className="mt-2 text-[clamp(28px,8vw,40px)] font-bold leading-[1]">
+                      {currentItem.name}
+                    </h3>
+
+                    <p
+                      className="mt-4 text-[15px] leading-[1.45] text-white/85"
+                      style={{ color: currentItem.theme.muted }}
+                    >
+                      {currentItem.description}
+                    </p>
+                  </div>
+
+                  {nextIndex !== currentIndex ? (
+                    <div
+                      className="absolute inset-0 px-6 pb-[72px] pt-6"
+                      style={{
+                        opacity: nextTextOpacity,
+                        transition: "opacity 120ms linear",
+                        color: nextItem.theme.text,
+                      }}
+                    >
+                      <p className="text-[13px] uppercase tracking-[0.16em] text-white/80">
+                        {nextItem.role}
+                      </p>
+
+                      <h3 className="mt-2 text-[clamp(28px,8vw,40px)] font-bold leading-[1]">
+                        {nextItem.name}
+                      </h3>
+
+                      <p
+                        className="mt-4 text-[15px] leading-[1.45] text-white/85"
+                        style={{ color: nextItem.theme.muted }}
+                      >
+                        {nextItem.description}
+                      </p>
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1915,35 +2017,31 @@ import MobileAchievementCard, {
 
 type MobileAchievementsShellProps = {
   items: MobileAchievementItem[];
-  floatingIndex: number;
-  activeIndex: number;
-  imageRevealProgress: number;
-  storyRevealProgress: number;
-  cardsProgress: number;
+  currentIndex: number;
+  nextIndex: number;
+  blend: number;
+  frameRevealProgress: number;
+  ribbonRevealProgress: number;
 };
 
 export default function MobileAchievementsShell({
   items,
-  floatingIndex,
-  activeIndex,
-  imageRevealProgress,
-  storyRevealProgress,
-  cardsProgress,
+  currentIndex,
+  nextIndex,
+  blend,
+  frameRevealProgress,
+  ribbonRevealProgress,
 }: MobileAchievementsShellProps) {
   return (
     <div className="relative mx-auto h-[100svh] w-full max-w-[390px]">
-      {items.map((item, index) => (
-        <MobileAchievementCard
-          key={item.id}
-          item={item}
-          index={index}
-          floatingIndex={floatingIndex}
-          activeIndex={activeIndex}
-          imageRevealProgress={imageRevealProgress}
-          storyRevealProgress={storyRevealProgress}
-          cardsProgress={cardsProgress}
-        />
-      ))}
+      <MobileAchievementCard
+        items={items}
+        currentIndex={currentIndex}
+        nextIndex={nextIndex}
+        blend={blend}
+        frameRevealProgress={frameRevealProgress}
+        ribbonRevealProgress={ribbonRevealProgress}
+      />
     </div>
   );
 }
@@ -1984,7 +2082,6 @@ export default function useMobileAchievementsScroll({
       const totalScrollable = Math.max(rect.height - window.innerHeight, 1);
       const passed = clamp(-rect.top, 0, totalScrollable);
       const progress = passed / totalScrollable;
-
       setSectionProgress(progress);
     };
 
@@ -1999,25 +2096,37 @@ export default function useMobileAchievementsScroll({
   }, [sectionId]);
 
   return useMemo(() => {
-    const titleFadeProgress = rangeProgress(sectionProgress, 0.06, 0.22);
+    const titleFadeProgress = rangeProgress(sectionProgress, 0.08, 0.24);
 
-    const imageRevealProgress = rangeProgress(sectionProgress, 0.18, 0.34);
-    const storyRevealProgress = rangeProgress(sectionProgress, 0.30, 0.52);
+    // Card yig‘ilish bosqichi
+    const frameRevealProgress = rangeProgress(sectionProgress, 0.24, 0.42);
 
-    const cardsProgress = rangeProgress(sectionProgress, 0.34, 0.96);
+    // Bayroqcha frame ichidan chiqish bosqichi
+    const ribbonRevealProgress = rangeProgress(sectionProgress, 0.38, 0.58);
+
+    // Faqat shundan keyin content almashishni boshlaymiz
+    const contentStart = 0.58;
+    const contentEnd = 0.96;
+    const contentProgress = rangeProgress(sectionProgress, contentStart, contentEnd);
 
     const maxIndex = Math.max(totalItems - 1, 0);
-    const floatingIndex = cardsProgress * maxIndex;
-    const activeIndex = clamp(Math.round(floatingIndex), 0, maxIndex);
+    const floatingIndex = contentProgress * maxIndex;
+
+    const currentIndex = clamp(Math.floor(floatingIndex), 0, maxIndex);
+    const nextIndex = clamp(currentIndex + 1, 0, maxIndex);
+
+    const blend = clamp(floatingIndex - currentIndex, 0, 1);
 
     return {
       sectionProgress,
       titleFadeProgress,
-      imageRevealProgress,
-      storyRevealProgress,
-      cardsProgress,
+      frameRevealProgress,
+      ribbonRevealProgress,
+      contentProgress,
       floatingIndex,
-      activeIndex,
+      currentIndex,
+      nextIndex,
+      blend,
     };
   }, [sectionProgress, totalItems]);
 }
