@@ -4,6 +4,7 @@ import MobileProductGuestCallout from "./mobile-product-guest-callout";
 import MobileProductInfo from "./mobile-product-info";
 import MobileProductMedia from "./mobile-product-media";
 import MobileProductActions from "./mobile-product-actions";
+import { useEffect, useState } from "react";
 import { useAuthModal } from "../../shared/auth/AuthModalProvider";
 
 type ProductTheme = {
@@ -48,6 +49,20 @@ export default function MobileProductCard({
   cardsRevealProgress,
 }: MobileProductCardProps) {
   const { isAuthenticated } = useAuthModal();
+  const [actionsVisible, setActionsVisible] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const id = window.setTimeout(() => {
+        setActionsVisible(true);
+      }, 60);
+
+      return () => window.clearTimeout(id);
+    }
+
+    setActionsVisible(false);
+  }, [isAuthenticated]);
+
   const distance = index - floatingIndex;
   const limitedDistance = clamp(distance, -1.2, 2.4);
 
@@ -148,25 +163,46 @@ export default function MobileProductCard({
             />
 
             {isAuthenticated ? (
-              <MobileProductActions
-                price={product.price}
-                accentColor={product.theme.accent}
-                textColor={textColor}
-                mutedColor={subtextColor}
-                borderColor={borderColor}
-                backgroundColor={isDark ? "#222222" : "#f8edf2"}
-                dark={isDark}
-              />
+              <div
+                className="transition-all duration-500 ease-out"
+                style={{
+                  opacity: actionsVisible ? 1 : 0,
+                  transform: actionsVisible
+                    ? "translateY(0px) scale(1)"
+                    : "translateY(16px) scale(0.98)",
+                  filter: actionsVisible ? "blur(0px)" : "blur(4px)",
+                }}
+              >
+                <MobileProductActions
+                  price={product.price}
+                  accentColor={product.theme.accent}
+                  textColor={textColor}
+                  mutedColor={subtextColor}
+                  borderColor={borderColor}
+                  backgroundColor={isDark ? "#222222" : "#f8edf2"}
+                  dark={isDark}
+                />
+              </div>
             ) : (
-              <MobileProductGuestCallout
-                compact={!isFront && cardsProgress < 0.98}
-                accentColor={product.theme.accent}
-                textColor={textColor}
-                borderColor={borderColor}
-                backgroundColor={isDark ? "#222222" : "#f8edf2"}
-                mutedColor={subtextColor}
-                dark={isDark}
-              />
+              <div
+                className="transition-all duration-300 ease-out"
+                style={{
+                  opacity: isAuthenticated ? 0 : 1,
+                  transform: isAuthenticated
+                    ? "translateY(-10px)"
+                    : "translateY(0px)",
+                }}
+              >
+                <MobileProductGuestCallout
+                  compact={!isFront && cardsProgress < 0.98}
+                  accentColor={product.theme.accent}
+                  textColor={textColor}
+                  borderColor={borderColor}
+                  backgroundColor={isDark ? "#222222" : "#f8edf2"}
+                  mutedColor={subtextColor}
+                  dark={isDark}
+                />
+              </div>
             )}
           </div>
         </div>

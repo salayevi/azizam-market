@@ -749,6 +749,7 @@ export default function MobileAboutStory() {
 ```
 "use client";
 
+import { useEffect, useState } from "react";
 import { mobileSections } from "@/config/mobile-system/mobile-sections";
 import { productsData } from "../shared/products-data";
 import MobileProductShell from "./mobile-product-shell";
@@ -763,17 +764,34 @@ const mobileProducts = productsData.map((product) => ({
   image: product.media.src,
   imageAlt: product.media.alt ?? product.name,
   theme: product.theme,
+  price: product.price ?? "Narx mavjud emas",
 }));
 
 export default function MobileProductSection() {
+  const [titleIntroReady, setTitleIntroReady] = useState(false);
+
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      setTitleIntroReady(true);
+    }, 80);
+
+    return () => window.clearTimeout(id);
+  }, []);
+
   const scrollState = useMobileProductsScroll({
     sectionId: "products",
     totalItems: mobileProducts.length,
   });
 
-  const titleOpacity = 1 - scrollState.titleFadeProgress;
-  const titleTranslateY = scrollState.titleFadeProgress * -26;
-  const titleScale = 1 - scrollState.titleFadeProgress * 0.04;
+  const titleIntroProgress = Math.min(scrollState.sectionProgress / 0.12, 1);
+
+  const titleOpacity = titleIntroProgress * (1 - scrollState.titleFadeProgress);
+
+  const titleTranslateY =
+    (1 - titleIntroProgress) * 42 + scrollState.titleFadeProgress * -26;
+
+  const titleScale =
+    0.92 + titleIntroProgress * 0.08 - scrollState.titleFadeProgress * 0.04;
 
   return (
     <section
@@ -793,6 +811,7 @@ export default function MobileProductSection() {
           className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center px-6 text-center"
           style={{
             opacity: titleOpacity,
+            transition: "opacity 120ms linear, transform 120ms linear",
           }}
         >
           <div
@@ -815,7 +834,6 @@ export default function MobileProductSection() {
           activeIndex={scrollState.activeIndex}
           cardsProgress={scrollState.cardsProgress}
           cardsRevealProgress={scrollState.cardsRevealProgress}
-          isAuthenticated={false}
         />
       </div>
     </section>
@@ -828,6 +846,8 @@ export default function MobileProductSection() {
 
 ```
 "use client";
+
+import { useEffect, useState } from "react";
 
 type MobileProductActionsProps = {
   price?: string;
@@ -848,17 +868,35 @@ export default function MobileProductActions({
   backgroundColor,
   dark = false,
 }: MobileProductActionsProps) {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      setReady(true);
+    }, 40);
+
+    return () => window.clearTimeout(id);
+  }, []);
+
   return (
     <div
-      className="mt-5 rounded-[24px] border shadow-[0_10px_26px_rgba(0,0,0,0.08)]"
+      className="mt-5 rounded-[24px] border shadow-[0_10px_26px_rgba(0,0,0,0.08)] transition-all duration-500 ease-out"
       style={{
         paddingInline: "16px",
         paddingBlock: "16px",
         background: backgroundColor,
         borderColor,
+        opacity: ready ? 1 : 0,
+        transform: ready ? "translateY(0px)" : "translateY(10px)",
       }}
     >
-      <div className="flex items-start justify-between gap-4">
+      <div
+        className="flex items-start justify-between gap-4 transition-all duration-500 ease-out"
+        style={{
+          opacity: ready ? 1 : 0,
+          transform: ready ? "translateY(0px)" : "translateY(8px)",
+        }}
+      >
         <div>
           <p
             className="text-[13px] font-medium"
@@ -877,10 +915,13 @@ export default function MobileProductActions({
 
         <button
           type="button"
-          className="rounded-full px-5 py-3 text-[15px] font-semibold"
+          className="rounded-full px-5 py-3 text-[15px] font-semibold transition-all duration-500 ease-out"
           style={{
             background: accentColor,
             color: dark ? "#111" : "#fff",
+            opacity: ready ? 1 : 0,
+            transform: ready ? "translateY(0px)" : "translateY(12px)",
+            transitionDelay: "80ms",
           }}
         >
           Sotib olish
@@ -889,11 +930,14 @@ export default function MobileProductActions({
 
       <button
         type="button"
-        className="mt-3 w-full rounded-full border px-5 py-3 text-[15px] font-semibold transition-opacity hover:opacity-90"
+        className="mt-3 w-full rounded-full border px-5 py-3 text-[15px] font-semibold transition-all duration-500 ease-out hover:opacity-90"
         style={{
           borderColor,
           color: textColor,
           background: "transparent",
+          opacity: ready ? 1 : 0,
+          transform: ready ? "translateY(0px)" : "translateY(14px)",
+          transitionDelay: "140ms",
         }}
       >
         Savatga qo'shish
@@ -912,6 +956,8 @@ import MobileProductGuestCallout from "./mobile-product-guest-callout";
 import MobileProductInfo from "./mobile-product-info";
 import MobileProductMedia from "./mobile-product-media";
 import MobileProductActions from "./mobile-product-actions";
+import { useEffect, useState } from "react";
+import { useAuthModal } from "../../shared/auth/AuthModalProvider";
 
 type ProductTheme = {
   bg: string;
@@ -941,7 +987,6 @@ type MobileProductCardProps = {
   activeIndex: number;
   cardsProgress: number;
   cardsRevealProgress: number;
-  isAuthenticated?: boolean;
 };
 
 const clamp = (value: number, min: number, max: number) =>
@@ -954,15 +999,30 @@ export default function MobileProductCard({
   activeIndex,
   cardsProgress,
   cardsRevealProgress,
-  isAuthenticated = false,
 }: MobileProductCardProps) {
+  const { isAuthenticated } = useAuthModal();
+  const [actionsVisible, setActionsVisible] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const id = window.setTimeout(() => {
+        setActionsVisible(true);
+      }, 60);
+
+      return () => window.clearTimeout(id);
+    }
+
+    setActionsVisible(false);
+  }, [isAuthenticated]);
+
   const distance = index - floatingIndex;
   const limitedDistance = clamp(distance, -1.2, 2.4);
 
   const isFront = Math.abs(distance) < 0.55 || index === activeIndex;
   const passedCard = distance < -0.55;
 
-  const revealLift = (1 - cardsRevealProgress) * mobileMotion.product.introOffsetY;
+  const revealLift =
+    (1 - cardsRevealProgress) * mobileMotion.product.introOffsetY;
   const revealScale =
     mobileMotion.product.introScaleFrom +
     (1 - mobileMotion.product.introScaleFrom) * cardsRevealProgress;
@@ -991,6 +1051,7 @@ export default function MobileProductCard({
   const zIndex = 100 - Math.round(Math.max(limitedDistance, 0) * 10);
 
   const isDark = product.theme.tone === "dark";
+  const bottomSafeOffset = 60; // nav height
 
   const outerColor = isDark ? "#1f1f1f" : "#7b001d";
   const topColor = isDark ? "#2b2b2b" : "#b61d52";
@@ -1006,7 +1067,7 @@ export default function MobileProductCard({
         width: mobileSections.product.cardMaxWidth,
         minHeight: mobileSections.product.cardMinHeight,
         borderRadius: mobileSections.product.cardRadius,
-        transform: `translate(-50%, calc(-50% + ${translateY}px)) scale(${scale})`,
+        transform: `translate(-50%, calc(-50% + ${translateY - bottomSafeOffset}px)) scale(${scale})`,
         opacity,
         filter: `blur(${blur}px)`,
         zIndex,
@@ -1054,25 +1115,46 @@ export default function MobileProductCard({
             />
 
             {isAuthenticated ? (
-              <MobileProductActions
-                price={product.price}
-                accentColor={product.theme.accent}
-                textColor={textColor}
-                mutedColor={subtextColor}
-                borderColor={borderColor}
-                backgroundColor={isDark ? "#222222" : "#f8edf2"}
-                dark={isDark}
-              />
+              <div
+                className="transition-all duration-500 ease-out"
+                style={{
+                  opacity: actionsVisible ? 1 : 0,
+                  transform: actionsVisible
+                    ? "translateY(0px) scale(1)"
+                    : "translateY(16px) scale(0.98)",
+                  filter: actionsVisible ? "blur(0px)" : "blur(4px)",
+                }}
+              >
+                <MobileProductActions
+                  price={product.price}
+                  accentColor={product.theme.accent}
+                  textColor={textColor}
+                  mutedColor={subtextColor}
+                  borderColor={borderColor}
+                  backgroundColor={isDark ? "#222222" : "#f8edf2"}
+                  dark={isDark}
+                />
+              </div>
             ) : (
-              <MobileProductGuestCallout
-                compact={!isFront && cardsProgress < 0.98}
-                accentColor={product.theme.accent}
-                textColor={textColor}
-                borderColor={borderColor}
-                backgroundColor={isDark ? "#222222" : "#f8edf2"}
-                mutedColor={subtextColor}
-                dark={isDark}
-              />
+              <div
+                className="transition-all duration-300 ease-out"
+                style={{
+                  opacity: isAuthenticated ? 0 : 1,
+                  transform: isAuthenticated
+                    ? "translateY(-10px)"
+                    : "translateY(0px)",
+                }}
+              >
+                <MobileProductGuestCallout
+                  compact={!isFront && cardsProgress < 0.98}
+                  accentColor={product.theme.accent}
+                  textColor={textColor}
+                  borderColor={borderColor}
+                  backgroundColor={isDark ? "#222222" : "#f8edf2"}
+                  mutedColor={subtextColor}
+                  dark={isDark}
+                />
+              </div>
             )}
           </div>
         </div>
@@ -1253,7 +1335,6 @@ type MobileProductShellProps = {
   activeIndex: number;
   cardsProgress: number;
   cardsRevealProgress: number;
-  isAuthenticated?: boolean;
 };
 
 export default function MobileProductShell({
@@ -1262,7 +1343,6 @@ export default function MobileProductShell({
   activeIndex,
   cardsProgress,
   cardsRevealProgress,
-  isAuthenticated = false,
 }: MobileProductShellProps) {
   return (
     <div
@@ -1281,7 +1361,6 @@ export default function MobileProductShell({
           activeIndex={activeIndex}
           cardsProgress={cardsProgress}
           cardsRevealProgress={cardsRevealProgress}
-          isAuthenticated={isAuthenticated}
         />
       ))}
     </div>
@@ -1967,8 +2046,8 @@ export default function useMobileCollapsedNav(threshold = 110) {
 
 ```
 export const deviceConfig = {
-  mobileMaxWidth: 1023,
-  desktopMinWidth: 1024,
+  mobileMaxWidth: 1024,
+  desktopMinWidth: 1025,
 } as const;
 
 export type DeviceMode = "mobile" | "desktop";

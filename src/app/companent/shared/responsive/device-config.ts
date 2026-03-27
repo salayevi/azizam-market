@@ -1,6 +1,6 @@
 export const deviceConfig = {
-  mobileMaxWidth: 1023,
-  desktopMinWidth: 1024,
+  mobileMaxWidth: 1024,
+  desktopMinWidth: 1025,
 } as const;
 
 export type DeviceMode = "mobile" | "desktop";

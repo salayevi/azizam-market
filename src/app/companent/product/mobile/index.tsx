@@ -1,7 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { mobileSections } from "@/config/mobile-system/mobile-sections";
-
 import { productsData } from "../shared/products-data";
 import MobileProductShell from "./mobile-product-shell";
 import useMobileProductsScroll from "../../shared/hooks/useMobileProductsScroll";
@@ -15,18 +15,34 @@ const mobileProducts = productsData.map((product) => ({
   image: product.media.src,
   imageAlt: product.media.alt ?? product.name,
   theme: product.theme,
-  price: product.price,
+  price: product.price ?? "Narx mavjud emas",
 }));
 
 export default function MobileProductSection() {
+  const [titleIntroReady, setTitleIntroReady] = useState(false);
+
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      setTitleIntroReady(true);
+    }, 80);
+
+    return () => window.clearTimeout(id);
+  }, []);
+
   const scrollState = useMobileProductsScroll({
     sectionId: "products",
     totalItems: mobileProducts.length,
   });
 
-  const titleOpacity = 1 - scrollState.titleFadeProgress;
-  const titleTranslateY = scrollState.titleFadeProgress * -26;
-  const titleScale = 1 - scrollState.titleFadeProgress * 0.04;
+  const titleIntroProgress = Math.min(scrollState.sectionProgress / 0.12, 1);
+
+  const titleOpacity = titleIntroProgress * (1 - scrollState.titleFadeProgress);
+
+  const titleTranslateY =
+    (1 - titleIntroProgress) * 42 + scrollState.titleFadeProgress * -26;
+
+  const titleScale =
+    0.92 + titleIntroProgress * 0.08 - scrollState.titleFadeProgress * 0.04;
 
   return (
     <section
@@ -46,6 +62,7 @@ export default function MobileProductSection() {
           className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center px-6 text-center"
           style={{
             opacity: titleOpacity,
+            transition: "opacity 120ms linear, transform 120ms linear",
           }}
         >
           <div
