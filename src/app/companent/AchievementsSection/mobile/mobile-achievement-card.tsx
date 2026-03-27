@@ -40,16 +40,14 @@ export default function MobileAchievementCard({
   const frameScale = 0.9 + frameRevealProgress * 0.1;
   const frameY = (1 - frameRevealProgress) * 115;
 
-  // ribbon chiqayotganda rasm biroz tepaga ko‘tariladi
-  const imageLift = ribbonRevealProgress * -26;
+  const imageLift = ribbonRevealProgress * -22;
 
   const currentImageOpacity = 1 - blend;
   const nextImageOpacity = nextIndex === currentIndex ? 0 : blend;
 
-  // ribbon avval frame ichidan chiqadi, keyin pastga tushib joyiga o'tiradi
   const ribbonOpacity = ribbonRevealProgress;
-  const ribbonTranslateY = (1 - ribbonRevealProgress) * -120;
-  const ribbonScaleY = 0.84 + ribbonRevealProgress * 0.16;
+  const ribbonTranslateY = (1 - ribbonRevealProgress) * -104;
+  const ribbonScaleY = 0.86 + ribbonRevealProgress * 0.14;
 
   const currentTextOpacity = 1 - blend;
   const nextTextOpacity = nextIndex === currentIndex ? 0 : blend;
@@ -77,7 +75,6 @@ export default function MobileAchievementCard({
           }}
         >
           <div className="relative mx-auto w-full max-w-[360px]">
-            {/* IMAGE FRAME */}
             <div
               className="relative z-20 overflow-visible"
               style={{
@@ -93,15 +90,16 @@ export default function MobileAchievementCard({
                 }}
               >
                 <div
-                  className="relative overflow-hidden bg-white"
+                  className="relative overflow-hidden"
                   style={{
                     clipPath: frameShape,
+                    background: "#f3f0f2",
                   }}
                 >
                   <div
-                    className="relative h-[clamp(330px,46svh,450px)] w-full"
+                    className="relative h-[clamp(348px,47svh,460px)] w-full"
                     style={{
-                      transform: `translateY(${imageLift}px)`,
+                      transform: `translateY(${imageLift}px) scale(1.02)`,
                       transition: "transform 120ms linear",
                     }}
                   >
@@ -109,6 +107,7 @@ export default function MobileAchievementCard({
                       src={currentItem.image}
                       alt={currentItem.name}
                       fill
+                      sizes="(max-width: 480px) 92vw, 360px"
                       className="object-cover object-center"
                       style={{
                         opacity: currentImageOpacity,
@@ -121,6 +120,7 @@ export default function MobileAchievementCard({
                         src={nextItem.image}
                         alt={nextItem.name}
                         fill
+                        sizes="(max-width: 480px) 92vw, 360px"
                         className="object-cover object-center"
                         style={{
                           opacity: nextImageOpacity,
@@ -133,11 +133,10 @@ export default function MobileAchievementCard({
               </div>
             </div>
 
-            {/* RIBBON - final holatda rasm OSTIDA turadi */}
             <div
-              className="relative z-10 mx-auto w-[94%]"
+              className="relative z-10 mx-auto w-[96%]"
               style={{
-                marginTop: `${-54 + ribbonRevealProgress * 54}px`,
+                marginTop: `${-70 + ribbonRevealProgress * 58}px`,
                 opacity: ribbonOpacity,
                 transform: `translateY(${ribbonTranslateY}px) scaleY(${ribbonScaleY})`,
                 transformOrigin: "top center",
@@ -148,13 +147,13 @@ export default function MobileAchievementCard({
               <div className="absolute inset-x-[12%] bottom-[-18px] h-[30px] bg-black/20 blur-[18px]" />
 
               <div
-                className="relative overflow-hidden rounded-t-[8px]"
+                className="relative overflow-hidden rounded-t-[10px]"
                 style={{
                   background: `linear-gradient(
                     180deg,
                     #ff2bad 0%,
-                    ${ribbonColor} 30%,
-                    #d10f8f 65%,
+                    ${ribbonColor} 32%,
+                    #d10f8f 66%,
                     #b8077b 100%
                   )`,
                   boxShadow:
@@ -170,7 +169,7 @@ export default function MobileAchievementCard({
 
                 <div className="absolute inset-x-[10%] top-[8px] h-[20px] rounded-full bg-white/15 blur-[8px]" />
 
-                <div className="relative min-h-[250px] px-6 pb-[60px] pt-6 text-white">
+                <div className="relative min-h-[276px] px-6 pb-[72px] pt-6 text-white">
                   <div
                     style={{
                       opacity: currentTextOpacity,
@@ -186,7 +185,7 @@ export default function MobileAchievementCard({
                     </h3>
 
                     <p
-                      className="mt-3 text-[15px] leading-[1.4] text-white/85"
+                      className="mt-4 text-[15px] leading-[1.45] text-white/85"
                       style={{ color: currentItem.theme.muted }}
                     >
                       {currentItem.description}
@@ -195,7 +194,7 @@ export default function MobileAchievementCard({
 
                   {nextIndex !== currentIndex ? (
                     <div
-                      className="absolute inset-0 px-6 pb-[60px] pt-6"
+                      className="absolute inset-0 px-6 pb-[72px] pt-6"
                       style={{
                         opacity: nextTextOpacity,
                         transition: "opacity 120ms linear",
@@ -211,7 +210,7 @@ export default function MobileAchievementCard({
                       </h3>
 
                       <p
-                        className="mt-3 text-[15px] leading-[1.4] text-white/85"
+                        className="mt-4 text-[15px] leading-[1.45] text-white/85"
                         style={{ color: nextItem.theme.muted }}
                       >
                         {nextItem.description}
