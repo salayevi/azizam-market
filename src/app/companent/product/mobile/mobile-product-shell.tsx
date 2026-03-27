@@ -1,23 +1,40 @@
+import { mobileSections } from "@/config/mobile-system/mobile-sections";
 import MobileProductCard, { type MobileProductItem } from "./mobile-product-card";
 
 type MobileProductShellProps = {
   products: MobileProductItem[];
+  floatingIndex: number;
   activeIndex: number;
+  cardsProgress: number;
+  cardsRevealProgress: number;
   isAuthenticated?: boolean;
 };
 
 export default function MobileProductShell({
   products,
+  floatingIndex,
   activeIndex,
+  cardsProgress,
+  cardsRevealProgress,
   isAuthenticated = false,
 }: MobileProductShellProps) {
   return (
-    <div className="relative mx-auto h-[100svh] w-full max-w-[380px]">
+    <div
+      className="relative mx-auto w-full"
+      style={{
+        maxWidth: mobileSections.product.frameMaxWidth,
+        height: "100svh",
+      }}
+    >
       {products.map((product, index) => (
         <MobileProductCard
           key={product.id}
           product={product}
-          isActive={index === activeIndex}
+          index={index}
+          floatingIndex={floatingIndex}
+          activeIndex={activeIndex}
+          cardsProgress={cardsProgress}
+          cardsRevealProgress={cardsRevealProgress}
           isAuthenticated={isAuthenticated}
         />
       ))}

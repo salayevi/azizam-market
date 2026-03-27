@@ -2,17 +2,60 @@
 
 import AuthTriggerButton from "../../shared/auth/AuthTriggerButton";
 
-export default function MobileProductGuestCallout() {
+type MobileProductGuestCalloutProps = {
+  compact?: boolean;
+  accentColor: string;
+  textColor: string;
+  mutedColor: string;
+  borderColor: string;
+  backgroundColor: string;
+  dark?: boolean;
+};
+
+export default function MobileProductGuestCallout({
+  compact = false,
+  accentColor,
+  textColor,
+  mutedColor,
+  borderColor,
+  backgroundColor,
+  dark = false,
+}: MobileProductGuestCalloutProps) {
   return (
-    <div className="mt-4 rounded-[22px] border border-[#f1bdd9] bg-white/90 px-4 py-4 text-center shadow-sm">
-      <p className="text-sm leading-6 text-[#6f4d57]">
-        Mahsulot bilan ishlash uchun avval tizimga kiring.
+    <div
+      className="mt-5 rounded-[24px] border shadow-[0_10px_26px_rgba(0,0,0,0.08)]"
+      style={{
+        paddingInline: compact ? "14px" : "16px",
+        paddingBlock: compact ? "14px" : "16px",
+        background: backgroundColor,
+        borderColor,
+      }}
+    >
+      <p
+        className="text-[clamp(14px,3.8vw,16px)] font-semibold leading-[1.35]"
+        style={{ color: textColor }}
+      >
+        To‘liq imkoniyatlar uchun tizimga kiring
       </p>
 
-      <div className="mt-3 flex justify-center">
+      <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-[clamp(13px,3.7vw,15px)]">
+        <AuthTriggerButton
+          mode="register"
+          className="font-semibold underline underline-offset-4"
+          style={{ color: accentColor }}
+        >
+          Ro‘yxatdan o‘ting
+        </AuthTriggerButton>
+
+        <span style={{ color: mutedColor }}>yoki</span>
+
         <AuthTriggerButton
           mode="login"
-          className="rounded-full bg-[#cf2f8f] px-5 py-3 text-sm font-semibold text-white"
+          className="rounded-full px-4 py-2 font-semibold"
+          style={{
+            background: accentColor,
+            color: dark ? "#111" : "#fff",
+          }}
         >
           Kirish
         </AuthTriggerButton>

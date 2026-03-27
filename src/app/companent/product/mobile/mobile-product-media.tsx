@@ -14,9 +14,9 @@ export default function MobileProductMedia({
       <Image
         src={image}
         alt={title}
-        width={500}
-        height={500}
-        className="h-auto w-full object-cover"
+        width={640}
+        height={520}
+        className="h-[clamp(236px,33svh,310px)] w-full object-cover object-center"
         priority={false}
       />
     </div>

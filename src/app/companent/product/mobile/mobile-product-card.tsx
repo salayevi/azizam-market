@@ -1,48 +1,161 @@
-import MobileProductActions from "./mobile-product-actions";
+import { mobileMotion } from "@/config/mobile-system/mobile-motion";
+import { mobileSections } from "@/config/mobile-system/mobile-sections";
 import MobileProductGuestCallout from "./mobile-product-guest-callout";
 import MobileProductInfo from "./mobile-product-info";
 import MobileProductMedia from "./mobile-product-media";
 
+type ProductTheme = {
+  bg: string;
+  text: string;
+  accent: string;
+  muted?: string;
+  card?: string;
+  tone?: "light" | "dark";
+};
+
 export type MobileProductItem = {
   id: number;
   title: string;
+  eyebrow: string;
+  promo?: string;
   description: string;
   image: string;
+  imageAlt?: string;
+  theme: ProductTheme;
 };
 
 type MobileProductCardProps = {
   product: MobileProductItem;
-  isActive?: boolean;
+  index: number;
+  floatingIndex: number;
+  activeIndex: number;
+  cardsProgress: number;
+  cardsRevealProgress: number;
   isAuthenticated?: boolean;
 };
 
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
+
 export default function MobileProductCard({
   product,
-  isActive = false,
+  index,
+  floatingIndex,
+  activeIndex,
+  cardsProgress,
+  cardsRevealProgress,
   isAuthenticated = false,
 }: MobileProductCardProps) {
+  const distance = index - floatingIndex;
+  const limitedDistance = clamp(distance, -1.2, 2.4);
+
+  const isFront = Math.abs(distance) < 0.55 || index === activeIndex;
+  const passedCard = distance < -0.55;
+
+  const revealLift = (1 - cardsRevealProgress) * mobileMotion.product.introOffsetY;
+  const revealScale =
+    mobileMotion.product.introScaleFrom +
+    (1 - mobileMotion.product.introScaleFrom) * cardsRevealProgress;
+
+  const translateY = passedCard
+    ? -mobileMotion.product.exitLift * clamp(Math.abs(distance), 0, 1)
+    : limitedDistance * mobileMotion.product.stackOffsetY +
+      Math.max(limitedDistance, 0) * 16 +
+      revealLift;
+
+  const scale = passedCard
+    ? 0.91
+    : (1 - Math.max(limitedDistance, 0) * mobileMotion.product.stackScaleStep) *
+      revealScale;
+
+  const opacityBase = passedCard
+    ? Math.max(0, 1 - Math.abs(distance) * 1.8)
+    : clamp(
+        1 - Math.max(limitedDistance, 0) * 0.22,
+        mobileMotion.product.inactiveOpacity,
+        1,
+      );
+
+  const opacity = opacityBase * cardsRevealProgress;
+  const blur = passedCard ? 5 : Math.max(0, limitedDistance) * 1.15;
+  const zIndex = 100 - Math.round(Math.max(limitedDistance, 0) * 10);
+
+  const isDark = product.theme.tone === "dark";
+
+  const outerColor = isDark ? "#1f1f1f" : "#7b001d";
+  const topColor = isDark ? "#2b2b2b" : "#b61d52";
+  const bottomColor = product.theme.card ?? (isDark ? "#191919" : "#f3dbe5");
+  const borderColor = product.theme.accent;
+  const textColor = product.theme.text;
+  const subtextColor = product.theme.muted ?? product.theme.text;
+
   return (
     <article
-      className={`absolute left-1/2 top-1/2 w-full max-w-[360px] -translate-x-1/2 rounded-[28px] border border-[#efbfd8] bg-white p-4 shadow-lg transition-all duration-500 ${
-        isActive ? "z-20 opacity-100" : "z-10 opacity-0"
-      }`}
+      className="absolute left-1/2 top-1/2 w-full overflow-hidden transition-transform duration-200 ease-out"
       style={{
-        transform: `translate(-50%, -50%) scale(${isActive ? 1 : 0.92})`,
+        width: mobileSections.product.cardMaxWidth,
+        minHeight: mobileSections.product.cardMinHeight,
+        borderRadius: mobileSections.product.cardRadius,
+        transform: `translate(-50%, calc(-50% + ${translateY}px)) scale(${scale})`,
+        opacity,
+        filter: `blur(${blur}px)`,
+        zIndex,
+        pointerEvents: isFront ? "auto" : "none",
+        background: outerColor,
+        border: `1px solid ${borderColor}`,
+        boxShadow: isFront
+          ? "0 22px 54px rgba(71, 10, 30, 0.22)"
+          : "0 12px 28px rgba(71, 10, 30, 0.12)",
       }}
     >
-      <MobileProductMedia image={product.image} title={product.title} />
+      <div className="p-[clamp(14px,4vw,18px)]">
+        <div
+          className="overflow-hidden"
+          style={{
+            borderRadius: mobileSections.product.cardRadius,
+            background: bottomColor,
+          }}
+        >
+          <div
+            className="px-[clamp(14px,4vw,18px)] pt-[clamp(14px,4vw,18px)]"
+            style={{ background: topColor }}
+          >
+            <MobileProductMedia
+              image={product.image}
+              title={product.imageAlt ?? product.title}
+            />
+          </div>
 
-      <div className="pt-5">
-        <MobileProductInfo
-          title={product.title}
-          description={product.description}
-        />
+          <div
+            className="px-[clamp(18px,4.8vw,22px)] pb-[clamp(18px,4.8vw,22px)] pt-[clamp(18px,4.8vw,24px)]"
+            style={{
+              marginTop: "-2px",
+              background: bottomColor,
+            }}
+          >
+            <MobileProductInfo
+              title={product.title}
+              eyebrow={product.eyebrow}
+              promo={product.promo}
+              description={product.description}
+              textColor={textColor}
+              subtextColor={subtextColor}
+              accentColor={product.theme.accent}
+            />
 
-        {isAuthenticated ? (
-          <MobileProductActions />
-        ) : (
-          <MobileProductGuestCallout />
-        )}
+            {!isAuthenticated && (
+              <MobileProductGuestCallout
+                compact={!isFront && cardsProgress < 0.98}
+                accentColor={product.theme.accent}
+                textColor={textColor}
+                borderColor={borderColor}
+                backgroundColor={isDark ? "#222222" : "#f8edf2"}
+                mutedColor={subtextColor}
+                dark={isDark}
+              />
+            )}
+          </div>
+        </div>
       </div>
     </article>
   );
