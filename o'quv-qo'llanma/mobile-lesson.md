@@ -105,10 +105,18 @@ config/
 # home/mobile/index.tsx
 
 ```
+"use client";
+
 import MobileHero from "./mobile-hero";
 
-export default function MobileHomeSection() {
-  return <MobileHero />;
+type MobileHomeSectionProps = {
+  startupReady?: boolean;
+};
+
+export default function MobileHomeSection({
+  startupReady = false,
+}: MobileHomeSectionProps) {
+  return <MobileHero startupReady={startupReady} />;
 }
 ```
 
@@ -2135,6 +2143,8 @@ export default function useMobileAchievementsScroll({
 # sections/mobile-page.tsx
 
 ```
+"use client";
+
 import MobileAboutSection from "../about/mobile";
 import MobileAchievementsSection from "../AchievementsSection/mobile";
 import MobileHomeSection from "../home/mobile";
@@ -2142,20 +2152,39 @@ import MobileFooter from "../home/mobile/mobile-footer";
 import MobileBottomNav from "../home/mobile/mobile-bottom-nav";
 import MobileProductSection from "../product/mobile";
 import MobileTopbar from "../home/mobile/mobile-topbar";
+import MobileStartupLoader from "../shared/loading/mobile-startup-loader";
+import useStartupLoading from "../shared/hooks/use-startup-loading";
 
 export default function MobilePage() {
+  const { isLoading, isReady } = useStartupLoading({
+    rootSelector: "#mobile-page-root",
+    minDurationMs: 650,
+    maxDurationMs: 1800,
+  });
+
   return (
-    <main className="relative min-h-screen w-full bg-white">
-      <MobileTopbar />
-      <MobileBottomNav />
-      <div>
-        <MobileHomeSection />
-        <MobileAboutSection />
-        <MobileProductSection />
-        <MobileAchievementsSection />
-        <MobileFooter />
-      </div>
-    </main>
+    <>
+      <MobileStartupLoader visible={isLoading} />
+      <main
+        id="mobile-page-root"
+        className="relative min-h-screen w-full bg-white"
+        style={{
+          opacity: isLoading ? 0 : 1,
+          transition: "opacity 400ms ease",
+        }}
+      >
+        <MobileTopbar />
+        <MobileBottomNav />
+
+        <div>
+          <MobileHomeSection startupReady={isReady} />
+          <MobileAboutSection />
+          <MobileProductSection />
+          <MobileAchievementsSection />
+          <MobileFooter />
+        </div>
+      </main>
+    </>
   );
 }
 ```
@@ -2180,6 +2209,7 @@ type UseMobileHeroMotionParams = {
   titleWrapRef: RefObject<HTMLDivElement | null>;
   azizamRef: RefObject<HTMLHeadingElement | null>;
   marketRef: RefObject<HTMLHeadingElement | null>;
+  startupReady?: boolean;
 };
 
 export default function useMobileHeroMotion({
@@ -2190,8 +2220,11 @@ export default function useMobileHeroMotion({
   titleWrapRef,
   azizamRef,
   marketRef,
+  startupReady = false,
 }: UseMobileHeroMotionParams) {
   useEffect(() => {
+    if (!startupReady) return;
+
     const section = sectionRef.current;
     const stage = stageRef.current;
     const bg = bgRef.current;
@@ -2216,11 +2249,18 @@ export default function useMobileHeroMotion({
         scale: 0.99,
       });
 
+      gsap.set(overlay, {
+        opacity: 0,
+      });
+
+      const introDelay = 0.08;
+
       gsap.to(titleWrap, {
         autoAlpha: 1,
         y: 0,
         scale: 1,
         duration: mobileMotion.hero.introDuration,
+        delay: introDelay,
         ease: mobileMotion.hero.introEase,
       });
 
@@ -2278,6 +2318,10 @@ export default function useMobileHeroMotion({
           },
           0,
         );
+
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
     }, section);
 
     const refresh = () => ScrollTrigger.refresh();
@@ -2292,110 +2336,17 @@ export default function useMobileHeroMotion({
       window.removeEventListener("orientationchange", refresh);
       ctx.revert();
     };
-  }, [sectionRef, stageRef, bgRef, overlayRef, titleWrapRef, azizamRef, marketRef]);
+  }, [
+    sectionRef,
+    stageRef,
+    bgRef,
+    overlayRef,
+    titleWrapRef,
+    azizamRef,
+    marketRef,
+    startupReady,
+  ]);
 }
-```
-
-# shared/hooks/use-mobile-collapsed-nav.ts
-
-```
-"use client";
-
-import { useEffect, useState } from "react";
-
-export default function useMobileCollapsedNav(threshold = 110) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => {
-      setIsCollapsed(window.scrollY > threshold);
-    };
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, [threshold]);
-
-  return isCollapsed;
-}
-```
-
-# shared/responsive/breakpoints.ts
-
-```
-(Xali code yozilmagan buyerga)
-```
-
-# shared/responsive/device-config.ts
-
-```
-export const deviceConfig = {
-  mobileMaxWidth: 1024,
-  desktopMinWidth: 1025,
-} as const;
-
-export type DeviceMode = "mobile" | "desktop";
-```
-
-# shared/responsive/ResponsivePage.tsx
-
-```
-"use client";
-
-import DesktopPage from "../../sections/desktop-page";
-import MobilePage from "../../sections/mobile-page";
-import useDeviceMode from "./use-device-mode";
-
-export default function ResponsivePage() {
-  const deviceMode = useDeviceMode();
-
-  if (deviceMode === "mobile") {
-    return <MobilePage />;
-  }
-
-  return <DesktopPage />;
-}
-```
-
-# shared/responsive/use-device-mode.ts
-
-```
-"use client";
-
-import { useEffect, useState } from "react";
-import { deviceConfig, type DeviceMode } from "./device-config";
-
-function getDeviceMode(width: number): DeviceMode {
-  return width <= deviceConfig.mobileMaxWidth ? "mobile" : "desktop";
-}
-
-export default function useDeviceMode(): DeviceMode {
-  const [deviceMode, setDeviceMode] = useState<DeviceMode>("desktop");
-
-  useEffect(() => {
-    const updateDeviceMode = () => {
-      setDeviceMode(getDeviceMode(window.innerWidth));
-    };
-
-    updateDeviceMode();
-    window.addEventListener("resize", updateDeviceMode);
-
-    return () => {
-      window.removeEventListener("resize", updateDeviceMode);
-    };
-  }, []);
-
-  return deviceMode;
-}
-```
-
-# config/mobile-system/breakpoints.ts
-
-```
-(xali code yozilmagan)
 ```
 
 # config/mobile-system/mobile-hero.ts
