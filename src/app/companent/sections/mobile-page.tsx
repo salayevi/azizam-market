@@ -11,9 +11,10 @@ import MobileStartupLoader from "../shared/loading/mobile-startup-loader";
 import useStartupLoading from "../shared/hooks/use-startup-loading";
 
 export default function MobilePage() {
-  const { isLoading } = useStartupLoading({
+  const { isLoading, isReady } = useStartupLoading({
     rootSelector: "#mobile-page-root",
-    minDurationMs: 800,
+    minDurationMs: 650,
+    maxDurationMs: 1800,
   });
 
   return (
@@ -31,7 +32,7 @@ export default function MobilePage() {
         <MobileBottomNav />
 
         <div>
-          <MobileHomeSection />
+          <MobileHomeSection startupReady={isReady} />
           <MobileAboutSection />
           <MobileProductSection />
           <MobileAchievementsSection />

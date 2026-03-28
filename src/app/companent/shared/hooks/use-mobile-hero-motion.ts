@@ -15,6 +15,7 @@ type UseMobileHeroMotionParams = {
   titleWrapRef: RefObject<HTMLDivElement | null>;
   azizamRef: RefObject<HTMLHeadingElement | null>;
   marketRef: RefObject<HTMLHeadingElement | null>;
+  startupReady?: boolean;
 };
 
 export default function useMobileHeroMotion({
@@ -25,8 +26,11 @@ export default function useMobileHeroMotion({
   titleWrapRef,
   azizamRef,
   marketRef,
+  startupReady = false,
 }: UseMobileHeroMotionParams) {
   useEffect(() => {
+    if (!startupReady) return;
+
     const section = sectionRef.current;
     const stage = stageRef.current;
     const bg = bgRef.current;
@@ -51,11 +55,18 @@ export default function useMobileHeroMotion({
         scale: 0.99,
       });
 
+      gsap.set(overlay, {
+        opacity: 0,
+      });
+
+      const introDelay = 0.08;
+
       gsap.to(titleWrap, {
         autoAlpha: 1,
         y: 0,
         scale: 1,
         duration: mobileMotion.hero.introDuration,
+        delay: introDelay,
         ease: mobileMotion.hero.introEase,
       });
 
@@ -113,6 +124,10 @@ export default function useMobileHeroMotion({
           },
           0,
         );
+
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
     }, section);
 
     const refresh = () => ScrollTrigger.refresh();
@@ -127,5 +142,14 @@ export default function useMobileHeroMotion({
       window.removeEventListener("orientationchange", refresh);
       ctx.revert();
     };
-  }, [sectionRef, stageRef, bgRef, overlayRef, titleWrapRef, azizamRef, marketRef]);
+  }, [
+    sectionRef,
+    stageRef,
+    bgRef,
+    overlayRef,
+    titleWrapRef,
+    azizamRef,
+    marketRef,
+    startupReady,
+  ]);
 }

@@ -8,7 +8,11 @@ import { mobileTypography } from "@/config/mobile-system/mobile-typography";
 import MobileTopbar from "./mobile-topbar";
 import useMobileHeroMotion from "../../shared/hooks/use-mobile-hero-motion";
 
-export default function MobileHero() {
+type MobileHeroProps = {
+  startupReady?: boolean;
+};
+
+export default function MobileHero({ startupReady = false }: MobileHeroProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
 
@@ -20,15 +24,16 @@ export default function MobileHero() {
   const marketRef = useRef<HTMLHeadingElement | null>(null);
   const bottomNavRef = useRef<HTMLDivElement | null>(null);
 
- useMobileHeroMotion({
-  sectionRef,
-  stageRef,
-  bgRef,
-  overlayRef,
-  titleWrapRef,
-  azizamRef,
-  marketRef,
-});
+  useMobileHeroMotion({
+    sectionRef,
+    stageRef,
+    bgRef,
+    overlayRef,
+    titleWrapRef,
+    azizamRef,
+    marketRef,
+    startupReady,
+  });
 
   return (
     <section
@@ -127,7 +132,6 @@ export default function MobileHero() {
             </div>
           </div>
         </div>
-
       </div>
     </section>
   );
