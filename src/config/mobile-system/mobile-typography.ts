@@ -13,6 +13,10 @@ export const mobileTypography = {
     lineHeight: 1.1,
   },
 
+  product: {
+    title: "clamp(34px, 10vw, 50px)",
+  },
+
   footer: {
     brandLabel: "clamp(11px, 3vw, 12px)",
     title: "clamp(34px, 10vw, 42px)",

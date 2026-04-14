@@ -18,7 +18,10 @@ export const mobileSections = {
   product: {
     minHeight: "380svh",
     stickyHeight: "100svh",
+    stagePadX: "clamp(12px, 3.5vw, 18px)",
+    titlePadX: "clamp(18px, 5vw, 28px)",
     frameMaxWidth: "min(calc(100vw - 24px), 390px)",
+    titleFrameMaxWidth: "min(calc(100vw - 32px), 440px)",
     titleTopOffset: "0svh",
     cardMaxWidth: "min(calc(100vw - 34px), 392px)",
     cardRadius: "30px",

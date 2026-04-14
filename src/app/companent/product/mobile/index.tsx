@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { mobileSections } from "@/config/mobile-system/mobile-sections";
+import { mobileTypography } from "@/config/mobile-system/mobile-typography";
 import { productsData } from "../shared/products-data";
 import MobileProductShell from "./mobile-product-shell";
 import useMobileProductsScroll from "../../shared/hooks/useMobileProductsScroll";
@@ -19,16 +19,6 @@ const mobileProducts = productsData.map((product) => ({
 }));
 
 export default function MobileProductSection() {
-  const [titleIntroReady, setTitleIntroReady] = useState(false);
-
-  useEffect(() => {
-    const id = window.setTimeout(() => {
-      setTitleIntroReady(true);
-    }, 80);
-
-    return () => window.clearTimeout(id);
-  }, []);
-
   const scrollState = useMobileProductsScroll({
     sectionId: "products",
     totalItems: mobileProducts.length,
@@ -53,27 +43,32 @@ export default function MobileProductSection() {
       }}
     >
       <div
-        className="sticky top-0 flex w-full items-center justify-center overflow-hidden px-3"
+        className="sticky top-0 flex w-full items-center justify-center overflow-hidden"
         style={{
           height: mobileSections.product.stickyHeight,
+          paddingInline: mobileSections.product.stagePadX,
         }}
       >
         <div
-          className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center px-6 text-center"
+          className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center text-center"
           style={{
             opacity: titleOpacity,
             transition: "opacity 120ms linear, transform 120ms linear",
+            paddingInline: mobileSections.product.titlePadX,
           }}
         >
           <div
             style={{
               width: "100%",
-              maxWidth: mobileSections.product.frameMaxWidth,
+              maxWidth: mobileSections.product.titleFrameMaxWidth,
               transform: `translateY(${titleTranslateY}px) scale(${titleScale})`,
               transformOrigin: "center center",
             }}
           >
-            <h2 className="text-[clamp(34px,10vw,50px)] font-bold leading-none tracking-[-0.05em] text-[#cf2f8f]">
+            <h2
+              className="font-bold leading-none tracking-[-0.05em] text-[#cf2f8f]"
+              style={{ fontSize: mobileTypography.product.title }}
+            >
               Maxsulotlar
             </h2>
           </div>
