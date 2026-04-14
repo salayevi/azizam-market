@@ -93,7 +93,7 @@ export default function MobileProductActions({
           transitionDelay: "140ms",
         }}
       >
-        Savatga qo'shish
+        Savatga qo&apos;shish
       </button>
     </div>
   );

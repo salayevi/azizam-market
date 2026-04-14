@@ -32,10 +32,11 @@ export default function ProductSlide({ product, index }: Props) {
     <article
       data-product-slide
       data-index={index}
-      className="absolute inset-0 grid h-full w-full grid-cols-1 lg:grid-cols-[1.05fr_1fr]"
+      className="absolute inset-0 grid h-full w-full grid-cols-1 lg:grid-cols-[1fr_1.02fr]"
       style={{
         background: product.theme.bg,
         color: product.theme.text,
+        columnGap: sizes.product.panelGap,
       }}
     >
       <div

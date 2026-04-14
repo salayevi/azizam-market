@@ -338,21 +338,29 @@ export default function AchievementsSection() {
             className="absolute inset-0 flex flex-col items-center justify-center text-center"
             style={{
               zIndex: zIndex.intro,
-              paddingInline: spacing[6],
+              paddingInline: sizes.layout.sectionPadX,
             }}
           >
             <h2
               ref={introTitleRef}
-              className="max-w-5xl text-5xl font-semibold tracking-tight lg:text-7xl"
-              style={{ color: colors.text.primary }}
+              className="font-semibold tracking-tight"
+              style={{
+                color: colors.text.primary,
+                maxWidth: sizes.achievements.introTitleMax,
+                fontSize: sizes.achievements.introTitleSize,
+              }}
             >
               Kompaniya Yutuqlari
             </h2>
 
             <p
               ref={introSubtitleRef}
-              className="mt-6 max-w-2xl text-lg leading-relaxed lg:text-2xl"
-              style={{ color: colors.text.secondary }}
+              className="mt-6 leading-relaxed"
+              style={{
+                color: colors.text.secondary,
+                maxWidth: sizes.achievements.introSubtitleMax,
+                fontSize: sizes.achievements.introSubtitleSize,
+              }}
             >
               Ishonch, tajriba va estetik yondashuv birlashgan yo‘limizdan
               lavhalar.
@@ -366,15 +374,19 @@ export default function AchievementsSection() {
                 ref={(el) => {
                   slidesRef.current[index] = el
                 }}
-                className="absolute inset-0 flex items-center justify-center px-8 lg:px-16"
+                className="absolute inset-0 flex items-center justify-center"
               >
-                <div className="relative flex h-full w-full max-w-7xl items-center justify-center">
+                <div
+                  className="relative flex h-full w-full items-center justify-center"
+                  style={{
+                    maxWidth: sizes.achievements.slideContainerMax,
+                    paddingInline: sizes.layout.sectionPadX,
+                  }}
+                >
                   <div
                     className="achievement-image-wrap absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                     style={{
-                      minWidth: "360px",
-                      maxWidth: "620px",
-                      width: "38vw",
+                      width: sizes.achievements.imageWidth,
                     }}
                   >
                     <div
@@ -393,13 +405,20 @@ export default function AchievementsSection() {
                     </div>
                   </div>
 
-                  <div className="achievement-content absolute left-1/2 top-[68%] w-full max-w-3xl -translate-x-1/2 text-center">
+                  <div
+                    className="achievement-content absolute left-1/2 w-full -translate-x-1/2 text-center"
+                    style={{
+                      top: sizes.achievements.contentTop,
+                      maxWidth: sizes.achievements.contentWrapMax,
+                    }}
+                  >
                     <div
-                      className="mx-auto max-w-2xl backdrop-blur-md"
+                      className="mx-auto backdrop-blur-md"
                       style={{
                         borderRadius: radius["2xl"],
                         backgroundColor: colors.surface.glass,
                         boxShadow: shadows.glass,
+                        maxWidth: sizes.achievements.contentCardMax,
                         paddingInline: spacing[8],
                         paddingBlock: spacing[6],
                       }}
@@ -412,15 +431,21 @@ export default function AchievementsSection() {
                       </div>
 
                       <h3
-                        className="text-3xl font-semibold tracking-tight lg:text-5xl"
-                        style={{ color: colors.text.primary }}
+                        className="font-semibold tracking-tight"
+                        style={{
+                          color: colors.text.primary,
+                          fontSize: sizes.achievements.cardTitleSize,
+                        }}
                       >
                         {item.title}
                       </h3>
 
                       <p
-                        className="mt-4 text-base leading-8 lg:text-lg"
-                        style={{ color: colors.text.secondary }}
+                        className="mt-4 leading-8"
+                        style={{
+                          color: colors.text.secondary,
+                          fontSize: sizes.achievements.cardTextSize,
+                        }}
                       >
                         {item.description}
                       </p>
@@ -436,19 +461,27 @@ export default function AchievementsSection() {
             className="absolute inset-0 flex flex-col items-center justify-center text-center"
             style={{
               zIndex: zIndex.finalIntro,
-              paddingInline: spacing[6],
+              paddingInline: sizes.layout.sectionPadX,
             }}
           >
             <h2
-              className="max-w-5xl text-5xl font-semibold tracking-tight lg:text-7xl"
-              style={{ color: colors.text.primary }}
+              className="font-semibold tracking-tight"
+              style={{
+                color: colors.text.primary,
+                maxWidth: sizes.achievements.introTitleMax,
+                fontSize: sizes.achievements.introTitleSize,
+              }}
             >
               Kompaniya Yutuqlari
             </h2>
 
             <p
-              className="mt-6 max-w-2xl text-lg leading-relaxed lg:text-2xl"
-              style={{ color: colors.text.secondary }}
+              className="mt-6 leading-relaxed"
+              style={{
+                color: colors.text.secondary,
+                maxWidth: sizes.achievements.introSubtitleMax,
+                fontSize: sizes.achievements.introSubtitleSize,
+              }}
             >
               Har bir bosqich ortida tajriba, did va ishonch turadi.
             </p>

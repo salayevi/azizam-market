@@ -24,6 +24,7 @@ export const mobileSections = {
     cardRadius: "30px",
     cardMinHeight: "clamp(520px, 76svh, 710px)",
     contentBottomOffset: "clamp(92px, 12svh, 110px)",
+    bottomSafeOffset: 60,
   },
 
   achievements: {
@@ -38,7 +39,15 @@ export const mobileSections = {
   footer: {
     minHeight: "100svh",
     contentMaxWidth: "min(calc(100vw - 32px), 380px)",
+    topPadding: "clamp(92px, 12svh, 110px)",
     bottomPadding: "clamp(96px, 14svh, 120px)",
+    glowTopOffset: "clamp(-140px, -14vh, -100px)",
+    glowSize: "clamp(240px, 68vw, 320px)",
+    cardRadius: "clamp(30px, 8.8vw, 36px)",
+    cardPadX: "clamp(22px, 6vw, 28px)",
+    cardPadY: "clamp(42px, 11vw, 48px)",
+    bodyMaxWidth: "min(75vw, 280px)",
+    ctaMaxWidth: "min(64vw, 240px)",
   },
 } as const;
 
