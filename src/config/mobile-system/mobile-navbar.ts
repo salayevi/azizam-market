@@ -1,9 +1,9 @@
 export const mobileNavbar = {
-  topIconSize: "78px",
-  topIconInnerSize: "62px",
-  topIconGap: "16px",
+  topIconSize: "clamp(68px, 16vw, 78px)",
+  topIconInnerSize: "clamp(54px, 13vw, 62px)",
+  topIconGap: "clamp(12px, 3.8vw, 16px)",
 
-  bottomHeight: "78px",
+  bottomHeight: "clamp(70px, 18vw, 78px)",
   bottomRadius: "9999px",
   bottomBlur: "14px",
 

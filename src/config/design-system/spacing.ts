@@ -1,4 +1,3 @@
-// src/config/design-system/spacing.ts
 export const spacing = {
   0: "0px",
   1: "clamp(4px, 0.22vw, 4px)",

@@ -1,15 +1,15 @@
 export const mobileSpacing = {
-  pageX: "20px",
+  pageX: "clamp(14px, 5vw, 20px)",
 
-  topbarTop: "26px",
-  topbarLeft: "20px",
-  topbarGap: "18px",
+  topbarTop: "clamp(18px, 5.5vw, 26px)",
+  topbarLeft: "clamp(14px, 5vw, 20px)",
+  topbarGap: "clamp(14px, 4vw, 18px)",
 
-  heroBottomSafeSpace: "148px",
+  heroBottomSafeSpace: "clamp(128px, 18vh, 148px)",
 
-  bottomNavX: "16px",
-  bottomNavY: "20px",
-  bottomNavInnerX: "18px",
+  bottomNavX: "clamp(12px, 4vw, 16px)",
+  bottomNavY: "clamp(14px, 4.5vw, 20px)",
+  bottomNavInnerX: "clamp(14px, 4.5vw, 18px)",
 
   heroTitleOffsetY: "0svh",
 } as const;

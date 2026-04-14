@@ -1,14 +1,14 @@
 export const mobileTypography = {
   hero: {
-    title: "clamp(50px, 14vw, 76px)",
+    title: "clamp(42px, 14vw, 76px)",
     lineHeight: 0.9,
     letterSpacing: "-0.06em",
     weight: 700,
-    lineGap: "4px",
+    lineGap: "clamp(2px, 1vw, 4px)",
   },
 
   nav: {
-    label: "11px",
+    label: "clamp(10px, 2.8vw, 11px)",
     weight: 600,
     lineHeight: 1.1,
   },

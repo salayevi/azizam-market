@@ -1,4 +1,3 @@
-// src/config/design-system/sizes.ts
 export const sizes = {
   hero: {
     titleMobile: "140px",
