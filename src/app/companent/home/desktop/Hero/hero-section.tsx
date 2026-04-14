@@ -114,10 +114,10 @@ export default function Hero() {
             ref={azizamRef}
             className="font-bold"
             style={{
-              fontSize: `clamp(${typography.fontSize.heroSm}, 12vw, ${typography.fontSize.heroXl})`,
+              fontSize: sizes.hero.titleDesktop,
               lineHeight: typography.lineHeight.none,
               letterSpacing: typography.letterSpacing.tighter,
-              paddingLeft: spacing[4],
+              paddingLeft: sizes.hero.titleInsetX,
             }}
           >
             Azizam
@@ -127,11 +127,11 @@ export default function Hero() {
             ref={marketRef}
             className="text-right font-bold"
             style={{
-              fontSize: `clamp(${typography.fontSize.heroSm}, 12vw, ${typography.fontSize.heroXl})`,
+              fontSize: sizes.hero.titleDesktop,
               lineHeight: typography.lineHeight.none,
               letterSpacing: typography.letterSpacing.tighter,
-              marginTop: spacing[4],
-              paddingRight: spacing[4],
+              marginTop: sizes.hero.titleRowGap,
+              paddingRight: sizes.hero.titleInsetX,
             }}
           >
             Market

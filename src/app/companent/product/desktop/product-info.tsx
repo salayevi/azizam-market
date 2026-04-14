@@ -1,5 +1,5 @@
 import { Product } from "../shared/product.types"
-import { radius } from "@/config/design-system"
+import { radius, sizes } from "@/config/design-system"
 
 type Props = {
   product: Product
@@ -8,7 +8,7 @@ type Props = {
 
 export default function ProductInfo({ product, isAuthenticated }: Props) {
   return (
-    <div data-product-info className="max-w-xl">
+    <div data-product-info className="w-full" style={{ maxWidth: sizes.product.infoMaxWidth }}>
       {product.badge && (
         <div
           className="mb-4 inline-flex px-4 py-1 text-sm font-medium"

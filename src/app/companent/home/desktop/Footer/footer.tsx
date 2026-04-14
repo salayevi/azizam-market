@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { colors, radius, spacing } from "@/config/design-system"
+import { colors, radius, sizes } from "@/config/design-system"
 import AuthTriggerButton from "@/app/companent/shared/auth/AuthTriggerButton"
 
 export default function Footer() {
@@ -11,9 +11,20 @@ export default function Footer() {
       className="relative w-full overflow-hidden"
       style={{ backgroundColor: colors.background.dark }}
     >
-      <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
-          <div className="max-w-md">
+      <div
+        className="mx-auto"
+        style={{
+          maxWidth: sizes.footer.containerMax,
+          paddingInline: sizes.footer.sectionPadX,
+          paddingTop: sizes.footer.sectionPadY,
+          paddingBottom: sizes.footer.sectionPadY,
+        }}
+      >
+        <div
+          className="flex flex-col lg:flex-row lg:items-start lg:justify-between"
+          style={{ gap: sizes.footer.columnsGap }}
+        >
+          <div style={{ maxWidth: sizes.footer.brandMax }}>
             <div className="flex items-center gap-3">
               <Image src="/logo.png" alt="Azizam Market" width={44} height={44} />
               <span className="text-xl font-semibold text-white">
@@ -30,7 +41,10 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+          <div
+            className="grid sm:grid-cols-2 lg:grid-cols-3"
+            style={{ gap: sizes.footer.linksGap }}
+          >
             <div>
               <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-white">
                 Bo‘limlar

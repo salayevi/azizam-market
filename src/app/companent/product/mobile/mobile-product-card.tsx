@@ -1,5 +1,6 @@
 import { mobileMotion } from "@/config/mobile-system/mobile-motion";
 import { mobileSections } from "@/config/mobile-system/mobile-sections";
+import { mobileSpacing } from "@/config/mobile-system/mobile-spacing";
 import MobileProductGuestCallout from "./mobile-product-guest-callout";
 import MobileProductInfo from "./mobile-product-info";
 import MobileProductMedia from "./mobile-product-media";
@@ -52,15 +53,11 @@ export default function MobileProductCard({
   const [actionsVisible, setActionsVisible] = useState(false);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      const id = window.setTimeout(() => {
-        setActionsVisible(true);
-      }, 60);
+    const id = window.setTimeout(() => {
+      setActionsVisible(isAuthenticated);
+    }, isAuthenticated ? 60 : 0);
 
-      return () => window.clearTimeout(id);
-    }
-
-    setActionsVisible(false);
+    return () => window.clearTimeout(id);
   }, [isAuthenticated]);
 
   const distance = index - floatingIndex;
@@ -99,7 +96,7 @@ export default function MobileProductCard({
   const zIndex = 100 - Math.round(Math.max(limitedDistance, 0) * 10);
 
   const isDark = product.theme.tone === "dark";
-  const bottomSafeOffset = 60; // nav height
+  const bottomSafeOffset = mobileSections.product.bottomSafeOffset; // nav height
 
   const outerColor = isDark ? "#1f1f1f" : "#7b001d";
   const topColor = isDark ? "#2b2b2b" : "#b61d52";
@@ -127,7 +124,7 @@ export default function MobileProductCard({
           : "0 12px 28px rgba(71, 10, 30, 0.12)",
       }}
     >
-      <div className="p-[clamp(14px,4vw,18px)]">
+      <div style={{ padding: mobileSpacing.productCardOuterPad }}>
         <div
           className="overflow-hidden"
           style={{
@@ -136,8 +133,11 @@ export default function MobileProductCard({
           }}
         >
           <div
-            className="px-[clamp(14px,4vw,18px)] pt-[clamp(14px,4vw,18px)]"
-            style={{ background: topColor }}
+            style={{
+              background: topColor,
+              paddingInline: mobileSpacing.productCardMediaPad,
+              paddingTop: mobileSpacing.productCardMediaPad,
+            }}
           >
             <MobileProductMedia
               image={product.image}
@@ -146,10 +146,12 @@ export default function MobileProductCard({
           </div>
 
           <div
-            className="px-[clamp(18px,4.8vw,22px)] pb-[clamp(18px,4.8vw,22px)] pt-[clamp(18px,4.8vw,24px)]"
             style={{
               marginTop: "-2px",
               background: bottomColor,
+              paddingInline: mobileSpacing.productCardContentPadX,
+              paddingTop: mobileSpacing.productCardContentPadTop,
+              paddingBottom: mobileSpacing.productCardContentPadBottom,
             }}
           >
             <MobileProductInfo

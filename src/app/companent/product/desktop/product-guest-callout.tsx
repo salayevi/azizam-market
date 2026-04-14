@@ -1,6 +1,6 @@
 "use client"
 
-import { colors, radius, shadows } from "@/config/design-system"
+import { colors, radius, shadows, sizes } from "@/config/design-system"
 import AuthTriggerButton from "../../shared/auth/AuthTriggerButton"
 
 type Props = {
@@ -11,12 +11,13 @@ export default function ProductGuestCallout({ accent }: Props) {
   return (
     <div
       data-product-guest-callout
-      className="mt-8 max-w-md p-5"
+      className="mt-8 p-5"
       style={{
         borderRadius: radius["2xl"],
         backgroundColor: colors.surface.white,
         border: `1px solid ${colors.border.soft}`,
         boxShadow: shadows.soft,
+        maxWidth: sizes.product.guestCalloutMaxWidth,
       }}
     >
       <div
