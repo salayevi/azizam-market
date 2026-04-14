@@ -12,6 +12,14 @@ export const mobileTypography = {
     weight: 600,
     lineHeight: 1.1,
   },
+
+  footer: {
+    brandLabel: "clamp(11px, 3vw, 12px)",
+    title: "clamp(34px, 10vw, 42px)",
+    body: "clamp(14px, 3.9vw, 15px)",
+    link: "clamp(12px, 3.4vw, 13px)",
+    note: "clamp(11px, 3vw, 12px)",
+  },
 } as const;
 
 export type MobileTypography = typeof mobileTypography;

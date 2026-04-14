@@ -338,7 +338,7 @@ export default function AchievementsSection() {
             className="absolute inset-0 flex flex-col items-center justify-center text-center"
             style={{
               zIndex: zIndex.intro,
-              paddingInline: spacing[6],
+              paddingInline: sizes.layout.sectionPadX,
             }}
           >
             <h2
@@ -366,15 +366,15 @@ export default function AchievementsSection() {
                 ref={(el) => {
                   slidesRef.current[index] = el
                 }}
-                className="absolute inset-0 flex items-center justify-center px-8 lg:px-16"
+                className="absolute inset-0 flex items-center justify-center"
               >
-                <div className="relative flex h-full w-full max-w-7xl items-center justify-center">
+                <div className="relative flex h-full w-full items-center justify-center"
+                style={{ maxWidth: sizes.achievements.slideContainerMax }}>
                   <div
                     className="achievement-image-wrap absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                     style={{
-                      minWidth: "360px",
-                      maxWidth: "620px",
-                      width: "38vw",
+                      width: sizes.achievements.imageWidth,
+                      minWidth: sizes.achievements.imageWidth,
                     }}
                   >
                     <div
@@ -393,7 +393,8 @@ export default function AchievementsSection() {
                     </div>
                   </div>
 
-                  <div className="achievement-content absolute left-1/2 top-[68%] w-full max-w-3xl -translate-x-1/2 text-center">
+                  <div className="achievement-content absolute left-1/2 w-full max-w-3xl -translate-x-1/2 text-center"
+                    style={{ top: sizes.achievements.contentTop }}>
                     <div
                       className="mx-auto max-w-2xl backdrop-blur-md"
                       style={{
@@ -436,7 +437,7 @@ export default function AchievementsSection() {
             className="absolute inset-0 flex flex-col items-center justify-center text-center"
             style={{
               zIndex: zIndex.finalIntro,
-              paddingInline: spacing[6],
+              paddingInline: sizes.layout.sectionPadX,
             }}
           >
             <h2

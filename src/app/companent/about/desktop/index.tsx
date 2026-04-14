@@ -4,9 +4,19 @@ import { useEffect, useRef } from "react"
 import Image from "next/image"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { colors, radius, shadows, sizes } from "@/config/design-system"
+import { colors, radius, shadows, sizes, spacing } from "@/config/design-system"
 
 gsap.registerPlugin(ScrollTrigger)
+
+const aboutTexts = [
+  "Azizam Market — bu shunchaki kosmetika do‘koni emas.",
+  "Bu — mehr, e’tibor va qadrlash maskani.",
+  "“Azizam” so‘zi biz uchun oddiy murojaat emas.",
+  "Bu yaqinlikni, samimiyatni va muhabbatni anglatadi.",
+  "Biz har bir inson o‘zini aziz his qilishi uchun ishlaymiz.",
+  "Har bir sovg‘a — bu munosabat.",
+  "Har bir mahsulot — e’tibor belgisi.",
+]
 
 export default function About() {
   const sectionRef = useRef<HTMLElement | null>(null)
@@ -63,7 +73,7 @@ export default function About() {
       })
 
       tl.to(imageRef.current, {
-        x: "-35vw",
+        x: sizes.about.imageTravelX,
         duration: 1.5,
       })
 
@@ -106,62 +116,84 @@ export default function About() {
     >
       <h2
         ref={bigTitleRef}
-        className="absolute text-7xl font-bold md:text-[120px]"
-        style={{ color: colors.brand.primaryStrong }}
+        className="absolute text-center font-bold"
+        style={{
+          color: colors.brand.primaryStrong,
+          fontSize: sizes.about.titleSize,
+          letterSpacing: "-0.03em",
+          width: "100%",
+          paddingInline: spacing[6],
+        }}
       >
         BIZ HAQIMIZDA
       </h2>
 
       <div
-        ref={imageRef}
-        className="absolute overflow-hidden"
+        className="absolute left-1/2 top-1/2 flex w-full -translate-x-1/2 -translate-y-1/2 items-center justify-center"
         style={{
-          borderRadius: radius.xl,
-          border: `2px solid ${colors.brand.primary}`,
-          boxShadow: shadows.card,
+          maxWidth: sizes.about.rowMaxWidth,
+          paddingInline: spacing[8],
+          gap: sizes.about.rowGap,
         }}
       >
-        <Image
-          src="/grid-img.png"
-          alt="Azizam"
-          width={520}
-          height={650}
-          className="object-cover"
-        />
-      </div>
-
-      <div
-        className="absolute right-[10vw]"
-        style={{ width: sizes.about.textWidth }}
-      >
-        <h3
-          ref={titleRef}
-          className="absolute text-5xl font-semibold"
-          style={{ color: colors.brand.primaryStrong }}
+        <div
+          ref={imageRef}
+          className="overflow-hidden"
+          style={{
+            borderRadius: radius.xl,
+            border: `2px solid ${colors.brand.primary}`,
+            boxShadow: shadows.card,
+            width: sizes.about.imageWidth,
+            minWidth: sizes.about.imageWidth,
+            height: sizes.about.imageHeight,
+            flexShrink: 0,
+          }}
         >
-          Azizam Market
-        </h3>
+          <Image
+            src="/grid-img.png"
+            alt="Azizam"
+            width={560}
+            height={700}
+            className="h-full w-full object-cover"
+          />
+        </div>
 
-        {[
-          "Azizam Market — bu shunchaki kosmetika do‘koni emas.",
-          "Bu — mehr, e’tibor va qadrlash maskani.",
-          "“Azizam” so‘zi biz uchun oddiy murojaat emas.",
-          "Bu yaqinlikni, samimiyatni va muhabbatni anglatadi.",
-          "Biz har bir inson o‘zini aziz his qilishi uchun ishlaymiz.",
-          "Har bir sovg‘a — bu munosabat.",
-          "Har bir mahsulot — e’tibor belgisi.",
-        ].map((text, index) => (
-          <p
-            key={index}
-            ref={(el) => {
-              textsRef.current[index] = el
+        <div
+          className="relative flex items-center"
+          style={{
+            width: sizes.about.textWidth,
+            minWidth: "420px",
+            minHeight: sizes.about.textMinHeight,
+          }}
+        >
+          <h3
+            ref={titleRef}
+            className="absolute font-semibold"
+            style={{
+              color: colors.brand.primaryStrong,
+              fontSize: "clamp(2.1rem, 3.2vw, 3.2rem)",
             }}
-            className="absolute text-2xl"
-            style={{ color: colors.brand.secondary }}
           >
-            {text}
-          </p>
-        ))}
+            Azizam Market
+          </h3>
+
+          {aboutTexts.map((text, index) => (
+            <p
+              key={index}
+              ref={(el) => {
+                textsRef.current[index] = el
+              }}
+              className="absolute"
+              style={{
+                color: colors.brand.secondary,
+                fontSize: sizes.about.textSize,
+                lineHeight: 1.45,
+              }}
+            >
+              {text}
+            </p>
+          ))}
+        </div>
       </div>
     </section>
   )

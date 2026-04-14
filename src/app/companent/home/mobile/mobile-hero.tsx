@@ -124,7 +124,7 @@ export default function MobileHero({ startupReady = false }: MobileHeroProps) {
                   fontWeight: mobileTypography.hero.weight,
                   whiteSpace: "nowrap",
                   margin: 0,
-                  marginTop: "6px",
+                  marginTop: mobileSpacing.heroTitleGap,
                 }}
               >
                 Market
