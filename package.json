@@ -2,11 +2,10 @@
   "name": "azizam-market",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
+ "scripts": {
+    "dev": "next dev -H 127.0.0.1 -p 3000",
     "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "start": "next start -H 127.0.0.1 -p 3000"
   },
   "dependencies": {
     "gsap": "^3.14.2",
