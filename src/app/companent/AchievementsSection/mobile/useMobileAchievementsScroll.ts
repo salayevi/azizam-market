@@ -44,7 +44,7 @@ export default function useMobileAchievementsScroll({
   }, [sectionId]);
 
   return useMemo(() => {
-    const titleFadeProgress = rangeProgress(sectionProgress, 0.08, 0.24);
+    const titleFadeProgress = rangeProgress(sectionProgress, 0.18, 0.24);
 
     // Card yig‘ilish bosqichi
     const frameRevealProgress = rangeProgress(sectionProgress, 0.24, 0.42);

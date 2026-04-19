@@ -44,7 +44,7 @@ export default function MobileProductActions({
       }}
     >
       <div
-        className="flex items-start justify-between gap-4 transition-all duration-500 ease-out"
+        className="flex items-start justify-between gap-2 transition-all duration-500 ease-out"
         style={{
           opacity: ready ? 1 : 0,
           transform: ready ? "translateY(0px)" : "translateY(8px)",

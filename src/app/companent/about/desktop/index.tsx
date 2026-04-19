@@ -187,7 +187,7 @@ export default function About() {
               style={{
                 color: colors.brand.secondary,
                 fontSize: sizes.about.textSize,
-                lineHeight: 1.45,
+                lineHeight: 1.25,
               }}
             >
               {text}

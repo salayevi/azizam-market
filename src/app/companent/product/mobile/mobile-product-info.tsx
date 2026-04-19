@@ -18,7 +18,7 @@ export default function MobileProductInfo({
   accentColor,
 }: MobileProductInfoProps) {
   return (
-    <div className="space-y-3 text-left">
+    <div className="space-y-2 text-left">
       <h3
         className="text-[clamp(28px,8vw,40px)] font-semibold leading-[0.96] tracking-[-0.045em]"
         style={{ color: textColor }}

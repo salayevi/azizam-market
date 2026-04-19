@@ -8,17 +8,17 @@ export const mobileTypography = {
   },
 
   nav: {
-    label: "clamp(10px, 2.8vw, 11px)",
-    weight: 600,
+    label: "clamp(8px, 2.8vw, 11px,)",
+    weight: 700,
     lineHeight: 1.1,
   },
 
   footer: {
-    brandLabel: "clamp(11px, 3vw, 12px)",
+    brandLabel: "clamp(11px, 3vw, 10px)",
     title: "clamp(34px, 10vw, 42px)",
     body: "clamp(14px, 3.9vw, 15px)",
-    link: "clamp(12px, 3.4vw, 13px)",
-    note: "clamp(11px, 3vw, 12px)",
+    link: "clamp(10px, 3.4vw, 13px)",
+    note: "clamp(10px, 3vw, 10px)",
   },
 } as const;
 

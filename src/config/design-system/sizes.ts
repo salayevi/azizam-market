@@ -22,7 +22,8 @@ export const sizes = {
     textWidth: "clamp(420px, 34vw, 620px)",
     textMinHeight: "clamp(120px, 14vh, 180px)",
     textSize: "clamp(1.28rem, 1.7vw, 1.85rem)",
-    imageTravelX: "-35vw",
+    imageTravelX: "-15vw",
+    // imageTravelX: "clamp(0.28rem, -17vw, 85rem)",
   },
 
   achievements: {
